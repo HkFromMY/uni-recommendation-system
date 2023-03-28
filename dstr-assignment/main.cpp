@@ -1,6 +1,6 @@
 #include "search.h"
 #include "sort.h"
-#include "LinkedList.h"
+#include "UniversityList.h"
 #include "Date.h"
 
 #include <chrono>
@@ -12,9 +12,8 @@ using namespace chrono;
 
 int main()
 {
-
-    // can play around for bug hunting
-    LinkedList* newList = new LinkedList();
+    // sample output
+    UniversityList* newList = new UniversityList();
     newList->appendNewNode(new University(1, "University 1"));
     newList->appendNewNode(new University(2, "University 2"));
     newList->appendNewNode(new University(3, "University 3"));

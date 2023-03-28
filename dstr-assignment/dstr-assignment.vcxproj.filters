@@ -30,7 +30,7 @@
     <ClCompile Include="Date.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp">
+    <ClCompile Include="UniversityList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="University.cpp">
@@ -50,7 +50,7 @@
     <ClInclude Include="Date.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h">
+    <ClInclude Include="UniversityList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="University.h">
