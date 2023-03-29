@@ -28,6 +28,7 @@ class User
 
 		// print details
 		void printDetails();
+		bool isPasswordMatch(string, string);
 
 };
 

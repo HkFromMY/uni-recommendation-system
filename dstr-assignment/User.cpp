@@ -14,6 +14,13 @@ void User::setUsername(string newUsername) { username = newUsername; }
 void User::setPassword(string newPassword) { username = newPassword; }
 void User::setRole(string newRole) { username = newRole; }
 
+bool User::isPasswordMatch(string usernameEntered, string passwordEntered) {
+	return (
+		(username == usernameEntered) &&
+		(password == passwordEntered)
+	);
+}
+
 void User::printDetails() {
 	cout << "Username: " << username << endl;
 	cout << "Password: " << password << endl;
