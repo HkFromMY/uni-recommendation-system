@@ -21,6 +21,7 @@ class UniversityList
 
 	public:
 		UniversityList();
+		~UniversityList();
 
 		// operations - CRUD
 		void appendNewNode(University*);

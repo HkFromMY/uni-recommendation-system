@@ -82,3 +82,5 @@ void University::setIRNRank(int irn_rank) { uni_irn_rank = irn_rank; }
 void University::setGERSCore(double ger_score) { uni_ger_score = ger_score; }
 void University::setGERRank(int ger_rank) { uni_ger_rank = ger_rank; }
 void University::setScoreScaled(double score_scale) { uni_score_scaled = score_scale; }
+
+University::~University() {}

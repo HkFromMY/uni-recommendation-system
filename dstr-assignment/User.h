@@ -15,6 +15,7 @@ class User
 
 	public:
 		User(string, string, string);
+		~User();
 
 		// getters
 		string getUsername();

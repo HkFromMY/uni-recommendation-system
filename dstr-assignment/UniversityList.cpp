@@ -140,3 +140,5 @@ void UniversityList::displayNodesDetails() {
 		counter++;
 	}
 }
+
+UniversityList::~UniversityList() {}

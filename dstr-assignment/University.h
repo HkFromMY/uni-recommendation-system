@@ -24,6 +24,7 @@ class University
 			int, string, string, string, double, int, double, int, double, int, double, int, double, int,
 			double, int, double, int, double, int, double
 		);
+		~University();
 
 		// getters
 		int getRank(); string getInstitution(); string getLocationCode(); string getLocation(); double getARScore();

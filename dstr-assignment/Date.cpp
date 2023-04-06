@@ -117,4 +117,5 @@ bool Date::isEqual(Date* date) {
 	if (day == date->getDay()) return true;
 }
 
+Date::~Date() {}
 

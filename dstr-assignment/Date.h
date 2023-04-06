@@ -22,6 +22,7 @@ class Date
 	public:
 		Date(int, int, int); // construct date object from integers
 		Date(string); // directly accept string and convert to date
+		~Date();
 
 		// getters
 		int getYear();

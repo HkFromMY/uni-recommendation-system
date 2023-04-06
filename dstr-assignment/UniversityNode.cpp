@@ -17,6 +17,8 @@ void UniversityNode::setData(University* newUniversity) { data = newUniversity; 
 void UniversityNode::setNextAddress(UniversityNode* nextAddress) { next = nextAddress;}
 void UniversityNode::setPreviousAddress(UniversityNode* previousAddress) { previous = previousAddress; }
 
+UniversityNode::~UniversityNode() {}
+
 //void loadCSVFile() {
 //    string rank, ar_rank, er_rank, fsr_rank, cpf_rank, ifr_rank, isr_rank, irn_rank, ger_rank;
 //    string institution, location_code, location;

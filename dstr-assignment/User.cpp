@@ -25,3 +25,5 @@ void User::printDetails() {
 	cout << "Username: " << username << endl;
 	cout << "Password: " << password << endl;
 }
+
+User::~User() {}

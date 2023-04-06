@@ -19,6 +19,7 @@ class UniversityNode
 	public:
 		// constructors
 		UniversityNode(University*);
+		~UniversityNode();
 		
 		// getters
 		University* getData();
