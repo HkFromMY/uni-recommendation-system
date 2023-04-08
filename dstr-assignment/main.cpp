@@ -4,27 +4,17 @@
 #include "Date.h"
 
 #include <chrono>
+#include <fstream>
 
 using namespace std;
 using namespace chrono;
 
 int main()
 {
-    // sample output
-    /*UniversityList* newList = new UniversityList();
-    newList->appendNewNode(new University(1, "University 1"));
-    newList->appendNewNode(new University(2, "University 2"));
-    newList->appendNewNode(new University(3, "University 3"));
-    newList->appendNewNode(new University(4, "University 4"));
-
-    newList->insertNodeAt(new University(5, "University 5"), 2);
-
-    newList->deleteNodeAt(2);
-
-    newList->displayNodesDetailsFromFront();*/
-
+    // Example usage
+    UniversityList* uni_list = loadCSVFile("2023 QS World University Rankings.csv");
+    uni_list->displayNodesDetailsFromFront();
     
 
     return 0;
-
 }

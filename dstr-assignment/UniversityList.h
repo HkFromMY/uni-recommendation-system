@@ -7,6 +7,9 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+
+using namespace std;
 
 class UniversityList
 {
@@ -43,5 +46,7 @@ class UniversityList
 		UniversityList* filterRank(int, int);
 
 };
+
+UniversityList* loadCSVFile(string);
 
 #endif
