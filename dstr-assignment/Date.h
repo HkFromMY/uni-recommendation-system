@@ -20,6 +20,7 @@ class Date
 		int day;
 
 	public:
+		Date(); // set current date if default constructor is called
 		Date(int, int, int); // construct date object from integers
 		Date(string); // directly accept string and convert to date
 		~Date();
@@ -42,8 +43,8 @@ class Date
 		bool isBefore(Date*);
 		bool isEqual(Date*);
 
-		// can maybe calculate differences between date
-		// add year, month, day to current date
+		// calculate differences between date
+		int differenceBetweenTwoDates(Date*); // return days
 };
 
 #endif

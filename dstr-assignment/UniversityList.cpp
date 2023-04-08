@@ -7,32 +7,26 @@ UniversityList::UniversityList() {
 }
 
 void UniversityList::appendNewNode(University* newUniversity) {
+	// complexity O(1) as no loop involved
+
 	UniversityNode* newNode = new UniversityNode(newUniversity);
 
 	if (head == NULL) {
 		head = newNode;
+		last = newNode;
 		newNode->setNextAddress(head);
 		newNode->setPreviousAddress(head);
 	}
 	else {
-		UniversityNode* currentNode = head;
-		while (currentNode->getNextAddress() != head) {
-			currentNode = currentNode->getNextAddress();
-		}
+		// original last element's next address becomes new node's address
+		last->setNextAddress(newNode);
 
-		// raeching the last element
+		// new node's previous address set to original last element's address
+		newNode->setPreviousAddress(last);
 
-		// next address of current node becomes the new node
-		currentNode->setNextAddress(newNode);
+		// new last address becomes new node
+		last = newNode;
 
-		// set the new node at the end of linked list
-		newNode->setPreviousAddress(currentNode);
-		
-		// previous address of first node is updated to the new node
-		head->setPreviousAddress(newNode);
-
-		// next address of new node (last node) be the first node
-		newNode->setNextAddress(head);
 	}
 
 	count++;
@@ -40,6 +34,8 @@ void UniversityList::appendNewNode(University* newUniversity) {
 }
 
 void UniversityList::insertNodeAt(University* newUniversity, int position) {
+	// complexity O(N)
+
 	// insert new node at 'position' argument given
 	// this class use zero-based indexing so the first node has index 0
 
@@ -47,14 +43,17 @@ void UniversityList::insertNodeAt(University* newUniversity, int position) {
 
 	if (head == NULL) {
 		head = newNode;
+		last = newNode;
 		newNode->setNextAddress(head);
 		newNode->setPreviousAddress(head);
+
 		return;
 	}
 
 	if (position > count - 1) {
 		// append to the end of the linked list
 		appendNewNode(newUniversity);
+
 		return;
 	}
 
@@ -80,12 +79,58 @@ void UniversityList::insertNodeAt(University* newUniversity, int position) {
 		}
 
 		currentNode = currentNode->getNextAddress();
-
 	}
 
 }
 
+void UniversityList::deleteNodeAtFront() {
+	// complexity O(1)
+	if (head == NULL) {
+		cout << "The Linked list is empty!" << endl;
+		
+		return;
+	}
+
+	UniversityNode* nodeToBeDeleted = head;
+	head = head->getNextAddress(); // set new head to next address of the original head
+
+	if (head != NULL) {
+		// if the linked list have 2 or more elements, then set the previous address of new head to NULL
+		head->setPreviousAddress(NULL);
+
+	}
+	else {
+		last = NULL;
+
+	}
+
+	delete nodeToBeDeleted;
+}
+
+void UniversityList::deleteNodeAtEnd() {
+	// complexity O(1)
+	if (head == NULL) {
+		cout << "The Linked list is empty!" << endl;
+
+		return;
+	}
+
+	UniversityNode* nodeToBeDeleted = last;
+	last = last->getPreviousAddress();
+
+	if (last != NULL) {
+		last->setNextAddress(NULL);
+	}
+	else {
+		head = NULL;
+	}
+
+	delete nodeToBeDeleted;
+}
+
 void UniversityList::deleteNodeAt(int position) {
+	// complexity O(N)
+
 	if (head == NULL) {
 		cout << "The Linked list is empty!" << endl;
 		return;
@@ -121,24 +166,65 @@ void UniversityList::deleteNodeAt(int position) {
 
 }
 
-void UniversityList::displayNodesDetails() {
+void UniversityList::displayNodesDetailsFromFront() {
+	// time complexity O(N)
 	if (head == NULL) {
-		cout << "The linked list is empty!" << endl;
+		cout << "The Linked list is empty!" << endl;
+
 		return;
 	}
 
 	// iterate through the linked list and print everything
 	UniversityNode* currentNode = head;
-	int counter = 0;
-
-	while (counter < count) {
+	while (currentNode != NULL) {
 		cout << "Previous Node Data --> " << currentNode->getPreviousAddress()->getData()->getInstitution() << endl;
 		cout << "Current Node Data --> " << currentNode->getData()->getInstitution() << endl;
 		cout << "Next Node Data --> " << currentNode->getNextAddress()->getData()->getInstitution() << endl << "-------------------------------------------------------------" << endl;
 
 		currentNode = currentNode->getNextAddress();
-		counter++;
 	}
+}
+
+void UniversityList::displayNodeDetailsFromEnd() {
+	// time complexity O(N)
+
+	if (head == NULL) {
+		cout << "The Linked list is empty!" << endl;
+		
+		return;
+	}
+
+	// iterate through the linked lsit and print everything
+	UniversityNode* currentNode = last;
+	while (currentNode != NULL) {
+		cout << "Previous Node Data --> " << currentNode->getPreviousAddress()->getData()->getInstitution() << endl;
+		cout << "Current Node Data --> " << currentNode->getData()->getInstitution() << endl;
+		cout << "Next Node Data --> " << currentNode->getNextAddress()->getData()->getInstitution() << endl << "-------------------------------------------------------------" << endl;
+
+		currentNode = currentNode->getPreviousAddress();
+	}
+}
+
+// searching functions (returns one search results)
+University* UniversityList::searchByText(string field, string target) {
+	return new University(1, "asdasdasd");
+}
+
+University* UniversityList::searchByNumeric(string field, int target) {
+	return new University(1, "asdasdasd");
+}
+
+// filtering functions (returns multiple search results)
+UniversityList* UniversityList::filterName(string target) {
+	return new UniversityList();
+}
+
+UniversityList* UniversityList::filterScore(double lower_range, double upper_range) {
+	return new UniversityList();
+}
+
+UniversityList* UniversityList::filterRank(int lower_range, int upper_range) {
+	return new UniversityList();
 }
 
 UniversityList::~UniversityList() {}

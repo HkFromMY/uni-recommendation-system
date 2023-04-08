@@ -26,8 +26,21 @@ class UniversityList
 		// operations - CRUD
 		void appendNewNode(University*);
 		void insertNodeAt(University*, int);
+		void deleteNodeAtFront();
+		void deleteNodeAtEnd();
 		void deleteNodeAt(int);
-		void displayNodesDetails();
+
+		void displayNodesDetailsFromFront();
+		void displayNodeDetailsFromEnd();
+
+		// searching functions (returns one search results)
+		University* searchByText(string, string);
+		University* searchByNumeric(string, int);
+
+		// filtering functions (returns multiple search results)
+		UniversityList* filterName(string);
+		UniversityList* filterScore(double, double);
+		UniversityList* filterRank(int, int);
 
 };
 
