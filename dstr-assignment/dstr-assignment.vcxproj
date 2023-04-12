@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Feedback.cpp" />
+    <ClCompile Include="Rank.cpp" />
     <ClCompile Include="UniversityList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="search.cpp" />
@@ -153,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="Date.h" />
     <ClInclude Include="Feedback.h" />
+    <ClInclude Include="Rank.h" />
     <ClInclude Include="UniversityList.h" />
     <ClInclude Include="search.h" />
     <ClInclude Include="sort.h" />
