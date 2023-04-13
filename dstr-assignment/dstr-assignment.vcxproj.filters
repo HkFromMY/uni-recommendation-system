@@ -48,6 +48,12 @@
     <ClCompile Include="UserMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="login.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common_interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sort.h">
@@ -60,9 +66,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Date.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UniversityList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="University.h">
@@ -80,10 +83,16 @@
     <ClInclude Include="Rank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="admin.h">
+    <ClInclude Include="common_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="login.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

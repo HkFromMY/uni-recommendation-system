@@ -140,8 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="admin.cpp" />
+    <ClCompile Include="common_interface.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Feedback.cpp" />
+    <ClCompile Include="login.cpp" />
     <ClCompile Include="Rank.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="search.cpp" />
@@ -153,12 +155,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="admin.h" />
+    <ClInclude Include="common_interface.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Feedback.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="login.h" />
     <ClInclude Include="UserMenu.h" />
     <ClInclude Include="Rank.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="UniversityList.h" />
     <ClInclude Include="search.h" />
     <ClInclude Include="sort.h" />
     <ClInclude Include="University.h" />
