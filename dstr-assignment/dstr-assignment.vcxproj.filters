@@ -42,7 +42,11 @@
     <ClCompile Include="Rank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="admin.cpp">
+=======
+    <ClCompile Include="UserMenu.cpp">
+>>>>>>> 4a0bd4696e51640b8454c64057a197c4b99b3ce5
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -88,5 +92,8 @@
     <None Include="2023 QS World University Rankings.csv">
       <Filter>Resource Files</Filter>
     </None>
+    <ClInclude Include="UserMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
