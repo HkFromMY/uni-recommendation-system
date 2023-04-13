@@ -1,7 +1,5 @@
 #include "University.h"
 
-#include "UniversityNode.h"
-
 University::University(int rank, string institution) {
     // for testing only
     uni_rank = rank;
@@ -82,5 +80,13 @@ void University::setIRNRank(int irn_rank) { uni_irn_rank = irn_rank; }
 void University::setGERSCore(double ger_score) { uni_ger_score = ger_score; }
 void University::setGERRank(int ger_rank) { uni_ger_rank = ger_rank; }
 void University::setScoreScaled(double score_scale) { uni_score_scaled = score_scale; }
+
+void University::printDetails() {
+    // print all details of a university
+    cout << "Institution Name --> " << uni_institution << endl;
+    cout << "AR Rank --> " << uni_ar_rank << endl;
+    cout << "AR Score --> " << uni_ar_score << endl;
+    cout << "Score scaled --> " << uni_score_scaled << endl;
+}
 
 University::~University() {}

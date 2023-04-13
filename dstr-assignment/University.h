@@ -40,10 +40,7 @@ class University
 		void setISRRank(int); void setIRNScore(double); void setIRNRank(int); void setGERSCore(double); void setGERRank(int);
 		void setScoreScaled(double);
 
-		void printDetails() {
-			// print all details of a university
-			cout << "University Name: " << uni_institution << endl;
-		}
+		void printDetails();
 };
 
 #endif

@@ -139,29 +139,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="admin.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Feedback.cpp" />
     <ClCompile Include="Rank.cpp" />
-    <ClCompile Include="UniversityList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="sort.cpp" />
     <ClCompile Include="University.cpp" />
-    <ClCompile Include="UniversityNode.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="admin.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Feedback.h" />
     <ClInclude Include="Rank.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="UniversityList.h" />
     <ClInclude Include="search.h" />
     <ClInclude Include="sort.h" />
     <ClInclude Include="University.h" />
-    <ClInclude Include="UniversityNode.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="2023 QS World University Rankings.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,6 +6,13 @@
 
 using namespace std;
 
+// used for list of constants related to user's roles for better variable management
+enum user_role {
+	ADMIN = 0,
+	USER = 1,
+	GUEST = 2 
+};
+
 class User
 {
 	private:
