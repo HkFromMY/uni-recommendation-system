@@ -149,11 +149,13 @@
     <ClCompile Include="University.cpp" />
     <ClCompile Include="UniversityNode.cpp" />
     <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserMenu.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Date.h" />
     <ClInclude Include="Feedback.h" />
+    <ClInclude Include="UserMenu.h" />
     <ClInclude Include="Rank.h" />
     <ClInclude Include="UniversityList.h" />
     <ClInclude Include="search.h" />
