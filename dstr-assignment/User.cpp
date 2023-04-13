@@ -37,9 +37,13 @@ int User::getRole() {
 
 	return GUEST;
 }
+string User::getEmail() { return email; }
+string User::getPhone() { return phone; }
 
 void User::setUsername(string newUsername) { username = newUsername; }
 void User::setPassword(string newPassword) { username = newPassword; }
+void User::setEmail(string newEmail) { username = newEmail; }
+void User::setPhone(string newPhone) { username = newPhone; }
 void User::setRole(string newRole) { username = newRole; }
 
 bool User::isPasswordMatch(string usernameEntered, string passwordEntered) {

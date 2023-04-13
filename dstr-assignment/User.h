@@ -32,11 +32,15 @@ class User
 		// getters
 		string getUsername();
 		string getPassword();
+		string getEmail();
+		string getPhone();
 		int getRole(); // use to compare with the enum defined above
 
 		// setters
 		void setUsername(string);
 		void setPassword(string);
+		void setEmail(string);
+		void setPhone(string);
 		void setRole(string);
 
 		// print details
