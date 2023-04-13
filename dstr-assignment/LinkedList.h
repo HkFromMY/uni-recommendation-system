@@ -64,7 +64,7 @@ Node<Data>* LinkedList<Data>::getLastNode() {
 
 template <class Data>
 int LinkedList<Data>::getSize() {
-	return size;
+	return count;
 }
 
 template <class Data>

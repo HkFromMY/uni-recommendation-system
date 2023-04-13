@@ -8,8 +8,7 @@
 #include <iostream>;
 
 void loginInterface();
-bool validateCredentials(string, string);
-LinkedList<User>* loadUserData(string);
+User* validateCredentials(string, string);
 bool promptLogin();
 
 #endif // !login_h

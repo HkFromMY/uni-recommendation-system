@@ -108,5 +108,8 @@
     <Text Include="user.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="feedback.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

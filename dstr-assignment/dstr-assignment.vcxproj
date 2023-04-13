@@ -173,6 +173,7 @@
     <None Include="2023 QS World University Rankings.csv" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="feedback.txt" />
     <Text Include="user.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,5 +1,7 @@
 #include "login.h"
 #include "common_interface.h"
+#include "admin.h"
+#include "util.h"
 
 void loginInterface() {
 	system("cls");
@@ -14,12 +16,9 @@ void loginInterface() {
 	getline(cin, password);
 
 	// validate and verify password here
-	bool credentialMatched = validateCredentials(username, password);
-	if (credentialMatched) {
-		// go other interface
-		cout << "Login successfully!" << endl;
-	}
-	else {
+	User* userFound = validateCredentials(username, password);
+	if (userFound == NULL) {
+		// if incorrect credentials
 		cout << "The credentials is incorrect!" << endl;
 
 		bool wantLogin = promptLogin();
@@ -28,9 +27,27 @@ void loginInterface() {
 			loginInterface();
 		}
 	}
+	else {
+		int login_role = userFound->getRole();
+
+		// go other interface because correct credentials
+		if (login_role == USER) {
+			// registered user interface
+
+		}
+		else if (login_role == ADMIN) {
+			// admin interface
+			adminInterface();
+
+		}
+		else {
+			// guest interface
+		}
+	}
 }
 
-bool validateCredentials(string username, string password) {
+User* validateCredentials(string username, string password) {
+	// search whether there is matched record in user record
 	LinkedList<User>* user_list = loadUserData("user.txt");
 	
 	Node<User>* currentUserNode = user_list->getFirstNode();
@@ -39,61 +56,36 @@ bool validateCredentials(string username, string password) {
 		User* user = currentUserNode->getData();
 		if (user->isPasswordMatch(username, password)) {
 			// if credentials matched
-			cout << "Credentials Matched!" << endl;
 
-			return true;
+			return user;
 		}
 
 		currentUserNode = currentUserNode->getNextAddress();
 	}
 
-	return false;
-}
-
-LinkedList<User>* loadUserData(string filepath) {
-	LinkedList<User>* user_list = new LinkedList<User>();
-	string username, password, role;
-	ifstream file(filepath);
-
-	if (!file.is_open()) {
-		cerr << "ERROR: File Open" << endl;
-
-		throw exception();
-	}
-
-
-	while (file.good()) {
-		// get line by line
-		getline(file, username, '|');
-		getline(file, password, '|');
-		getline(file, role, '\n');
-
-		User* user = new User(
-			username,
-			password,
-			role
-		);
-
-		user_list->appendNewNode(user);
-	}
-
-	return user_list;
+	return NULL;
 }
 
 bool promptLogin() {
+	// this function prompts the user whether they want to login or not
+	// repeat until the users give valid input
+
 	int relogin;
-	cout << "Do you want to login again? (0 - No, 1 - Yes) >> ";
+	cout << "Do you want to login again? (1 - No, 2 - Yes) >> ";
 	cin >> relogin;
 
 	// clear input stream and remaining elements
 	cin.clear();
 	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	
-	if (relogin < 0 || relogin > 2) {
+	if (relogin <= 0 || relogin > 2) {
 		// invalid options, then re-prompt
+		system("cls");
+		systemHeading();
+
 		return promptLogin();
 	}
 
 	// if user insert 1 then means they want login so this expression returns true
-	return relogin == 1; 
+	return relogin == 2; 
 }

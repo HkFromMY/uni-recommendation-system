@@ -1,6 +1,8 @@
 #pragma once
 #ifndef user_h
 
+#include "Date.h"
+
 #include <iostream>
 #include <string>
 
@@ -16,18 +18,21 @@ enum user_role {
 class User
 {
 	private:
-		string username;
+		string username; // should be unique
 		string password;
+		string email;
+		string phone;
+		Date* last_login_date; // update when registered and login
 		string role; // can be user or admin only
 
 	public:
-		User(string, string, string);
+		User(string, string, string, string, string);
 		~User();
 
 		// getters
 		string getUsername();
 		string getPassword();
-		string getRole();
+		int getRole(); // use to compare with the enum defined above
 
 		// setters
 		void setUsername(string);

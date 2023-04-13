@@ -1,14 +1,42 @@
 #include "User.h"
 
-User::User(string newUsername, string newPassword, string newRole) {
+User::User(
+	string newUsername, 
+	string newPassword, 
+	string newEmail, 
+	string newPhone, 
+	string newRole
+) {
 	username = newUsername;
 	password = newPassword;
+	email = newEmail;
+	phone = newPhone;
 	role = newRole;
+
+	// validations
+	if (
+		role != "user" &&
+		role != "admin" &&
+		role != "guest"
+	) {
+		throw invalid_argument("Invalid role for User class.");
+	}
 }
 
 string User::getUsername() { return username; }
 string User::getPassword() { return password; }
-string User::getRole() { return role; }
+int User::getRole() {
+	// return integer based on user object's role
+
+	if (role == "user") {
+		return USER;
+	}
+	else if (role == "admin") {
+		return ADMIN;
+	}
+
+	return GUEST;
+}
 
 void User::setUsername(string newUsername) { username = newUsername; }
 void User::setPassword(string newPassword) { username = newPassword; }
@@ -23,7 +51,8 @@ bool User::isPasswordMatch(string usernameEntered, string passwordEntered) {
 
 void User::printDetails() {
 	cout << "Username: " << username << endl;
-	cout << "Password: " << password << endl;
+	cout << "Email: " << email << endl;
+	cout << "Phone: " << phone << endl;
 	cout << "Role: " << role << endl;
 }
 

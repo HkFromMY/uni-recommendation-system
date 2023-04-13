@@ -145,3 +145,43 @@ LinkedList<University>* loadCSVFile(string filepath) {
 
 	return uni_list;
 }
+
+LinkedList<User>* loadUserData(string filepath) {
+	// load the user data from text file into LinkedList of User objects
+	LinkedList<User>* user_list = new LinkedList<User>();
+	string username, password, email, phone, role;
+	ifstream file(filepath);
+
+	if (!file.is_open()) {
+		cerr << "ERROR: File Open" << endl;
+
+		throw exception();
+	}
+
+
+	while (file.good()) {
+		// get line by line
+		getline(file, username, '|');
+		getline(file, password, '|');
+		getline(file, email, '|');
+		getline(file, phone, '|');
+		getline(file, role, '\n');
+
+		if (username == "") {
+			// ignore last row
+			break;
+		}
+
+		User* user = new User(
+			username,
+			password,
+			email,
+			phone,
+			role
+		);
+
+		user_list->appendNewNode(user);
+	}
+
+	return user_list;
+}
