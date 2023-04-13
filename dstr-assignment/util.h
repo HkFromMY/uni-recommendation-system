@@ -1,7 +1,7 @@
 #pragma once
 #ifndef util_h
 
-#include "UniversityList.h"
+#include "LinkedList.h"
 #include "University.h"
 
 #include <iostream>

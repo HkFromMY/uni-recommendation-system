@@ -1,2 +1,3 @@
-﻿  main.cpp
-  dstr-assignment.vcxproj -> C:\Users\bpvpe\Desktop\uni-recommendation-system\Debug\dstr-assignment.exe
+﻿  login.cpp
+C:\Users\bpvpe\Downloads\uni-recommendation-system\dstr-assignment\login.h(8,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  dstr-assignment.vcxproj -> C:\Users\bpvpe\Downloads\uni-recommendation-system\Debug\dstr-assignment.exe

@@ -24,6 +24,7 @@ bool User::isPasswordMatch(string usernameEntered, string passwordEntered) {
 void User::printDetails() {
 	cout << "Username: " << username << endl;
 	cout << "Password: " << password << endl;
+	cout << "Role: " << role << endl;
 }
 
 User::~User() {}

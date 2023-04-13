@@ -35,6 +35,10 @@ void mainInterface() {
         cout << "Enter your selection here --> ";
         cin >> selection;
 
+        // clear remaining string elements after extracting the int
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
         switch (selection) {
             case 1:
                 cout << "Entering guest interface!" << endl;

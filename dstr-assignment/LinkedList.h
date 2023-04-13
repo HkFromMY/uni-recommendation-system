@@ -28,6 +28,11 @@ class LinkedList
 		LinkedList();
 		~LinkedList();
 
+		// getters (read-only)
+		Node<Data>* getFirstNode();
+		Node<Data>* getLastNode();
+		int getSize();
+
 		// operations - CRUD
 		void appendNewNode(Data*);
 		void insertNodeAt(Data*, int);
@@ -38,15 +43,6 @@ class LinkedList
 		void displayNodesDetailsFromFront();
 		void displayNodeDetailsFromEnd();
 
-		// searching functions (returns one search results)
-		Data* searchByText(string, string);
-		Data* searchByNumeric(string, int);
-
-		// filtering functions (returns multiple search results)
-		LinkedList<Data>* filterName(string);
-		LinkedList<Data>* filterScore(double, double);
-		LinkedList<Data>* filterRank(int, int);
-
 };
 
 template <class Data>
@@ -54,6 +50,21 @@ LinkedList<Data>::LinkedList() {
 	head = NULL;
 	count = 0;
 	last = NULL;
+}
+
+template <class Data>
+Node<Data>* LinkedList<Data>::getFirstNode() {
+	return head;
+}
+
+template <class Data>
+Node<Data>* LinkedList<Data>::getLastNode() {
+	return last;
+}
+
+template <class Data>
+int LinkedList<Data>::getSize() {
+	return size;
 }
 
 template <class Data>
@@ -264,33 +275,6 @@ void LinkedList<Data>::displayNodeDetailsFromEnd() {
 
 		currentNode = currentNode->getPreviousAddress();
 	}
-}
-
-// searching functions (returns one search results)
-template <class Data>
-Data* LinkedList<Data>::searchByText(string field, string target) {
-	return new Data(1, "asdasdasd");
-}
-
-template <class Data>
-Data* LinkedList<Data>::searchByNumeric(string field, int target) {
-	return new Data(1, "asdasdasd");
-}
-
-// filtering functions (returns multiple search results)
-template <class Data>
-LinkedList<Data>* LinkedList<Data>::filterName(string target) {
-	return new LinkedList<Data>();
-}
-
-template <class Data>
-LinkedList<Data>* LinkedList<Data>::filterScore(double lower_range, double upper_range) {
-	return new LinkedList<Data>();
-}
-
-template <class Data>
-LinkedList<Data>* LinkedList<Data>::filterRank(int lower_range, int upper_range) {
-	return new LinkedList<Data>();
 }
 
 template <class Data>
