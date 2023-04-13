@@ -42,11 +42,10 @@
     <ClCompile Include="Rank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="admin.cpp">
-=======
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="UserMenu.cpp">
->>>>>>> 4a0bd4696e51640b8454c64057a197c4b99b3ce5
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
