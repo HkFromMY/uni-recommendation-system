@@ -51,6 +51,7 @@ class User
 		// utility functions
 		void printDetails();
 		bool isPasswordMatch(string, string);
+		bool isInactive();
 		string fileOutputLine(); // return line of string that can be directly written to the file
 
 };

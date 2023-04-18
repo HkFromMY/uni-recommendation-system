@@ -29,6 +29,7 @@ void adminInterface() {
 				break;
 
 			case 2:
+				displayInactiveUser();
 				break;
 
 			case 3:
@@ -208,46 +209,67 @@ bool promptUserAction(User* user, string action) {
 void displayInactiveUser() {
 	system("cls");
 	systemHeading();
-
+	
+	// printing inactive users
+	bool hasInactive = false;
 	LinkedList<User>* userList = loadUserData("user.txt", true);
-	int selection = 0;
-
 	Node<User>* currentNode = userList->getFirstNode();
-	while (selection != 4) {
-		// display details and allows the users to navigate back and forth
-		User* user = currentNode->getData();
+	User* user;
 
-		user->printDetails();
-		cout << endl;
+	cout << "Inactive Users: " << endl;
+	for (int i = 0; i < userList->getSize(); i++) {
+		user = currentNode->getData();
 
-		cout << "Actions: " << endl;
-		cout << "1. Previous record." << endl;
-		cout << "2. Next record." << endl;
-		cout << "3. Delete user account." << endl;
-		cout << "4. Quit." << endl;
-		cout << "Enter your selection here --> ";
-		cin >> selection;
+		if (user->isInactive()) {
+			cout << string(40, '=') << endl;
+			user->printDetails();
+			cout << string(40, '=') << endl;
 
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			hasInactive = true;
 
-		switch (selection) {
-			case 1:
-				break;
+		}
 
-			case 2:
-				break;
+		currentNode = currentNode->getNextAddress();
+	}
 
-			case 3:
-				break;
+	if (!hasInactive) {
+		cout << "No inactive users currently!" << endl;
+	}
 
-			default:
-				cout << "Please choose a valid option!" << endl;
-				system("pause");
-				systemHeading();
-				break;
+	// Select user and delete on text file
+	int userId;
+	cout << "Which user's account you wish to delete? (Enter -1 to exit) --> ";
+	cin >> userId;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	if (userId == -1) {
+		return;
+
+	}
+
+	Node<User>* userToDelete = searchUser(userList->getFirstNode(), userId);
+	if (userToDelete == NULL || !userToDelete->getData()->isInactive()) {
+		// if user not found
+		cout << "WARNING: User not found!" << endl;
+		system("pause");
+		displayInactiveUser();
+
+	}
+	else {
+		// if user found
+		bool deleteUser = promptUserAction(userToDelete->getData(), "delete");
+		if (deleteUser) {
+			// delete the users on text file
+			deleteUserOnFile(userId);
+
+		}
+		else {
+			// call again this interface
+			displayInactiveUser();
+
 		}
 	}
+
 }
 
 void displayFeedbacks() {

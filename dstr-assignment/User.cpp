@@ -45,6 +45,15 @@ int User::getRole() {
 string User::getEmail() { return email; }
 string User::getPhone() { return phone; }
 Date* User::getLastLoginDate() { return last_login_date; }
+bool User::isInactive() {
+	Date* today = new Date();
+
+	if (last_login_date->differenceBetweenTwoDates(today) > 90) {
+		return true;
+	}
+
+	return false;
+}
 
 void User::setUserId(int newUserId) { user_id = newUserId; }
 void User::setUsername(string newUsername) { username = newUsername; }
