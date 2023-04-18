@@ -106,6 +106,19 @@ void Date::printDate() {
 		<< setfill('0') << setw(2) << day << endl;
 }
 
+string Date::toString() {
+	stringstream month_stream;
+	month_stream << setw(2) << setfill('0') << month;
+	string month = month_stream.str();
+
+	stringstream day_stream;
+	day_stream << setw(2) << setfill('0') << day;
+	string day = day_stream.str();
+
+	// YYYY-MM-DD format
+	return to_string(year) + "-" + month + "-" + day;
+}
+
 bool Date::isAfter(Date* date) {
 	// check year first
 	if (year > date->getYear()) return true;

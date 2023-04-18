@@ -28,10 +28,13 @@ class LinkedList
 		LinkedList();
 		~LinkedList();
 
-		// getters (read-only)
+		// getters
 		Node<Data>* getFirstNode();
 		Node<Data>* getLastNode();
 		int getSize();
+
+		// setters
+		void setSize(int);
 
 		// operations - CRUD
 		void appendNewNode(Data*);
@@ -39,6 +42,7 @@ class LinkedList
 		void deleteNodeAtFront();
 		void deleteNodeAtEnd();
 		void deleteNodeAt(int);
+		void deleteThisNode(Node<Data>* node);
 
 		void displayNodesDetailsFromFront();
 		void displayNodeDetailsFromEnd();
@@ -68,6 +72,11 @@ int LinkedList<Data>::getSize() {
 }
 
 template <class Data>
+void LinkedList<Data>::setSize(int newSize) {
+	count = newSize;
+}
+
+template <class Data>
 void LinkedList<Data>::appendNewNode(Data* newData) {
 	// complexity O(1) as no loop involved
 
@@ -85,6 +94,12 @@ void LinkedList<Data>::appendNewNode(Data* newData) {
 
 		// new node's previous address set to original last element's address
 		newNode->setPreviousAddress(last);
+
+		// connect the last to head
+		newNode->setNextAddress(head);
+
+		// connect the head to last
+		head->setPreviousAddress(newNode);
 
 		// new last address becomes new node
 		last = newNode;
@@ -109,6 +124,7 @@ void LinkedList<Data>::insertNodeAt(Data* newData, int position) {
 		last = newNode;
 		newNode->setNextAddress(head);
 		newNode->setPreviousAddress(head);
+		count++;
 
 		return;
 	}
@@ -120,7 +136,7 @@ void LinkedList<Data>::insertNodeAt(Data* newData, int position) {
 		return;
 	}
 
-	Node* currentNode = head;
+	Node<Data>* currentNode = head;
 	for (int currentIndex = 0; currentIndex <= position; currentIndex++) {
 
 		if (currentIndex == position - 1) {
@@ -155,20 +171,24 @@ void LinkedList<Data>::deleteNodeAtFront() {
 		return;
 	}
 
-	Node* nodeToBeDeleted = head;
+	Node<Data>* nodeToBeDeleted = head;
 	head = head->getNextAddress(); // set new head to next address of the original head
 
-	if (head != NULL) {
-		// if the linked list have 2 or more elements, then set the previous address of new head to NULL
-		head->setPreviousAddress(NULL);
+	if (count > 1) {
+		// if the linked list have 2 or more elements before deleting, 
+		// then set the previous address of new head to the last element
+		head->setPreviousAddress(last);
 
+		// connect the last element to the new first element
+		last->setNextAddress(head);
 	}
 	else {
-		last = NULL;
+		head = last = NULL;
 
 	}
 
 	delete nodeToBeDeleted;
+	count--;
 }
 
 template <class Data>
@@ -180,21 +200,28 @@ void LinkedList<Data>::deleteNodeAtEnd() {
 		return;
 	}
 
-	Node* nodeToBeDeleted = last;
+	Node<Data>* nodeToBeDeleted = last;
 	last = last->getPreviousAddress();
 
-	if (last != NULL) {
-		last->setNextAddress(NULL);
+	if (count > 1) {
+		// connect the head element to the new last element
+		last->setNextAddress(head);
+
+		// connect the new last element to the head
+		head->setPreviousAddress(last);
 	}
 	else {
-		head = NULL;
+		head = last = NULL;
+
 	}
 
 	delete nodeToBeDeleted;
+	count--;
 }
 
 template <class Data>
 void LinkedList<Data>::deleteNodeAt(int position) {
+	// zero-based indexing
 	// complexity O(N)
 
 	if (head == NULL) {
@@ -206,30 +233,69 @@ void LinkedList<Data>::deleteNodeAt(int position) {
 		throw out_of_range("Index out of range!");
 	}
 
-	Node* currentNode = head;
-	Node* previousNode = currentNode->getPreviousAddress();
+	Node<Data>* currentNode = head;
+	Node<Data>* previousNode = currentNode->getPreviousAddress();
 
 	for (int currentIndex = 0; currentIndex <= position; currentIndex++) {
 
-		if (currentIndex == position) {
-			// reconnect the previous address of next node and next address of previous node after deleting the node
-			previousNode->setNextAddress(currentNode->getNextAddress());
-			currentNode->getNextAddress()->setPreviousAddress(previousNode);
-
+		if (currentIndex == position) 
+		{	
 			if (currentNode == head) {
-				// if currentNode is head, then reset the head also
-				head = currentNode->getNextAddress();
+				// if currentNode is head, then call deleteNodeAtFront
+				deleteNodeAtFront();
+			}
+			else if (currentNode == last) {
+				// if currentNode is last element, then call deleteNodeAtEnd
+				deleteNodeAtEnd();
+			}
+			else {
+				cout << "previousNode " << previousNode->getData()->getEmail() << endl;
+				cout << "currentNode " << currentNode->getData()->getEmail() << endl;
+
+				// reconnect the previous address of next node and next address of previous node after deleting the node
+				previousNode->setNextAddress(currentNode->getNextAddress());
+				currentNode->getNextAddress()->setPreviousAddress(previousNode);
+
+				delete currentNode;
+				count--;
+
 			}
 
-			delete currentNode;
-			count--;
 		}
 		else {
 			currentNode = currentNode->getNextAddress();
-			previousNode = currentNode->getPreviousAddress();
+			previousNode = previousNode->getNextAddress();
 		}
 	}
 
+}
+
+template <class Data>
+void LinkedList<Data>::deleteThisNode(Node<Data>* node) {
+	// O(1) - time complexity
+	// delete the node from the list
+	// this functions ASSUMES that the node is from this LinkedList object
+	if (node == NULL) {
+		throw invalid_argument("'node' cannot be NULL!");
+
+	}
+
+	if (node == head) {
+		deleteNodeAtFront();
+
+	}
+	else if (node == last) {
+		deleteNodeAtEnd();
+
+	}
+	else {
+		// delete the node and reduce linked list size by 1
+		node->getPreviousAddress()->setNextAddress(node->getNextAddress());
+		node->getNextAddress()->setPreviousAddress(node->getPreviousAddress());
+		count--;
+
+		delete node;
+	}
 }
 
 template <class Data>
@@ -242,13 +308,16 @@ void LinkedList<Data>::displayNodesDetailsFromFront() {
 	}
 
 	// iterate through the linked list and print everything
+	int counter = 0;
 	Node<Data>* currentNode = head;
-	while (currentNode != NULL) {
+
+	while (counter < count) {
 		Data* currentData = currentNode->getData();
 		currentData->printDetails();
 		cout << string(50, '=') << endl;
 
 		currentNode = currentNode->getNextAddress();
+		counter++;
 	}
 }
 
@@ -263,17 +332,16 @@ void LinkedList<Data>::displayNodeDetailsFromEnd() {
 	}
 
 	// iterate through the linked lsit and print everything
-	Node* currentNode = last;
-	while (currentNode != NULL) {
+	int counter = 0;
+	Node<Data>* currentNode = last;
+	while (counter < count) {
 		University* currentUni = currentNode->getData();
-
-		cout << "Institution Name --> " << currentUni->getInstitution() << endl;
-		cout << "AR Rank --> " << currentUni->getARRank() << endl;
-		cout << "AR Score --> " << currentUni->getARScore() << endl;
-		cout << "Score scaled --> " << currentUni->getScoreScaled() << endl;
+		currentUni->printDetails();
 		cout << string(50, '=') << endl;
 
 		currentNode = currentNode->getPreviousAddress();
+		counter++;
+		
 	}
 }
 

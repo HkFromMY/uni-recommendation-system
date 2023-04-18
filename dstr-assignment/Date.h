@@ -37,6 +37,7 @@ class Date
 
 		// print date object in string format
 		void printDate();
+		string toString();
 
 		// for comparing dates
 		bool isAfter(Date*); 

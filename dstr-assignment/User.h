@@ -18,6 +18,7 @@ enum user_role {
 class User
 {
 	private:
+		int user_id;
 		string username; // should be unique
 		string password;
 		string email;
@@ -26,26 +27,31 @@ class User
 		string role; // can be user or admin only
 
 	public:
-		User(string, string, string, string, string);
+		User(int, string, string, string, string, string, Date*);
 		~User();
 
 		// getters
+		int getUserId();
 		string getUsername();
 		string getPassword();
 		string getEmail();
 		string getPhone();
 		int getRole(); // use to compare with the enum defined above
+		Date* getLastLoginDate();
 
 		// setters
+		void setUserId(int);
 		void setUsername(string);
 		void setPassword(string);
 		void setEmail(string);
 		void setPhone(string);
 		void setRole(string);
+		void setLastLoginDate(Date*);
 
-		// print details
+		// utility functions
 		void printDetails();
 		bool isPasswordMatch(string, string);
+		string fileOutputLine(); // return line of string that can be directly written to the file
 
 };
 

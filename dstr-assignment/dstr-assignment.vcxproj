@@ -143,6 +143,7 @@
     <ClCompile Include="common_interface.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Feedback.cpp" />
+    <ClCompile Include="input_validation.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="Rank.cpp" />
     <ClCompile Include="main.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="common_interface.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Feedback.h" />
+    <ClInclude Include="input_validation.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="login.h" />
     <ClInclude Include="UserMenu.h" />
@@ -174,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="feedback.txt" />
+    <Text Include="test.txt" />
     <Text Include="user.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -5,10 +5,10 @@
 
 void loginInterface() {
 	system("cls");
+	systemHeading();
 
 	string username, password;
 
-	systemHeading();
 	cout << "Please enter your username >> ";
 	getline(cin, username);
 
@@ -17,7 +17,8 @@ void loginInterface() {
 
 	// validate and verify password here
 	User* userFound = validateCredentials(username, password);
-	if (userFound == NULL) {
+
+	if (userFound == nullptr) {
 		// if incorrect credentials
 		cout << "The credentials is incorrect!" << endl;
 
@@ -40,20 +41,19 @@ void loginInterface() {
 			adminInterface();
 
 		}
-		else {
-			// guest interface
-		}
 	}
 }
 
 User* validateCredentials(string username, string password) {
 	// search whether there is matched record in user record
-	LinkedList<User>* user_list = loadUserData("user.txt");
+	LinkedList<User>* user_list = loadUserData("user.txt", false);
 	
 	Node<User>* currentUserNode = user_list->getFirstNode();
-	while (currentUserNode != NULL) {
+	int counter = 0;
+	while (counter < user_list->getSize()) {
 		// linear search O(N)
 		User* user = currentUserNode->getData();
+
 		if (user->isPasswordMatch(username, password)) {
 			// if credentials matched
 
@@ -61,9 +61,10 @@ User* validateCredentials(string username, string password) {
 		}
 
 		currentUserNode = currentUserNode->getNextAddress();
+		counter++;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 bool promptLogin() {
@@ -71,7 +72,7 @@ bool promptLogin() {
 	// repeat until the users give valid input
 
 	int relogin;
-	cout << "Do you want to login again? (1 - No, 2 - Yes) >> ";
+	cout << "Do you want to login again? (1 - Yes, 2 - No) >> ";
 	cin >> relogin;
 
 	// clear input stream and remaining elements
@@ -87,5 +88,5 @@ bool promptLogin() {
 	}
 
 	// if user insert 1 then means they want login so this expression returns true
-	return relogin == 2; 
+	return relogin == 1; 
 }

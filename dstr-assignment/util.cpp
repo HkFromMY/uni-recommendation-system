@@ -146,42 +146,108 @@ LinkedList<University>* loadCSVFile(string filepath) {
 	return uni_list;
 }
 
-LinkedList<User>* loadUserData(string filepath) {
+LinkedList<User>* loadUserData(string filepath, bool userOnly) {
 	// load the user data from text file into LinkedList of User objects
 	LinkedList<User>* user_list = new LinkedList<User>();
-	string username, password, email, phone, role;
+	string user_id, username, password, email, phone, role, last_login_date;
 	ifstream file(filepath);
 
 	if (!file.is_open()) {
-		cerr << "ERROR: File Open" << endl;
+		cerr << "ERROR: File not found!" << endl;
 
 		throw exception();
 	}
 
-
 	while (file.good()) {
 		// get line by line
+		getline(file, user_id, '|');
 		getline(file, username, '|');
 		getline(file, password, '|');
 		getline(file, email, '|');
 		getline(file, phone, '|');
-		getline(file, role, '\n');
+		getline(file, role, '|');
+		getline(file, last_login_date, '\n');
 
-		if (username == "") {
+		if (user_id == "") {
 			// ignore last row
 			break;
 		}
 
 		User* user = new User(
+			convertToInt(user_id),
 			username,
 			password,
 			email,
 			phone,
-			role
+			role,
+			new Date(last_login_date)
 		);
 
+		if (userOnly && user->getRole() == ADMIN) {
+			// exclude admin records if want user only
+			continue;
+		}
+
 		user_list->appendNewNode(user);
+
 	}
 
 	return user_list;
+}
+
+// generate ids for records
+int generateUserId() {
+	// this function generates new user id by incrementing to the latest user records by 1
+	LinkedList<User>* userList = loadUserData("user.txt", false);
+	User* lastUser = userList->getLastNode()->getData();
+
+	cout << "Last user ID: " << lastUser->getEmail() << endl;
+
+	return userList->getLastNode()->getData()->getUserId() + 1;
+}
+
+// file functions
+void writeToFile(string filepath, string content) {
+	// receives content of string and overwrite the entire file given the filepath
+
+	// output file stream
+	ofstream output_stream(filepath);
+
+	output_stream << content;
+
+	output_stream.close();
+}
+
+void appendToFile(string filepath, string line) {
+	// receives line of string and append to the end of file given the filepath
+	ofstream output_stream(filepath, ios_base::app);
+
+	if (output_stream.is_open()) {
+		output_stream << line;
+	}
+	else {
+		cerr << "ERROR: File not found!" << endl;
+	}
+
+	output_stream.close();
+}
+
+string latestUserRecordInString(LinkedList<User>* userList) {
+	// return latest user record in string (identical to text file's records)
+	// this function is called to generate a string that represents all user records in string to be written to the text file
+	// O(N) time complexity
+
+	int counter = 0;
+	string output_text = "";
+	Node<User>* current = userList->getFirstNode();
+
+	while (counter < userList->getSize()) {
+
+		output_text += current->getData()->fileOutputLine();
+
+		current = current->getNextAddress();
+		counter++;
+	}
+
+	return output_text;
 }

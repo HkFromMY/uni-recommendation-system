@@ -12,7 +12,6 @@ using namespace std;
 using namespace chrono;
 
 void mainInterface();
-void systemHeading();
 
 int main()
 {

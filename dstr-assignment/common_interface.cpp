@@ -4,5 +4,3 @@ void systemHeading() {
     cout << "          UNIVERSITY RECOMMENDATION SYSTEM          " << endl;
     cout << "====================================================" << endl;
 }
-
-

@@ -1,3 +1,5 @@
-cheryl|12345678|cheryl@gmail.com|01123123233|user
-honkit|12345678|honkit@gmail.com|01134151123|admin
-desmond|12345678|desmond@gmail.com|0163214123|user
+1|cheryl|12345678|cheryl@gmail.com|01123123233|user|2023-04-18
+2|honkit|12345678|honkit@gmail.com|0112345789|admin|2023-04-18
+3|desmond|12345678|desmond@gmail.com|0163214123|user|2023-04-18
+4|someone|12345678|someone@gmail.com|0115132232|user|2023-04-18
+5|hello|12345678|hello@gmail.com|0163214123|user|2023-04-18

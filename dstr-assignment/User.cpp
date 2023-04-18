@@ -1,17 +1,21 @@
 #include "User.h"
 
 User::User(
+	int newUserId,
 	string newUsername, 
 	string newPassword, 
 	string newEmail, 
 	string newPhone, 
-	string newRole
+	string newRole,
+	Date* lastLoginDate
 ) {
+	user_id = newUserId;
 	username = newUsername;
 	password = newPassword;
 	email = newEmail;
 	phone = newPhone;
 	role = newRole;
+	last_login_date = lastLoginDate;
 
 	// validations
 	if (
@@ -23,6 +27,7 @@ User::User(
 	}
 }
 
+int User::getUserId() { return user_id; }
 string User::getUsername() { return username; }
 string User::getPassword() { return password; }
 int User::getRole() {
@@ -39,12 +44,24 @@ int User::getRole() {
 }
 string User::getEmail() { return email; }
 string User::getPhone() { return phone; }
+Date* User::getLastLoginDate() { return last_login_date; }
 
+void User::setUserId(int newUserId) { user_id = newUserId; }
 void User::setUsername(string newUsername) { username = newUsername; }
-void User::setPassword(string newPassword) { username = newPassword; }
-void User::setEmail(string newEmail) { username = newEmail; }
-void User::setPhone(string newPhone) { username = newPhone; }
-void User::setRole(string newRole) { username = newRole; }
+void User::setPassword(string newPassword) { password = newPassword; }
+void User::setEmail(string newEmail) { email = newEmail; }
+void User::setPhone(string newPhone) { phone = newPhone; }
+void User::setRole(string newRole) { 
+	if (
+		role != "user" &&
+		role != "admin"
+	) {
+		throw invalid_argument("Invalid user role!");
+	}
+
+	role = newRole; 
+}
+void User::setLastLoginDate(Date* newLastLoginDate) { last_login_date = newLastLoginDate; }
 
 bool User::isPasswordMatch(string usernameEntered, string passwordEntered) {
 	return (
@@ -54,10 +71,19 @@ bool User::isPasswordMatch(string usernameEntered, string passwordEntered) {
 }
 
 void User::printDetails() {
+	cout << "User Id: " << user_id << endl;
 	cout << "Username: " << username << endl;
 	cout << "Email: " << email << endl;
 	cout << "Phone: " << phone << endl;
 	cout << "Role: " << role << endl;
+	cout << "Last Login Date: " << last_login_date->toString() << endl;
+}
+
+string User::fileOutputLine() {
+	// returns line of string that represent a user record in the text file
+	string output = to_string(user_id) + "|" + username + "|" + password + "|" + email + "|" + phone + "|" + role + "\n";
+
+	return output;
 }
 
 User::~User() {}
