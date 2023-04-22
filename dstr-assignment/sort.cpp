@@ -1,5 +1,9 @@
 #include "sort.h"
 
+void sortFeedbackByDate(Node<Feedback>*) {
+
+}
+
 void merge_sort(int* arr, int left, int right) {
 	// source geeksforgeeks - Merge Sort
 	if (left >= right) {

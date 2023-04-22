@@ -1,20 +1,41 @@
 #include "Feedback.h"
-#include "Date.h"
 
-Feedback::Feedback(string user_id, string comment) {
-	this->sender_id = user_id;
-	this->comment = comment;
-	this->send_date = new Date(); // current date as the send date
+Feedback::Feedback(int newFeedbackId, int newUserId, int newRecipient, string newComment) {
+	// for creating a new feedback
+	feedback_id = newFeedbackId;
+	sender_id = newUserId;
+	recipient_id = newRecipient;
+	comment = newComment;
+	send_date = new Date(); // current date as the send date
 }
 
-string Feedback::getSenderId() { return sender_id; }
+Feedback::Feedback(int newFeedbackId, int newUserId, int newRecipientId, string newComment, Date* newSendDate) {
+	// for loading an existing feedback
+	feedback_id = newFeedbackId;
+	sender_id = newUserId;
+	recipient_id = newRecipientId;
+	comment = newComment;
+	send_date = newSendDate;
+}
+
+int Feedback::getFeedbackId() { return feedback_id; }
+int Feedback::getSenderId() { return sender_id; }
+int Feedback::getRecipientId() { return recipient_id; }
 string Feedback::getComment() { return comment; }
 Date* Feedback::getSendDate() { return send_date; }
 
-void Feedback::setSenderId(string new_user_id) { sender_id = new_user_id; }
-void Feedback::setComment(string new_comment) { comment = new_comment; }
-void Feedback::setSendDate(Date* new_send_date) { send_date = new_send_date; }
+void Feedback::setFeedbackId(int newFeedbackId) { feedback_id = newFeedbackId; }
+void Feedback::setSenderId(int newUserId) { sender_id = newUserId; }
+void Feedback::setRecipientId(int newRecipientId) { recipient_id = newRecipientId; }
+void Feedback::setComment(string newComment) { comment = newComment; }
+void Feedback::setSendDate(Date* newSendDate) { send_date = newSendDate; }
 
-void Feedback::printDetails() {}
+void Feedback::printDetails() {
+	cout << "Feedback Id: " << to_string(feedback_id) << endl;
+	cout << "Sender Id: " << to_string(sender_id) << endl;
+	cout << "Recipient Id: " << to_string(recipient_id) << endl;
+	cout << "Comment: " << comment << endl;
+	cout << "Send Date: " << send_date->toString() << endl;
+}
 
 Feedback::~Feedback() {}

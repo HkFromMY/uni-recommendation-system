@@ -16,7 +16,10 @@ void mainInterface();
 int main()
 {
     // start the system
-    mainInterface();
+    //mainInterface();
+    LinkedList<Feedback>* feedback_list = loadFeedbackData("feedback.txt");
+    sortFeedbackByDate(feedback_list->getFirstNode());
+    feedback_list->displayNodesDetailsFromFront();
 
     return 0;
 }

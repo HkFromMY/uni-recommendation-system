@@ -1,0 +1,5 @@
+1|1|2|Good system to look for university|2023-04-18
+2|3|2|Great UI|2023-04-11
+3|5|2|Lots of universities available here|2023-04-12
+4|4|2|I like this system!|2023-04-14
+5|1|2|Thanks for the hard work!|2023-04-16

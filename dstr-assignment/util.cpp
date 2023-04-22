@@ -22,7 +22,7 @@ double convertToDouble(string str) {
 	}
 }
 
-LinkedList<University>* loadCSVFile(string filepath) {
+LinkedList<University>* loadUniversitiesData(string filepath) {
 	// This functions packs all data in CSV and return LinkedList's pointer
 
 	LinkedList<University>* uni_list = new LinkedList<University>();
@@ -195,15 +195,59 @@ LinkedList<User>* loadUserData(string filepath, bool userOnly) {
 	return user_list;
 }
 
+LinkedList<Feedback>* loadFeedbackData(string filepath) {
+	// load the feedback data from text file into LinkedList of Feedback objects
+	LinkedList<Feedback>* feedback_list = new LinkedList<Feedback>();
+	string feedback_id, sender_id, recipient_id, comment, send_date;
+	ifstream file(filepath);
+
+	if (!file.is_open()) {
+		cerr << "ERROR: File not found!" << endl;
+
+		throw exception();
+	}
+
+	// parsing data and return list of feedback records
+	while (file.good()) {
+		getline(file, feedback_id, '|');
+		getline(file, sender_id, '|');
+		getline(file, recipient_id, '|');
+		getline(file, comment, '|');
+		getline(file, send_date, '\n');
+
+		if (feedback_id == "") {
+			break;
+		}
+
+		Feedback* feedback = new Feedback(
+			convertToInt(feedback_id), 
+			convertToInt(sender_id),
+			convertToInt(recipient_id),
+			comment, 
+			new Date(send_date)
+		);
+		
+		feedback_list->appendNewNode(feedback);
+	}
+
+	return feedback_list;
+}
+
 // generate ids for records
 int generateUserId() {
 	// this function generates new user id by incrementing to the latest user records by 1
 	LinkedList<User>* userList = loadUserData("user.txt", false);
 	User* lastUser = userList->getLastNode()->getData();
 
-	cout << "Last user ID: " << lastUser->getEmail() << endl;
+	return lastUser->getUserId() + 1;
+}
 
-	return userList->getLastNode()->getData()->getUserId() + 1;
+int generateFeedbackId() {
+	// this function generates new feedback id by incrementing to the latest feedback records by 1
+	LinkedList<Feedback>* feedbackList = loadFeedbackData("feedback.txt");
+	Feedback* lastFeedback = feedbackList->getLastNode()->getData();
+
+	return lastFeedback->getFeedbackId() + 1;
 }
 
 // file functions

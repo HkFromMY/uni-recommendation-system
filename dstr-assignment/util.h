@@ -4,6 +4,7 @@
 #include "LinkedList.h"
 #include "University.h"
 #include "User.h"
+#include "Feedback.h"
 
 #include <iostream>
 #include <string>
@@ -14,11 +15,13 @@ int convertToInt(string);
 double convertToDouble(string);
 
 // can add trim string functions here
-LinkedList<University>* loadCSVFile(string);
+LinkedList<University>* loadUniversitiesData(string);
 LinkedList<User>* loadUserData(string, bool);
+LinkedList<Feedback>* loadFeedbackData(string);
 
 // generate ids for records
 int generateUserId();
+int generateFeedbackId();
 
 // file methods
 void writeToFile(string, string);
