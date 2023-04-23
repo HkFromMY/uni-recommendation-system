@@ -2,6 +2,7 @@
 #include "common_interface.h"
 #include "admin.h"
 #include "util.h"
+#include "UserMenu.h"
 
 void loginInterface() {
 	system("cls");
@@ -34,6 +35,7 @@ void loginInterface() {
 		// go other interface because correct credentials
 		if (login_role == USER) {
 			// registered user interface
+			userInterface();
 
 		}
 		else if (login_role == ADMIN) {
