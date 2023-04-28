@@ -1,9 +1,8 @@
 #include "search.h"
-#include "sort.h"
 #include "util.h"
-
-#include "common_interface.h"
 #include "login.h"
+#include "common_interface.h"
+#include "feedback_model.h"
 
 #include <chrono>
 #include <fstream>
@@ -17,9 +16,6 @@ int main()
 {
     // start the system
     mainInterface();
-    //LinkedList<Feedback>* feedback_list = loadFeedbackData("feedback.txt");
-    //sortFeedbackByDate(feedback_list->getFirstNode());
-    //feedback_list->displayNodesDetailsFromFront();
 
     return 0;
 }

@@ -18,12 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sort.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="search.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Date.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,14 +51,20 @@
     <ClCompile Include="input_validation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="user_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="feedback_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="university_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HashMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sort.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="search.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,6 +99,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="input_validation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="user_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="feedback_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="university_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HashMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

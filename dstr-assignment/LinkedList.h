@@ -34,6 +34,8 @@ class LinkedList
 		int getSize();
 
 		// setters
+		void setFirstNode(Node<Data>*);
+		void setLastNode(Node<Data>*);
 		void setSize(int);
 
 		// operations - CRUD
@@ -72,6 +74,16 @@ int LinkedList<Data>::getSize() {
 }
 
 template <class Data>
+void LinkedList<Data>::setFirstNode(Node<Data>* newFirstNode) {
+	head = newFirstNode;
+}
+
+template <class Data>
+void LinkedList<Data>::setLastNode(Node<Data>* newLastNode) {
+	last = newLastNode;
+}
+
+template <class Data>
 void LinkedList<Data>::setSize(int newSize) {
 	count = newSize;
 }
@@ -85,21 +97,14 @@ void LinkedList<Data>::appendNewNode(Data* newData) {
 	if (head == NULL) {
 		head = newNode;
 		last = newNode;
-		newNode->setNextAddress(head);
-		newNode->setPreviousAddress(head);
+
 	}
 	else {
-		// original last element's next address becomes new node's address
-		last->setNextAddress(newNode);
-
 		// new node's previous address set to original last element's address
 		newNode->setPreviousAddress(last);
 
-		// connect the last to head
-		newNode->setNextAddress(head);
-
-		// connect the head to last
-		head->setPreviousAddress(newNode);
+		// set current node's next address to new node
+		last->setNextAddress(newNode);
 
 		// new last address becomes new node
 		last = newNode;
@@ -107,7 +112,6 @@ void LinkedList<Data>::appendNewNode(Data* newData) {
 	}
 
 	count++;
-	//cout << "New node appended to the end of linked list." << endl;
 }
 
 template <class Data>
@@ -122,8 +126,6 @@ void LinkedList<Data>::insertNodeAt(Data* newData, int position) {
 	if (head == NULL) {
 		head = newNode;
 		last = newNode;
-		newNode->setNextAddress(head);
-		newNode->setPreviousAddress(head);
 		count++;
 
 		return;
@@ -174,16 +176,12 @@ void LinkedList<Data>::deleteNodeAtFront() {
 	Node<Data>* nodeToBeDeleted = head;
 	head = head->getNextAddress(); // set new head to next address of the original head
 
-	if (count > 1) {
-		// if the linked list have 2 or more elements before deleting, 
-		// then set the previous address of new head to the last element
-		head->setPreviousAddress(last);
-
-		// connect the last element to the new first element
-		last->setNextAddress(head);
+	if (head != NULL) {
+		// if the linked list have 2 or more elements before deleting
+		head->setPreviousAddress(NULL);
 	}
 	else {
-		head = last = NULL;
+		last = NULL;
 
 	}
 
@@ -203,15 +201,13 @@ void LinkedList<Data>::deleteNodeAtEnd() {
 	Node<Data>* nodeToBeDeleted = last;
 	last = last->getPreviousAddress();
 
-	if (count > 1) {
-		// connect the head element to the new last element
-		last->setNextAddress(head);
+	if (last != NULL) {
+		// next address of last element will be NULL
+		last->setNextAddress(NULL);
 
-		// connect the new last element to the head
-		head->setPreviousAddress(last);
 	}
 	else {
-		head = last = NULL;
+		head = NULL;
 
 	}
 
@@ -308,16 +304,14 @@ void LinkedList<Data>::displayNodesDetailsFromFront() {
 	}
 
 	// iterate through the linked list and print everything
-	int counter = 0;
 	Node<Data>* currentNode = head;
 
-	while (counter < count) {
+	while (currentNode != NULL) {
 		Data* currentData = currentNode->getData();
 		currentData->printDetails();
 		cout << string(50, '=') << endl;
 
 		currentNode = currentNode->getNextAddress();
-		counter++;
 	}
 }
 
@@ -332,15 +326,13 @@ void LinkedList<Data>::displayNodeDetailsFromEnd() {
 	}
 
 	// iterate through the linked lsit and print everything
-	int counter = 0;
 	Node<Data>* currentNode = last;
-	while (counter < count) {
+	while (currentNode != NULL) {
 		University* currentUni = currentNode->getData();
 		currentUni->printDetails();
 		cout << string(50, '=') << endl;
 
 		currentNode = currentNode->getPreviousAddress();
-		counter++;
 		
 	}
 }

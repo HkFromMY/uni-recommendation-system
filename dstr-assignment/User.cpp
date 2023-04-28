@@ -88,9 +88,9 @@ void User::printDetails() {
 	cout << "Last Login Date: " << last_login_date->toString() << endl;
 }
 
-string User::fileOutputLine() {
-	// returns line of string that represent a user record in the text file
-	string output = to_string(user_id) + "|" + username + "|" + password + "|" + email + "|" + phone + "|" + role + "\n";
+string User::toString() {
+	// convert user object to string represented in text file
+	string output = to_string(user_id) + "|" + username + "|" + password + "|" + email + "|" + phone + "|" + role + "|" + last_login_date->toString() + "\n";
 
 	return output;
 }

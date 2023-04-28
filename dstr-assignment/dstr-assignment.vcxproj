@@ -143,15 +143,17 @@
     <ClCompile Include="common_interface.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Feedback.cpp" />
+    <ClCompile Include="feedback_model.cpp" />
+    <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="input_validation.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="Rank.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="search.cpp" />
-    <ClCompile Include="sort.cpp" />
     <ClCompile Include="University.cpp" />
+    <ClCompile Include="university_model.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserMenu.cpp" />
+    <ClCompile Include="user_model.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -159,16 +161,18 @@
     <ClInclude Include="common_interface.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Feedback.h" />
+    <ClInclude Include="feedback_model.h" />
+    <ClInclude Include="HashMap.h" />
     <ClInclude Include="input_validation.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="login.h" />
+    <ClInclude Include="university_model.h" />
     <ClInclude Include="UserMenu.h" />
     <ClInclude Include="Rank.h" />
-    <ClInclude Include="search.h" />
-    <ClInclude Include="sort.h" />
     <ClInclude Include="University.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="User.h" />
+    <ClInclude Include="user_model.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>

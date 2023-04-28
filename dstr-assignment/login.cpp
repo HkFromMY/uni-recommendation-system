@@ -40,7 +40,7 @@ void loginInterface() {
 		}
 		else if (login_role == ADMIN) {
 			// admin interface
-			adminInterface();
+			adminInterface(userFound);
 
 		}
 	}
@@ -48,11 +48,10 @@ void loginInterface() {
 
 User* validateCredentials(string username, string password) {
 	// search whether there is matched record in user record
-	LinkedList<User>* user_list = loadUserData("user.txt", false);
+	LinkedList<User>* user_list = loadUserData("user.txt");
 	
 	Node<User>* currentUserNode = user_list->getFirstNode();
-	int counter = 0;
-	while (counter < user_list->getSize()) {
+	while (currentUserNode != NULL) {
 		// linear search O(N)
 		User* user = currentUserNode->getData();
 
@@ -63,7 +62,6 @@ User* validateCredentials(string username, string password) {
 		}
 
 		currentUserNode = currentUserNode->getNextAddress();
-		counter++;
 	}
 
 	return nullptr;
