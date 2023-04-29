@@ -35,6 +35,7 @@ void adminInterface(User* userLoggedIn) {
 				break;
 
 			case 4:
+				displayUniversities();
 				break;
 
 			default:
@@ -416,6 +417,30 @@ void displayFeedbacks(User* userLoggedIn) {
 
 void displayUniversities() {
 	// display top 10 universities according to the favourites
+	system("cls");
+	systemHeading();
+	cout << "Top 10 Universities according to parents' favourites:" << endl;
+	cout << string(40, '=') << endl;
 
+	// load favourite occurrences from favourites.txt and sort it by descending order
+	LinkedList<Counter>* favourites = loadFavouriteOccurrences()->to_counters();
+	favourites->setFirstNode(sortFavouritesByOccurrences(favourites->getFirstNode()));
 
+	Node<Counter>* currentNode = favourites->getFirstNode();
+	// print top 10 universities
+	for (int counter = 0; counter < 10; counter++) {
+		if (currentNode == NULL) {
+			system("pause");
+			return;
+		}
+		
+		Counter* currentUni = currentNode->getData();
+		cout << "Institution Name: " << currentUni->getKey() << endl;
+		cout << "Number of parents who saved: " << currentUni->getValue() << endl;
+		cout << string(50, '=') << endl;
+
+		currentNode = currentNode->getNextAddress();
+	}
+
+	system("pause");
 }

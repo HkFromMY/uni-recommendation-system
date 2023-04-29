@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="admin.cpp" />
     <ClCompile Include="common_interface.cpp" />
+    <ClCompile Include="Counter.cpp" />
     <ClCompile Include="Date.cpp" />
+    <ClCompile Include="Favourite.cpp" />
+    <ClCompile Include="favourite_model.cpp" />
     <ClCompile Include="Feedback.cpp" />
     <ClCompile Include="feedback_model.cpp" />
-    <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="input_validation.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="Rank.cpp" />
@@ -159,7 +161,10 @@
   <ItemGroup>
     <ClInclude Include="admin.h" />
     <ClInclude Include="common_interface.h" />
+    <ClInclude Include="Counter.h" />
     <ClInclude Include="Date.h" />
+    <ClInclude Include="Favourite.h" />
+    <ClInclude Include="favourite_model.h" />
     <ClInclude Include="Feedback.h" />
     <ClInclude Include="feedback_model.h" />
     <ClInclude Include="HashMap.h" />
@@ -179,6 +184,7 @@
     <None Include="2023 QS World University Rankings.csv" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="favourite.txt" />
     <Text Include="feedback.txt" />
     <Text Include="test.txt" />
     <Text Include="user.txt" />

@@ -60,7 +60,13 @@
     <ClCompile Include="university_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HashMap.cpp">
+    <ClCompile Include="Favourite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="favourite_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Counter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,6 +119,15 @@
     <ClInclude Include="HashMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Favourite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="favourite_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Counter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="2023 QS World University Rankings.csv">
@@ -130,6 +145,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="test.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="favourite.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

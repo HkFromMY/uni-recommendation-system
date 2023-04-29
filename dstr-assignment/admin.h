@@ -3,10 +3,13 @@
 
 #include "User.h"
 #include "LinkedList.h"
+#include "Counter.h"
+
 #include "common_interface.h"
 #include "input_validation.h"
 #include "user_model.h"
 #include "feedback_model.h"
+#include "favourite_model.h"
 
 #include <iostream>
 #include <string>

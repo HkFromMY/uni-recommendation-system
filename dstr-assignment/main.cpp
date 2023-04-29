@@ -3,9 +3,12 @@
 #include "login.h"
 #include "common_interface.h"
 #include "feedback_model.h"
+#include "favourite_model.h"
 
 #include <chrono>
 #include <fstream>
+
+#include "HashMap.h"
 
 using namespace std;
 using namespace chrono;
