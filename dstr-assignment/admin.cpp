@@ -307,7 +307,7 @@ void displayFeedbacks(User* userLoggedIn) {
 	systemHeading();
 
 	// sort feedback by date
-	LinkedList<Feedback>* feedbacks = loadFeedbackData("feedback.txt");
+	LinkedList<Feedback>* feedbacks = loadFeedbackData();
 	feedbacks->setFirstNode(sortFeedbackByDate(feedbacks->getFirstNode()));
 	feedbacks = filterFeedbacksByType(feedbacks, "User Feedback"); // filter so that only user feedback are remained
 

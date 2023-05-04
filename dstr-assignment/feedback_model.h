@@ -20,7 +20,7 @@ Node<Feedback>* splitFeedback(Node<Feedback>*);
 // search & filter
 LinkedList<Feedback>* filterFeedbacksByType(LinkedList<Feedback>*, string);
 
-LinkedList<Feedback>* loadFeedbackData(string);
+LinkedList<Feedback>* loadFeedbackData();
 int generateFeedbackId();
 void appendNewFeedbackOnFile(Feedback*);
 string latestFeedbackRecordInString(LinkedList<Feedback>*);

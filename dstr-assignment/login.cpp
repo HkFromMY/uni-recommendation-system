@@ -35,7 +35,7 @@ void loginInterface() {
 		// go other interface because correct credentials
 		if (login_role == USER) {
 			// registered user interface
-			userInterface();
+			userInterface(userFound);
 
 		}
 		else if (login_role == ADMIN) {

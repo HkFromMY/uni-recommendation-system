@@ -1,16 +1,18 @@
 #include "University.h"
 
-University::University(int rank, string institution) {
+University::University(int rank, string institution, Rank* rank_obj, double score) {
     // for testing only
     uni_rank = rank;
     uni_institution = institution;
+    uni_ar_rank = rank_obj;
+    uni_ar_score = score;
 }
 
 University::University(
     int rank, string institution, string location_code, string location, double ar_score,
-    int ar_rank, double er_score, int er_rank, double fsr_score, int fsr_rank,
-    double cpf_score, int cpf_rank, double ifr_score, int ifr_rank, double isr_score,
-    int isr_rank, double irn_score, int irn_rank, double ger_score, int ger_rank, double score_scaled
+    Rank* ar_rank, double er_score, Rank* er_rank, double fsr_score, Rank* fsr_rank,
+    double cpf_score, Rank* cpf_rank, double ifr_score, Rank* ifr_rank, double isr_score,
+    Rank* isr_rank, double irn_score, Rank* irn_rank, double ger_score, Rank* ger_rank, double score_scaled
 ) {
     uni_rank = rank;
     uni_institution = institution;
@@ -35,27 +37,112 @@ University::University(
     uni_score_scaled = score_scaled;
 }
 
+// general getters
+string University::getStringValue(string field) {
+    // return value of respective field given the field name
+    // e.g. field = "institution" returns institution variable
+
+    if (field == "uni_institution") {
+        return uni_institution;
+
+    }
+    else if (field == "uni_location_code") {
+        return uni_location_code;
+
+    }
+    else if (field == "uni_location") {
+        return uni_location;
+
+    }
+    else {
+        return NULL;
+    }
+}
+
+double University::getScoreValue(string field) {
+    if (field == "uni_ar_score") {
+        return uni_ar_score;
+    }
+    else if (field == "uni_er_score") {
+        return uni_er_score;
+    }
+    else if (field == "uni_fsr_score") {
+        return uni_fsr_score;
+    }
+    else if (field == "uni_cpf_score") {
+        return uni_cpf_score;
+    }
+    else if (field == "uni_ifr_score") {
+        return uni_ifr_score;
+    }
+    else if (field == "uni_isr_score") {
+        return uni_isr_score;
+    }
+    else if (field == "uni_irn_score") {
+        return uni_irn_score;
+    }
+    else if (field == "uni_ger_score") {
+        return uni_ger_score;
+    }
+    else if (field == "uni_score_scaled") {
+        return uni_score_scaled;
+    }
+    else {
+        return NULL;
+    }
+}
+
+Rank* University::getRankValue(string field) {
+    if (field == "uni_ar_rank") {
+        return uni_ar_rank;
+    }
+    else if (field == "uni_er_rank") {
+        return uni_er_rank;
+    }
+    else if (field == "uni_fsr_rank") {
+        return uni_fsr_rank;
+    }
+    else if (field == "uni_cpf_rank") {
+        return uni_cpf_rank;
+    }
+    else if (field == "uni_ifr_rank") {
+        return uni_ifr_rank;
+    }
+    else if (field == "uni_isr_rank") {
+        return uni_isr_rank;
+    }
+    else if (field == "uni_irn_rank") {
+        return uni_irn_rank;
+    }
+    else if (field == "uni_ger_rank") {
+        return uni_ger_rank;
+    }
+    else {
+        return NULL;
+    }
+}
+
 // getters
 int University::getRank() { return uni_rank; }
 string University::getInstitution() { return uni_institution; }
 string University::getLocationCode() { return uni_location_code; }
 string University::getLocation() { return uni_location; }
 double University::getARScore() { return uni_ar_score; }
-int University::getARRank() { return uni_ar_rank; }
+Rank* University::getARRank() { return uni_ar_rank; }
 double University::getERScore() { return uni_er_score; }
-int University::getERRank() { return uni_er_rank; }
+Rank* University::getERRank() { return uni_er_rank; }
 double University::getFSRScore() { return uni_fsr_score; }
-int University::getFSRRank() { return uni_fsr_rank; }
+Rank* University::getFSRRank() { return uni_fsr_rank; }
 double University::getCPFScore() { return uni_cpf_score; }
-int University::getCPFRank() { return uni_cpf_rank; }
+Rank* University::getCPFRank() { return uni_cpf_rank; }
 double University::getIFRScore() { return uni_ifr_score; }
-int University::getIFRRank() { return uni_ifr_rank; }
+Rank* University::getIFRRank() { return uni_ifr_rank; }
 double University::getISRScore() { return uni_isr_score; }
-int University::getISRRank() { return uni_isr_rank; }
+Rank* University::getISRRank() { return uni_isr_rank; }
 double University::getIRNScore() { return uni_irn_score; }
-int University::getIRNRank() { return uni_irn_rank; }
+Rank* University::getIRNRank() { return uni_irn_rank; }
 double University::getGERScore() { return uni_ger_score; }
-int University::getGERRank() { return uni_ger_rank; }
+Rank* University::getGERRank() { return uni_ger_rank; }
 double University::getScoreScaled() { return uni_score_scaled; }
 
 // setters
@@ -64,29 +151,46 @@ void University::setInstitution(string institution) { uni_institution = institut
 void University::setLocationCode(string location_code) { uni_location_code = location_code; }
 void University::setLocation(string location) { uni_location = location; }
 void University::setARScore(double ar_score) { uni_ar_score = ar_score; }
-void University::setARRank(int ar_rank) { uni_ar_rank = ar_rank; }
+void University::setARRank(Rank* ar_rank) { uni_ar_rank = ar_rank; }
 void University::setERScore(double er_score) { uni_er_score = er_score; }
-void University::setERRank(int er_rank) { uni_er_rank = er_rank; }
+void University::setERRank(Rank* er_rank) { uni_er_rank = er_rank; }
 void University::setFSRScore(double fsr_score) { uni_fsr_score = fsr_score; }
-void University::setFSRRank(int fsr_rank) { uni_fsr_rank = fsr_rank; }
+void University::setFSRRank(Rank* fsr_rank) { uni_fsr_rank = fsr_rank; }
 void University::setCPFScore(double cpf_score) { uni_cpf_score = cpf_score; }
-void University::setCPFRank(int cpf_rank) { uni_cpf_rank = cpf_rank; }
+void University::setCPFRank(Rank* cpf_rank) { uni_cpf_rank = cpf_rank; }
 void University::setIFRScore(double ifr_score) { uni_ifr_score = ifr_score; }
-void University::setIFRRank(int ifr_rank) { uni_ifr_rank = ifr_rank; }
+void University::setIFRRank(Rank* ifr_rank) { uni_ifr_rank = ifr_rank; }
 void University::setISRScore(double isr_score) { uni_isr_score = isr_score; }
-void University::setISRRank(int isr_rank) { uni_isr_rank = isr_rank; }
+void University::setISRRank(Rank* isr_rank) { uni_isr_rank = isr_rank; }
 void University::setIRNScore(double irn_score) { uni_irn_score = irn_score; }
-void University::setIRNRank(int irn_rank) { uni_irn_rank = irn_rank; }
+void University::setIRNRank(Rank* irn_rank) { uni_irn_rank = irn_rank; }
 void University::setGERSCore(double ger_score) { uni_ger_score = ger_score; }
-void University::setGERRank(int ger_rank) { uni_ger_rank = ger_rank; }
+void University::setGERRank(Rank* ger_rank) { uni_ger_rank = ger_rank; }
 void University::setScoreScaled(double score_scale) { uni_score_scaled = score_scale; }
 
 void University::printDetails() {
     // print all details of a university
-    cout << "Institution Name --> " << uni_institution << endl;
-    cout << "AR Rank --> " << uni_ar_rank << endl;
-    cout << "AR Score --> " << uni_ar_score << endl;
-    cout << "Score scaled --> " << uni_score_scaled << endl;
+    cout << "Rank: " << uni_rank << endl;
+    cout << "Institution Name: " << uni_institution << endl;
+    cout << "Uni Location Code: " << uni_location_code << endl;
+    cout << "Uni Location: " << uni_location << endl;
+    cout << "AR Score: " << to_string(uni_ar_score) << endl;
+    cout << "AR Rank: " << uni_ar_rank->getRank() << endl;
+    cout << "ER Score: " << to_string(uni_er_score) << endl;
+    cout << "ER Rank: " << uni_er_rank->getRank() << endl;
+    cout << "FSR Score: " << to_string(uni_fsr_score) << endl;
+    cout << "FSR Rank: " << uni_fsr_rank->getRank() << endl;
+    cout << "CPF Score: " << to_string(uni_cpf_score) << endl;
+    cout << "CPF Rank: " << uni_cpf_rank->getRank() << endl;
+    cout << "IFR Score: " << to_string(uni_ifr_score) << endl;
+    cout << "IFR Rank: " << uni_ifr_rank->getRank() << endl;
+    cout << "ISR Score: " << to_string(uni_isr_score) << endl;
+    cout << "ISR Rank: " << uni_isr_rank->getRank() << endl;
+    cout << "IRN Score: " << to_string(uni_irn_score) << endl;
+    cout << "IRN Rank: " << uni_irn_rank->getRank() << endl;
+    cout << "GER Score: " << to_string(uni_ger_score) << endl;
+    cout << "GER Rank: " << uni_ger_rank->getRank() << endl;
+    cout << "Score scaled: " << to_string(uni_score_scaled) << endl;
 }
 
 University::~University() {}

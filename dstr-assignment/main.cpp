@@ -4,6 +4,7 @@
 #include "common_interface.h"
 #include "feedback_model.h"
 #include "favourite_model.h"
+#include "university_model.h"
 
 #include <chrono>
 #include <fstream>

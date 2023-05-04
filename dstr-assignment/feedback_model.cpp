@@ -71,11 +71,11 @@ LinkedList<Feedback>* filterFeedbacksByType(LinkedList<Feedback>* feedbacks, str
 	return filteredFeedbacks;
 }
 
-LinkedList<Feedback>* loadFeedbackData(string filepath) {
+LinkedList<Feedback>* loadFeedbackData() {
 	// load the feedback data from text file into LinkedList of Feedback objects
 	LinkedList<Feedback>* feedback_list = new LinkedList<Feedback>();
 	string feedback_id, sender_id, recipient_id, type, comment, send_date;
-	ifstream file(filepath);
+	ifstream file("feedback.txt");
 
 	if (!file.is_open()) {
 		cerr << "ERROR: File not found!" << endl;
@@ -113,7 +113,7 @@ LinkedList<Feedback>* loadFeedbackData(string filepath) {
 
 int generateFeedbackId() {
 	// this function generates new feedback id by incrementing to the latest feedback records by 1
-	LinkedList<Feedback>* feedbackList = loadFeedbackData("feedback.txt");
+	LinkedList<Feedback>* feedbackList = loadFeedbackData();
 	Feedback* lastFeedback = feedbackList->getLastNode()->getData();
 
 	return lastFeedback->getFeedbackId() + 1;
