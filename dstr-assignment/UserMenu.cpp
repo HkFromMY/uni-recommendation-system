@@ -6,6 +6,7 @@ void userInterface(User* userLoggedIn) {
 	while (selection != 5) {
 		system("cls");
 		systemHeading();
+		cout << "Hello " << userLoggedIn->getUsername() << "!" << endl << endl;
 
 		cout << "Please select your action: " << endl;
 		cout << "1. Display university records" << endl;
@@ -57,8 +58,7 @@ void userInterface(User* userLoggedIn) {
 }
 
 void displayUniversityDetails() {
-	// display university records 10 per page then the users can traverse back and forth
-	// before entering this interface the users can select whether to sort the universities by what field in ascending or descending order
+	// before displaying uni details the users can select whether to sort the universities by what field in ascending or descending order
 	system("cls");
 	systemHeading();
 
@@ -96,6 +96,7 @@ void displayUniversityDetails() {
 		}
 		else {
 			cout << "Invalid input!" << endl;
+			system("pause");
 			return displayUniversityDetails();
 		}
 
@@ -109,14 +110,20 @@ void displayUniversityDetails() {
 			)
 		);
 
+		displayUniversityRecords(uniList);
+
+	}
+	else if (sortSelection == 2) {
+		displayUniversityRecords(uniList);
+
 	}
 	else {
+		// recursively call this function until the input is valid
+		cout << "Invalid input!" << endl;
+		system("pause");
 		return displayUniversityDetails();
 
 	}
-	
-	displayUniversityRecords(uniList);
-
 }
 
 void displayUniversityRecords(LinkedList<University>* uniList) {
@@ -136,8 +143,8 @@ void displayUniversityRecords(LinkedList<University>* uniList) {
 		cout << string(50, '=') << endl;
 
 		// ask for action
-		cout << "1. Next" << endl;
-		cout << "2. Previous" << endl;
+		cout << "1. Previous" << endl;
+		cout << "2. Next" << endl;
 		cout << "3. Quit" << endl;
 		cout << "Enter your selection here --> ";
 		cin >> selection;
@@ -148,13 +155,13 @@ void displayUniversityRecords(LinkedList<University>* uniList) {
 
 		switch (selection) {
 			case 1:
-				if (currentNode->getNextAddress() != NULL) currentNode = currentNode->getNextAddress();
-				else currentNode = uniList->getFirstNode(); // go back to first element
+				if (currentNode->getPreviousAddress() != NULL) currentNode = currentNode->getPreviousAddress();
+				else currentNode = uniList->getLastNode(); // go to the last element
 				break;
 
 			case 2:
-				if (currentNode->getPreviousAddress() != NULL) currentNode = currentNode->getPreviousAddress();
-				else currentNode = uniList->getLastNode(); // go to the last element
+				if (currentNode->getNextAddress() != NULL) currentNode = currentNode->getNextAddress();
+				else currentNode = uniList->getFirstNode(); // go back to first element
 				break;
 
 			case 3:
@@ -182,69 +189,5 @@ void displayFeedback() {
 
 void displayFeedbackReplies() {
 
-}
-
-bool promptUserAction(University* university, string action) {
-	system("cls");
-	systemHeading();
-
-	int selection = 0;
-	cout << "Are you sure you want to " << action << university->getInstitution() << " as your favourite?" << endl << endl;
-	cout << "Actions: " << endl;
-	cout << "1. Yes" << endl;
-	cout << "2. No" << endl;
-	cout << "Enter your selection here --> ";
-	cin >> selection;
-
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-	switch (selection) {
-	case 1:
-		// save university record here
-		return true;
-
-	case 2:
-		// cancel saving university operation
-		return false;
-
-	default:
-		cout << "Please choose a valid option!" << endl;
-		system("pause");
-		return promptUserAction(university, action);
-	}
-}
-
-void sortOptions() {
-	system("cls");
-	systemHeading();
-
-	int selection = 0;
-	cout << "How do you want to sort the university records?" << endl;
-	cout << "1. Sort by academic reputation score" << endl;
-	cout << "2. Sort by employer reputation score" << endl;
-	cout << "3. Sort by faculty/student ratio" << endl;
-	cout << "Enter your selection here --> ";
-	cin >> selection;
-
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-	string field;
-	switch (selection) {
-	case 1:
-		field = "ar_score";
-
-	case 2:
-		field = "er_score";
-
-	case 3:
-		field = "fsr_score";
-
-	default:
-		cout << "Please choose a valid option!" << endl;
-		system("pause");
-		return sortOptions();
-	}
 }
 

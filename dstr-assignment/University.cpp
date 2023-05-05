@@ -174,23 +174,23 @@ void University::printDetails() {
     cout << "Institution Name: " << uni_institution << endl;
     cout << "Uni Location Code: " << uni_location_code << endl;
     cout << "Uni Location: " << uni_location << endl;
-    cout << "AR Score: " << to_string(uni_ar_score) << endl;
-    cout << "AR Rank: " << uni_ar_rank->getRank() << endl;
-    cout << "ER Score: " << to_string(uni_er_score) << endl;
-    cout << "ER Rank: " << uni_er_rank->getRank() << endl;
-    cout << "FSR Score: " << to_string(uni_fsr_score) << endl;
-    cout << "FSR Rank: " << uni_fsr_rank->getRank() << endl;
-    cout << "CPF Score: " << to_string(uni_cpf_score) << endl;
-    cout << "CPF Rank: " << uni_cpf_rank->getRank() << endl;
-    cout << "IFR Score: " << to_string(uni_ifr_score) << endl;
-    cout << "IFR Rank: " << uni_ifr_rank->getRank() << endl;
-    cout << "ISR Score: " << to_string(uni_isr_score) << endl;
-    cout << "ISR Rank: " << uni_isr_rank->getRank() << endl;
-    cout << "IRN Score: " << to_string(uni_irn_score) << endl;
-    cout << "IRN Rank: " << uni_irn_rank->getRank() << endl;
-    cout << "GER Score: " << to_string(uni_ger_score) << endl;
-    cout << "GER Rank: " << uni_ger_rank->getRank() << endl;
-    cout << "Score scaled: " << to_string(uni_score_scaled) << endl;
+    cout << "Academic Reputation Score: " << setprecision(2) << fixed << uni_ar_score << endl;
+    cout << "Academic Reputation Rank: " << uni_ar_rank->getRank() << endl;
+    cout << "Employer Reputation Score: " << setprecision(2) << fixed << uni_er_score << endl;
+    cout << "Employer Reputation Rank: " << uni_er_rank->getRank() << endl;
+    cout << "Faculty/Student Ratio Score: " << setprecision(2) << fixed << uni_fsr_score << endl;
+    cout << "Faculty/Student Ratio Rank: " << uni_fsr_rank->getRank() << endl;
+    cout << "Citations per Faculty Score: " << setprecision(2) << fixed << uni_cpf_score << endl;
+    cout << "Citations per Faculty Rank: " << uni_cpf_rank->getRank() << endl;
+    cout << "International Faculty Ratio Score: " << setprecision(2) << fixed << uni_ifr_score << endl;
+    cout << "International Faculty Ratio Rank: " << uni_ifr_rank->getRank() << endl;
+    cout << "International Student Ratio Score: " << setprecision(2) << fixed << uni_isr_score << endl;
+    cout << "International Student Ratio Rank: " << uni_isr_rank->getRank() << endl;
+    cout << "International Research Network Score: " << setprecision(2) << fixed << uni_irn_score << endl;
+    cout << "International Research Network Rank: " << uni_irn_rank->getRank() << endl;
+    cout << "Employment Outcome Score (GER Score): " << setprecision(2) << fixed << uni_ger_score << endl;
+    cout << "Employment Outcome Rank (GER Rank): " << uni_ger_rank->getRank() << endl;
+    cout << "Score scaled: " << setprecision(2) << fixed << uni_score_scaled << endl;
 }
 
 University::~University() {}

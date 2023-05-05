@@ -9,7 +9,6 @@ void loginInterface() {
 	systemHeading();
 
 	string username, password;
-
 	cout << "Please enter your username >> ";
 	getline(cin, username);
 
