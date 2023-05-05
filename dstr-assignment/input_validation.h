@@ -8,7 +8,8 @@
 
 using namespace std;
 
-bool validateEmail(string email);
-bool validatePhone(string phone);
+bool validateEmail(string);
+bool validatePhone(string);
+bool validateRank(string);
 
 #endif // !input_validation_h

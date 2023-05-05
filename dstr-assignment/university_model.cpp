@@ -168,7 +168,7 @@ Node<University>* mergeUniversities(
 	// pick smaller values
 	University* firstUniversity = firstHalf->getData();
 	University* secondUniversity = secondHalf->getData();
-	bool comparisonResult = compareValue(firstUniversity, secondUniversity, sortFieldType, sortField, isAscending);
+	bool comparisonResult = compareUniversityValue(firstUniversity, secondUniversity, sortFieldType, sortField, isAscending);
 
 	if (comparisonResult) {
 		firstHalf->setNextAddress(mergeUniversities(firstHalf->getNextAddress(), secondHalf, sortFieldType, sortField, isAscending));
@@ -186,7 +186,173 @@ Node<University>* mergeUniversities(
 	}
 }
 
-bool compareValue(University* firstUniversity, University* secondUniversity, string* sortFieldType, string* sortField, bool isAscending) {
+// binary search for university
+Node<University>* searchUniversityByText(Node<University>* headNode, string* searchField, string* target) {
+	// ASSUMPTIONS: The linked list passed is sorted (ascending)!
+	// LIMITATIONS: only EXACT matches then the result will be returned!
+	// only returns first occurrences
+
+	if (headNode == NULL) return NULL;
+	else if (headNode->getData()->getStringValue(*searchField) == *target) return headNode;
+	
+	Node<University>* firstNode = headNode;
+	Node<University>* endNode = NULL;
+
+	do {
+		Node<University>* middleNode = findMiddleUniversityNode(firstNode, endNode);
+
+		if (middleNode == NULL) 
+			return NULL;
+
+		string searchFieldValue = middleNode->getData()->getStringValue(*searchField);
+		if (searchFieldValue == *target) {
+			return middleNode;
+
+		}
+		else if (searchFieldValue < *target) {
+			// then target at right side
+			firstNode = middleNode->getNextAddress();
+
+		}
+		else {
+			// then target at left side
+			endNode = middleNode;
+		}
+
+	} while (endNode == NULL || endNode != firstNode);
+
+	return NULL;
+}
+
+Node<University>* searchUniversityByScore(Node<University>* headNode, string* searchField, double target) {
+	// ASSUMPTIONS: The linked list passed is sorted (ascending)!
+	// only returns first occurrences
+
+	if (headNode == NULL) return NULL;
+	else if (headNode->getData()->getScoreValue(*searchField) == target) return headNode;
+	
+	Node<University>* firstNode = headNode;
+	Node<University>* endNode = NULL;
+
+	do {
+		Node<University>* middleNode = findMiddleUniversityNode(firstNode, endNode);
+
+		if (middleNode == NULL) 
+			return NULL;
+
+		double searchFieldValue = middleNode->getData()->getScoreValue(*searchField);
+		if (searchFieldValue == target) {
+			return middleNode;
+
+		}
+		else if (searchFieldValue < target) {
+			// then target at right side
+			firstNode = middleNode->getNextAddress();
+
+		}
+		else {
+			// then target at left side
+			endNode = middleNode;
+		}
+
+	} while (endNode == NULL || endNode != firstNode);
+
+	return NULL;
+}
+
+Node<University>* searchUniversityByRank(Node<University>* headNode, string* searchField, int target) {
+	// ASSUMPTIONS: The linked list passed is sorted (ascending)!
+	// only returns first occurrences
+
+	if (headNode == NULL) return NULL;
+	else if (headNode->getData()->getRank() == target) return headNode;
+	
+	Node<University>* firstNode = headNode;
+	Node<University>* endNode = NULL;
+
+	do {
+		Node<University>* middleNode = findMiddleUniversityNode(firstNode, endNode);
+
+		if (middleNode == NULL) 
+			return NULL;
+
+		int searchFieldValue = middleNode->getData()->getRank();
+		if (searchFieldValue == target) {
+			return middleNode;
+
+		}
+		else if (searchFieldValue < target) {
+			// then target at right side
+			firstNode = middleNode->getNextAddress();
+
+		}
+		else {
+			// then target at left side
+			endNode = middleNode;
+		}
+
+	} while (endNode == NULL || endNode != firstNode);
+
+	return NULL;
+}
+
+Node<University>* searchUniversityByRankObj(Node<University>* headNode, string* searchField, Rank* target) {
+	// ASSUMPTIONS: The linked list passed is sorted (ascending)!
+	// only returns first occurrences
+
+	if (headNode == NULL) return NULL;
+	else if (headNode->getData()->getRankValue(*searchField)->isEqual(target)) return headNode;
+	
+	Node<University>* firstNode = headNode;
+	Node<University>* endNode = NULL;
+
+	do {
+		Node<University>* middleNode = findMiddleUniversityNode(firstNode, endNode);
+
+		if (middleNode == NULL) 
+			return NULL;
+
+		Rank* searchFieldValue = middleNode->getData()->getRankValue(*searchField);
+		if (searchFieldValue->isEqual(target)) {
+			return middleNode;
+
+		}
+		else if (searchFieldValue->isLowerThan(target)) {
+			// then target at right side
+			firstNode = middleNode->getNextAddress();
+
+		}
+		else {
+			// then target at left side
+			endNode = middleNode;
+		}
+
+	} while (endNode == NULL || endNode != firstNode);
+
+	return NULL;
+}
+
+Node<University>* findMiddleUniversityNode(Node<University>* first, Node<University>* last) {
+	// source: https://www.prepbytes.com/blog/linked-list/binary-search-on-linked-list/
+	// find the middle node between the first node and last node
+	if (first == NULL) return NULL;
+
+	Node<University>* pointer_1 = first;
+	Node<University>* pointer_2 = first->getNextAddress();
+
+	while (pointer_2 != last) {
+		pointer_2 = pointer_2->getNextAddress();
+
+		if (pointer_2 != last) {
+			pointer_1 = pointer_1->getNextAddress();
+			pointer_2 = pointer_2->getNextAddress();
+		}
+	}
+
+	return pointer_1;
+}
+
+bool compareUniversityValue(University* firstUniversity, University* secondUniversity, string* sortFieldType, string* sortField, bool isAscending) {
 	// this functions accepts parameters and compare different types of data accordingly
 	// returns a boolean 
 	if (*sortFieldType == "uni_rank") {

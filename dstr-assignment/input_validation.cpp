@@ -11,3 +11,9 @@ bool validatePhone(string phone) {
 
 	return phone.length() >= 10 && phone.length() <= 11;
 }
+
+bool validateRank(string rank) {
+	const regex pattern("^[0-9]{1,3}\\+{0,1}$");
+	
+	return regex_match(rank, pattern);
+}

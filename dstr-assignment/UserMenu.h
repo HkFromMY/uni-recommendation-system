@@ -19,7 +19,9 @@ using namespace std;
 void userInterface(User*);
 void displayUniversityDetails();
 void displayUniversityRecords(LinkedList<University>*);
-void searchUniversity();
+void searchUniversityMenu();
 void displaySavedUniversities();
 void displayFeedback();
 void displayFeedbackReplies();
+
+string promptUserSearchField();

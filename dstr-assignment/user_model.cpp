@@ -45,58 +45,52 @@ void deleteUserOnFile(int userId) {
 }
 
 Node<User>* searchUser(Node<User>* headNode, int userId) {
+	// source: https://www.prepbytes.com/blog/linked-list/binary-search-on-linked-list/
 	// O(log n) - binary search
 
-	if (headNode == NULL) {
-		return NULL;
-
-	}
-	else if (headNode->getData()->getUserId() == userId) {
-		// return head node if the target is in first node
-		return headNode;
-
-	}
-	else if (headNode->getPreviousAddress()->getData()->getUserId() == userId) {
-		// return last node if the target is in last node as binary search cannot handle if the last node contains target (for doubly circular linked list)
-		return headNode->getPreviousAddress();
-
-	}
+	if (headNode == NULL) return NULL;
+	else if (headNode->getData()->getUserId() == userId) return headNode;
 
 	// implements binary search on linkedlist
 	Node<User>* first = headNode;
-	Node<User>* end = headNode->getPreviousAddress();
-	Node<User>* middleNode;
+	Node<User>* end = NULL;
 
-	while (first != end) {
-		middleNode = findMiddleUserNode(first, end);
+	do {
+		Node<User>* middleNode = findMiddleUserNode(first, end);
+
+		if (middleNode == NULL) return NULL;
 
 		User* user = middleNode->getData();
 		if (user->getUserId() == userId) {
 			return middleNode;
-
 		}
 		else if (user->getUserId() < userId) {
 			first = middleNode->getNextAddress();
-
 		}
-		else if (user->getUserId() > userId) {
-			end = middleNode->getPreviousAddress();
-
+		else {
+			end = middleNode;
 		}
-	}
+
+	} while (end == NULL || first != end);
 
 	return NULL; // no results found
 }
 
 Node<User>* findMiddleUserNode(Node<User>* first, Node<User>* last) {
 	// find the middle node between the first node and last node.
+	if (first == NULL) return NULL;
 
 	Node<User>* pointer_1 = first;
 	Node<User>* pointer_2 = first->getNextAddress();
 
-	while (pointer_2 != last && pointer_2->getNextAddress() != last) {
-		pointer_1 = pointer_1->getNextAddress();
-		pointer_2 = pointer_2->getNextAddress()->getNextAddress();
+	while (pointer_2 != last) {
+		pointer_2 = pointer_2->getNextAddress();
+
+		if (pointer_2 != last) {
+			pointer_1 = pointer_1->getNextAddress();
+			pointer_2 = pointer_2->getNextAddress();
+
+		}
 	}
 
 	return pointer_1;

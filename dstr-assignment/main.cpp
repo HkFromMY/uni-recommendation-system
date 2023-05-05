@@ -5,6 +5,7 @@
 #include "feedback_model.h"
 #include "favourite_model.h"
 #include "university_model.h"
+#include "input_validation.h"
 
 #include <chrono>
 #include <fstream>
