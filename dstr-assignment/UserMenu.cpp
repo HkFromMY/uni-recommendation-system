@@ -66,6 +66,9 @@ void displayUniversityDetails(User* userLoggedIn) {
 	cout << "Do you want to sort the universities before displaying? (1 - Yes, 2 - No) --> ";
 	cin >> sortSelection;
 
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 	if (sortSelection == 1) {
 
 		system("cls");
@@ -97,6 +100,7 @@ void displayUniversityDetails(User* userLoggedIn) {
 			cout << "Invalid input!" << endl;
 			system("pause");
 
+			delete uniList;
 			return displayUniversityDetails(userLoggedIn);
 		}
 
@@ -115,16 +119,19 @@ void displayUniversityDetails(User* userLoggedIn) {
 	}
 	else if (sortSelection == 2) {
 		displayUniversityRecords(userLoggedIn, uniList);
+
 	}
 	else {
 		// recursively call this function until the input is valid
 		cout << "Invalid input!" << endl;
 		system("pause");
 
+		delete uniList;
 		return displayUniversityDetails(userLoggedIn);
 
 	}
 
+	delete uniList; // free memory
 }
 
 void displayUniversityRecords(User* userLoggedIn, LinkedList<University>* uniList) {
@@ -214,6 +221,7 @@ void searchUniversityMenu(User* userLoggedIn) {
 			cout << "The search value for rank is not valid! Please retry!" << endl;
 			system("pause");
 
+			delete uniList;
 			return searchUniversityMenu(userLoggedIn);
 		}
 	}
@@ -260,6 +268,9 @@ void searchUniversityMenu(User* userLoggedIn) {
 
 	if (universityFound == NULL) {
 		cout << "The target is not found!" << endl;
+
+		delete uniList;
+		return searchUniversityMenu(userLoggedIn);
 	}
 	else {
 		system("cls");
@@ -273,7 +284,7 @@ void searchUniversityMenu(User* userLoggedIn) {
 	cout << "1. Save as favourite." << endl;
 	cout << "2. Search for another university." << endl;
 	cout << "3. Quit to user menu." << endl;
-	cout << "Enter your selection here --> " << endl;
+	cout << "Enter your selection here --> ";
 	cin >> action;
 
 	switch (action) {
@@ -289,17 +300,20 @@ void searchUniversityMenu(User* userLoggedIn) {
 			break;
 
 		case 2:
+			delete uniList;
 			return searchUniversityMenu(userLoggedIn);
 
 		case 3:
-			return;
+			break;
 
 		default:
 			cout << "Invalid input!" << endl;
 			system("pause");
 
-			return;
+			break;
 	}
+
+	delete uniList; // free memory
 }
 
 void saveUniversityAsFavourite(User* userLoggedIn, Favourite* favouriteUniversity) {
@@ -357,6 +371,7 @@ void displaySavedUniversities(User* userLoggedIn) {
 		counter++;
 	}
 	system("pause");
+	delete favList; // free memory
 }
 
 void displayFeedback(User* userLoggedIn) {
@@ -368,6 +383,7 @@ void displayFeedback(User* userLoggedIn) {
 	LinkedList<Feedback>* userFeedbacks = loadFeedbackData();
 	userFeedbacks = filterFeedbacksBySenderId(userFeedbacks, userLoggedIn->getUserId());
 	Node<Feedback>* currentNode = userFeedbacks->getFirstNode();
+	
 	cout << "Feedbacks sent: " << endl;
 	while (currentNode != NULL) {
 		cout << counter << ". " << currentNode->getData()->getComment() << endl;
@@ -400,6 +416,8 @@ void displayFeedback(User* userLoggedIn) {
 			system("pause");
 			break;
 	}
+
+	delete userFeedbacks; // free memory
 }
 
 void sendFeedback(User* userLoggedIn) {
@@ -427,6 +445,8 @@ void sendFeedback(User* userLoggedIn) {
 
 	cout << "Feedback sent successfully!" << endl;
 	system("pause");
+
+	delete userList; // free memory
 }
 
 void displayFeedbackReplies(User* userLoggedIn) {
@@ -454,4 +474,6 @@ void displayFeedbackReplies(User* userLoggedIn) {
 	}
 
 	system("pause");
+
+	delete feedbacks; // free memory
 }

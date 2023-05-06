@@ -64,6 +64,8 @@ void displayAllUniversities() {
 
 	// display records
 	displayUniRecords(uniList);
+
+	delete uniList; // free memory
 }
 
 void displayUniRecords(LinkedList<University>* uniList) {
@@ -133,6 +135,7 @@ void searchUniversityDetails() {
 			cout << "The search value for rank is not valid! Please retry!" << endl;
 			system("pause");
 
+			delete uniList;
 			return searchUniversityDetails();
 		}
 	}
@@ -207,6 +210,8 @@ void searchUniversityDetails() {
 
 			break;
 	}
+
+	delete uniList;
 }
 
 void registerAsCustomer() {
@@ -277,19 +282,23 @@ bool checkRecordUniqueness(string* username, string* email, string* phone) {
 
 		if (user->getUsername() == *username) {
 			cout << "Your username is taken!" << endl;
+			delete userList;
 			return false;
 		}
 		else if (user->getEmail() == *email) {
 			cout << "Your email is taken!" << endl;
+			delete userList;
 			return false;
 		}
 		else if (user->getPhone() == *phone) {
 			cout << "Your phone is taken!" << endl;
+			delete userList;
 			return false;
 		}
 
 		currentNode = currentNode->getNextAddress();
 	}
 
+	delete userList; // free memory
 	return true;
 }

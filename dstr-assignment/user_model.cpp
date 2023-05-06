@@ -18,6 +18,8 @@ void updateLastLoginDateOnFile(User* user) {
 	// update on text file
 	string outputTextFile = latestUserRecordInString(userList);
 	writeToFile("user.txt", outputTextFile);
+
+	delete userList; // free memory
 }
 
 void editUserOnFile(int userId, string newUsername, string newPassword, string newEmail, string newPhone) {
@@ -42,6 +44,8 @@ void editUserOnFile(int userId, string newUsername, string newPassword, string n
 
 	// write the user records represented in text constructed above in text file
 	writeToFile("user.txt", output_text);
+
+	delete allUserList; // free memory
 }
 
 void deleteUserOnFile(int userId) {
@@ -61,6 +65,8 @@ void deleteUserOnFile(int userId) {
 
 	// write the user records represented in text constructed above in text file
 	writeToFile("user.txt", output_text);
+
+	delete allUserList; // free memory
 }
 
 Node<User>* searchUser(Node<User>* headNode, int userId) {

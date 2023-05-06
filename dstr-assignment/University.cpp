@@ -193,4 +193,15 @@ void University::printDetails() {
     cout << "Score scaled: " << setprecision(2) << fixed << uni_score_scaled << endl;
 }
 
-University::~University() {}
+University::~University() {
+    // delete all these objects to free the memory
+
+    delete uni_ar_rank;
+    delete uni_er_rank;
+    delete uni_fsr_rank;
+    delete uni_cpf_rank;
+    delete uni_ifr_rank;
+    delete uni_isr_rank;
+    delete uni_irn_rank;
+    delete uni_ger_rank;
+}

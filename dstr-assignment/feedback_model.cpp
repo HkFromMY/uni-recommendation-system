@@ -166,6 +166,7 @@ int generateFeedbackId() {
 	LinkedList<Feedback>* feedbackList = loadFeedbackData();
 	Feedback* lastFeedback = feedbackList->getLastNode()->getData();
 
+	delete feedbackList; // free memory
 	return lastFeedback->getFeedbackId() + 1;
 }
 

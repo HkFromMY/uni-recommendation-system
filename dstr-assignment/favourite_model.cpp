@@ -187,6 +187,7 @@ int generateFavouriteId() {
 	LinkedList<Favourite>* favList = loadFavouriteData();
 	Favourite* lastFavourite = favList->getLastNode()->getData();
 
+	delete favList; // free memory
 	return lastFavourite->getFavouriteId() + 1;
 }
 
@@ -208,6 +209,8 @@ void addNewFavouriteOnFile(int userId, Favourite* newFavourite) {
 
 	// append new line of favourite object in file
 	appendToFile("favourite.txt", newFavourite->toString());
+
+	delete favList; // free memory
 }
 
 void deleteFavouriteOnFile(int favouriteId) {
@@ -218,6 +221,8 @@ void deleteFavouriteOnFile(int favouriteId) {
 	// update on text file
 	string latestFavouritesRecords = latestFavouritesInString(favList);
 	writeToFile("favourite.txt", latestFavouritesRecords);
+
+	delete favList; // free memory
 }
 
 string latestFavouritesInString(LinkedList<Favourite>* favList) {

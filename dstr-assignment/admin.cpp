@@ -198,6 +198,7 @@ void displayRegisteredUserDetails() {
 		systemHeading();
 	}
 
+	delete userList; // free memory
 }
 
 bool promptUserAction(User* user, string action) {
@@ -287,7 +288,9 @@ void displayInactiveUser() {
 		// if user not found
 		cout << "WARNING: User not found!" << endl;
 		system("pause");
-		displayInactiveUser();
+
+		delete userList; // free memory
+		return displayInactiveUser();
 
 	}
 	else {
@@ -300,7 +303,8 @@ void displayInactiveUser() {
 		}
 		else {
 			// call again this interface
-			displayInactiveUser();
+			delete userList;
+			return displayInactiveUser();
 
 		}
 	}
@@ -417,6 +421,8 @@ void displayFeedbacks(User* userLoggedIn) {
 		system("cls");
 		systemHeading();
 	}
+
+	delete feedbacks; // free memory
 }
 
 void displayUniversities() {
@@ -446,5 +452,6 @@ void displayUniversities() {
 		currentNode = currentNode->getNextAddress();
 	}
 
+	delete favourites; // free memory
 	system("pause");
 }

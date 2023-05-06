@@ -338,6 +338,22 @@ void LinkedList<Data>::displayNodeDetailsFromEnd() {
 }
 
 template <class Data>
-LinkedList<Data>::~LinkedList() { cout << "hi"; system("pause"); }
+LinkedList<Data>::~LinkedList() {
+	// delete every nodes in the linkedlist if the linked list is deleted
+	// time complexity - O(N)
+
+	Node<Data>* currentNode = head;
+	Node<Data>* deleteNode;
+	Data* dataToBeDeleted;
+
+	while (currentNode != NULL) {
+		deleteNode = currentNode;
+		dataToBeDeleted = deleteNode->getData();
+		currentNode = currentNode->getNextAddress();
+
+		delete dataToBeDeleted;
+		delete deleteNode;
+	}
+}
 
 #endif
