@@ -23,7 +23,7 @@ Node<User>* findMiddleUserNode(Node<User>*, Node<User>*);
 LinkedList<User>* filterUsersByRole(LinkedList<User>*, int);
 
 // file operations for users - CRUD
-LinkedList<User>* loadUserData(string);
+LinkedList<User>* loadUserData();
 int generateUserId();
 void editUserOnFile(int, string, string, string, string);
 void deleteUserOnFile(int);

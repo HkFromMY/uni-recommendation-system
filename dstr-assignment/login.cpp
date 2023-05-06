@@ -47,7 +47,7 @@ void loginInterface() {
 
 User* validateCredentials(string username, string password) {
 	// search whether there is matched record in user record
-	LinkedList<User>* user_list = loadUserData("user.txt");
+	LinkedList<User>* user_list = loadUserData();
 	
 	Node<User>* currentUserNode = user_list->getFirstNode();
 	while (currentUserNode != NULL) {

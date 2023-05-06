@@ -13,12 +13,15 @@
 using namespace std;
 
 // implemented using merge sort
-Node<Feedback>* sortFeedbackByDate(Node<Feedback>*);
-Node<Feedback>* mergeFeedback(Node<Feedback>*, Node<Feedback>*);
+Node<Feedback>* sortFeedbackByDate(Node<Feedback>*, bool);
+Node<Feedback>* mergeFeedback(Node<Feedback>*, Node<Feedback>*, bool);
 Node<Feedback>* splitFeedback(Node<Feedback>*);
+bool compareSendDateResult(Feedback*, Feedback*, bool);
 
 // search & filter
 LinkedList<Feedback>* filterFeedbacksByType(LinkedList<Feedback>*, string);
+LinkedList<Feedback>* filterFeedbacksBySenderId(LinkedList<Feedback>*, int);
+LinkedList<Feedback>* filterFeedbacksByRecipientId(LinkedList<Feedback>*, int);
 
 LinkedList<Feedback>* loadFeedbackData();
 int generateFeedbackId();

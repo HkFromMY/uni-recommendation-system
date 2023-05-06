@@ -4,3 +4,5 @@
 4|4|2|User Feedback|I like this system!|2023-04-14
 5|1|2|User Feedback|Thanks for the hard work!|2023-04-16
 6|2|1|Admin Reply|Thank you so much for your kind words!|2023-04-28
+7|1|2|User Feedback|This system provides good details, but please do provide a textual description for the university!|2023-05-06
+8|2|1|Admin Reply|Another thank you for your kind words!|2023-05-06

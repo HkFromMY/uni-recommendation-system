@@ -3,7 +3,7 @@
 // functions to conduct CRUD operations on txt files
 void editUserOnFile(int userId, string newUsername, string newPassword, string newEmail, string newPhone) {
 	// list of all users (including admins and users)
-	LinkedList<User>* allUserList = loadUserData("user.txt");
+	LinkedList<User>* allUserList = loadUserData();
 
 	Node<User>* userToEdit = searchUser(allUserList->getLastNode(), userId);
 	if (userToEdit == NULL) {
@@ -26,7 +26,7 @@ void editUserOnFile(int userId, string newUsername, string newPassword, string n
 }
 
 void deleteUserOnFile(int userId) {
-	LinkedList<User>* allUserList = loadUserData("user.txt");
+	LinkedList<User>* allUserList = loadUserData();
 
 	Node<User>* userToBeDeleted = searchUser(allUserList->getLastNode(), userId);
 	if (userToBeDeleted == NULL) {
@@ -99,7 +99,7 @@ Node<User>* findMiddleUserNode(Node<User>* first, Node<User>* last) {
 // generate ids for records
 int generateUserId() {
 	// this function generates new user id by incrementing to the latest user records by 1
-	LinkedList<User>* userList = loadUserData("user.txt");
+	LinkedList<User>* userList = loadUserData();
 	User* lastUser = userList->getLastNode()->getData();
 
 	return lastUser->getUserId() + 1;
@@ -141,11 +141,11 @@ LinkedList<User>* filterUsersByRole(LinkedList<User>* users, int userRole) {
 	return filteredUsers;
 }
 
-LinkedList<User>* loadUserData(string filepath) {
+LinkedList<User>* loadUserData() {
 	// load the user data from text file into LinkedList of User objects
 	LinkedList<User>* user_list = new LinkedList<User>();
 	string user_id, username, password, email, phone, role, last_login_date;
-	ifstream file(filepath);
+	ifstream file("user.txt");
 
 	if (!file.is_open()) {
 		cerr << "ERROR: File not found!" << endl;

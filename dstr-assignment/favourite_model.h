@@ -21,8 +21,14 @@ Node<Counter>* splitFavourites(Node<Counter>*);
 Node<Counter>* mergeFavourites(Node<Counter>*, Node<Counter>*);
 
 LinkedList<Favourite>* filterFavouriteByUser(LinkedList<Favourite>*, int);
+Node<Favourite>* searchFavourite(LinkedList<Favourite>*, int);
+Node<Favourite>* findMiddleFavouriteNode(Node<Favourite>*, Node<Favourite>*);
 
 LinkedList<Favourite>* loadFavouriteData();
 HashMap<string, int>* loadFavouriteOccurrences();
+int generateFavouriteId();
+void addNewFavouriteOnFile(int, Favourite*);
+void deleteFavouriteOnFile(int);
+string latestFavouritesInString(LinkedList<Favourite>*);
 
 #endif // !favourite_model_h

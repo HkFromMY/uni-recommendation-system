@@ -3,3 +3,4 @@
 3|3|Stanford University
 4|4|University of Oxford
 5|1|University of Oxford
+6|1|National University of Singapore (NUS)

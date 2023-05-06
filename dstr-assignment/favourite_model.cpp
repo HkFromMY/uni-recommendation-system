@@ -70,6 +70,57 @@ LinkedList<Favourite>* filterFavouriteByUser(LinkedList<Favourite>* favourites, 
 	return user_favourites;
 }
 
+// binary search implementation
+Node<Favourite>* searchFavourite(LinkedList<Favourite>* favList, int favouriteId) {
+	// search for favourite based on user id and delete
+	
+	Node<Favourite>* firstNode = favList->getFirstNode();
+	Node<Favourite>* endNode = NULL;
+	if (firstNode == NULL) return NULL;
+
+	do {
+		Node<Favourite>* middleNode = findMiddleFavouriteNode(firstNode, endNode);
+		int middleFavouriteId = middleNode->getData()->getFavouriteId();
+
+		if (middleFavouriteId == favouriteId) {
+			// found target and delete
+			return middleNode;
+
+		}
+		else if (middleFavouriteId < favouriteId) {
+			firstNode = middleNode->getNextAddress();
+
+		}
+		else {
+			endNode = middleNode;
+
+		}
+
+
+	} while (endNode == NULL || endNode != firstNode);
+
+	return NULL;
+}
+
+Node<Favourite>* findMiddleFavouriteNode(Node<Favourite>* firstNode, Node<Favourite>* lastNode) {
+	if (firstNode == NULL) return NULL;
+
+	Node<Favourite>* pointer_1 = firstNode;
+	Node<Favourite>* pointer_2 = firstNode->getNextAddress();
+
+	while (pointer_2 != lastNode) {
+		pointer_2 = pointer_2->getNextAddress();
+		
+		if (pointer_2 != lastNode) {
+			pointer_1 = pointer_1->getNextAddress();
+			pointer_2 = pointer_2->getNextAddress();
+
+		}
+	}
+
+	return pointer_1;
+}
+
 LinkedList<Favourite>* loadFavouriteData() {
 	LinkedList<Favourite>* favourite_list = new LinkedList<Favourite>();
 	string favourite_id, user_id, favourite_university;
@@ -130,4 +181,55 @@ HashMap<string, int>* loadFavouriteOccurrences() {
 	}
 
 	return favourite_occurrences;
+}
+
+int generateFavouriteId() {
+	LinkedList<Favourite>* favList = loadFavouriteData();
+	Favourite* lastFavourite = favList->getLastNode()->getData();
+
+	return lastFavourite->getFavouriteId() + 1;
+}
+
+void addNewFavouriteOnFile(int userId, Favourite* newFavourite) {
+	// validations to make sure this university is unique in the user's fav list
+	LinkedList<Favourite>* favList = loadFavouriteData();
+	favList = filterFavouriteByUser(favList, userId);
+
+	// simple linear search to search through the favourite list
+	Node<Favourite>* currentNode = favList->getFirstNode();
+	while (currentNode != NULL) {
+		if (currentNode->getData()->getFavouriteUniversity() == newFavourite->getFavouriteUniversity()) {
+
+			throw "This university is already saved by the users!";
+		}
+
+		currentNode = currentNode->getNextAddress();
+	}
+
+	// append new line of favourite object in file
+	appendToFile("favourite.txt", newFavourite->toString());
+}
+
+void deleteFavouriteOnFile(int favouriteId) {
+	// search and delete favourite based on the favourite ID
+	LinkedList<Favourite>* favList = loadFavouriteData();
+	favList->deleteThisNode(searchFavourite(favList, favouriteId));
+
+	// update on text file
+	string latestFavouritesRecords = latestFavouritesInString(favList);
+	writeToFile("favourite.txt", latestFavouritesRecords);
+}
+
+string latestFavouritesInString(LinkedList<Favourite>* favList) {
+	// convert latest favourite linked list into string to be outputted into the text file
+	Node<Favourite>* currentNode = favList->getFirstNode();
+	string outputText = "";
+
+	while (currentNode != NULL) {
+		outputText += currentNode->getData()->toString();
+	
+		currentNode = currentNode->getNextAddress();
+	}
+
+	return outputText;
 }

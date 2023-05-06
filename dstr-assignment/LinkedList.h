@@ -338,6 +338,6 @@ void LinkedList<Data>::displayNodeDetailsFromEnd() {
 }
 
 template <class Data>
-LinkedList<Data>::~LinkedList() {}
+LinkedList<Data>::~LinkedList() { cout << "hi"; system("pause"); }
 
 #endif

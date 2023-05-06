@@ -14,6 +14,7 @@ void adminInterface(User* userLoggedIn) {
 		cout << "2. Display inactive users." << endl;
 		cout << "3. View feedback from users." << endl;
 		cout << "4. Display top 10 universities' reports." << endl;
+		cout << "5. Log out from the system" << endl;
 		cout << "Enter your selection here --> ";
 		cin >> selection;
 
@@ -38,6 +39,9 @@ void adminInterface(User* userLoggedIn) {
 				displayUniversities();
 				break;
 
+			case 5:
+				break;
+
 			default:
 				cout << "Please choose a valid option!" << endl;
 				system("pause");
@@ -52,7 +56,7 @@ void displayRegisteredUserDetails() {
 	systemHeading();
 
 	// loads in the user records
-	LinkedList<User>* userList = loadUserData("user.txt");
+	LinkedList<User>* userList = loadUserData();
 	userList = filterUsersByRole(userList, USER); // filters that only users are left
 
 	int selection = 0;
@@ -236,7 +240,7 @@ void displayInactiveUser() {
 	
 	// printing inactive users
 	bool hasInactive = false;
-	LinkedList<User>* userList = loadUserData("user.txt");
+	LinkedList<User>* userList = loadUserData();
 	userList = filterUsersByRole(userList, USER);
 
 	Node<User>* currentNode = userList->getFirstNode();
@@ -306,9 +310,9 @@ void displayFeedbacks(User* userLoggedIn) {
 	system("cls");
 	systemHeading();
 
-	// sort feedback by date
+	// sort feedback by date (descending)
 	LinkedList<Feedback>* feedbacks = loadFeedbackData();
-	feedbacks->setFirstNode(sortFeedbackByDate(feedbacks->getFirstNode()));
+	feedbacks->setFirstNode(sortFeedbackByDate(feedbacks->getFirstNode(), false));
 	feedbacks = filterFeedbacksByType(feedbacks, "User Feedback"); // filter so that only user feedback are remained
 
 	int selection = 0;

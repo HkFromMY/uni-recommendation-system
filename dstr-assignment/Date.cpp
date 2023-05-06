@@ -120,29 +120,58 @@ string Date::toString() {
 }
 
 bool Date::isAfter(Date* date) {
-	// check year first
-	if (year > date->getYear()) return true;
-
-	// check month then
-	if (month > date->getMonth()) return true;
-
-	// check day only
-	if (day > date->getDay()) return true;
-
-	return false;
+	if (year > date->getYear()) {
+		return true;
+	}
+	else if (year < date->getYear()) {
+		return false;
+	}
+	else {
+		// if date1's year smaller than or equal to date2's year
+		if (month > date->getMonth()) {
+			return true;
+		}
+		else if (month < date->getMonth()) {
+			return false;
+		}
+		else {
+			// if date1's month smaller than or equal to date2's month
+			if (day > date->getDay()) {
+				return true;
+			}
+			else {
+				// date1's day either smaller than or equal to date2's day
+				return false;
+			}
+		}
+	}
 }
 
 bool Date::isBefore(Date* date) {
-	// check year first
-	if (year < date->getYear()) return true;
+	// similar to isAfter method, the comparison operator is reversed only
 
-	// check month then
-	if (month < date->getMonth()) return true;
-
-	// check day only
-	if (day < date->getDay()) return true;
-
-	return false;
+	if (year < date->getYear()) {
+		return true;
+	}
+	else if (year > date->getYear()) {
+		return false;
+	}
+	else {
+		if (month < date->getMonth()) {
+			return true;
+		}
+		else if (month > date->getMonth()) {
+			return false;
+		}
+		else {
+			if (day < date->getDay()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
 }
 
 bool Date::isEqual(Date* date) {

@@ -1,6 +1,6 @@
 #include "feedback_model.h"
 
-Node<Feedback>* sortFeedbackByDate(Node<Feedback>* node) {
+Node<Feedback>* sortFeedbackByDate(Node<Feedback>* node, bool isAscending) {
 	if (node == NULL || node->getNextAddress() == NULL) {
 		return node;
 	}
@@ -8,11 +8,11 @@ Node<Feedback>* sortFeedbackByDate(Node<Feedback>* node) {
 	Node<Feedback>* secondHalf = splitFeedback(node);
 
 	// recursively sorted for first and second halves of the sub-linkedlist
-	node = sortFeedbackByDate(node);
-	secondHalf = sortFeedbackByDate(secondHalf);
+	node = sortFeedbackByDate(node, isAscending);
+	secondHalf = sortFeedbackByDate(secondHalf, isAscending);
 
 	// merge sorted sub-linkedlist
-	return mergeFeedback(node, secondHalf);
+	return mergeFeedback(node, secondHalf, isAscending);
 }
 
 Node<Feedback>* splitFeedback(Node<Feedback>* headNode) {
@@ -30,29 +30,43 @@ Node<Feedback>* splitFeedback(Node<Feedback>* headNode) {
 	return temp;
 }
 
-Node<Feedback>* mergeFeedback(Node<Feedback>* firstHalf, Node<Feedback>* secondHalf) {
+Node<Feedback>* mergeFeedback(Node<Feedback>* firstHalf, Node<Feedback>* secondHalf, bool isAscending) {
 	if (firstHalf == NULL) return secondHalf;
 	if (secondHalf == NULL) return firstHalf;
 
 	// pick smaller values
 	Feedback* firstFeedback = firstHalf->getData();
 	Feedback* secondFeedback = secondHalf->getData();
+	bool comparisonResult = compareSendDateResult(firstFeedback, secondFeedback, isAscending);
 
-	if (firstFeedback->getSendDate()->isBefore(secondFeedback->getSendDate())) {
-		firstHalf->setNextAddress(mergeFeedback(firstHalf->getNextAddress(), secondHalf));
+	if (comparisonResult) {
+		firstHalf->setNextAddress(mergeFeedback(firstHalf->getNextAddress(), secondHalf, isAscending));
 		firstHalf->getNextAddress()->setPreviousAddress(firstHalf);
 		firstHalf->setPreviousAddress(NULL);
 
 		return firstHalf;
 	}
 	else {
-		secondHalf->setNextAddress(mergeFeedback(firstHalf, secondHalf->getNextAddress()));
+		secondHalf->setNextAddress(mergeFeedback(firstHalf, secondHalf->getNextAddress(), isAscending));
 		secondHalf->getNextAddress()->setPreviousAddress(secondHalf);
 		secondHalf->setPreviousAddress(NULL);
 
 		return secondHalf;
 	}
 
+}
+
+bool compareSendDateResult(Feedback* firstFeedback, Feedback* secondFeedback, bool isAscending) {
+	// utility function for comparing dates by ascending or descending
+	Date* sendDate1 = firstFeedback->getSendDate();
+	Date* sendDate2 = secondFeedback->getSendDate();
+	
+	if (isAscending) {
+		return sendDate1->isBefore(sendDate2);
+	}
+	else {
+		return sendDate1->isAfter(sendDate2);
+	}
 }
 
 LinkedList<Feedback>* filterFeedbacksByType(LinkedList<Feedback>* feedbacks, string feedbackType) {
@@ -62,6 +76,42 @@ LinkedList<Feedback>* filterFeedbacksByType(LinkedList<Feedback>* feedbacks, str
 	Node<Feedback>* currentNode = feedbacks->getFirstNode();
 	while (currentNode != NULL) {
 		if (currentNode->getData()->getType() == feedbackType) {
+			filteredFeedbacks->appendNewNode(currentNode->getData());
+		}
+
+		currentNode = currentNode->getNextAddress();
+	}
+
+	return filteredFeedbacks;
+}
+
+LinkedList<Feedback>* filterFeedbacksBySenderId(LinkedList<Feedback>* feedbacks, int senderId) {
+	// linear search for filtering multiple results
+	// time complexity O(N)
+
+	LinkedList<Feedback>* filteredFeedbacks = new LinkedList<Feedback>();
+
+	Node<Feedback>* currentNode = feedbacks->getFirstNode();
+	while (currentNode != NULL) {
+		if (currentNode->getData()->getSenderId() == senderId) {
+			filteredFeedbacks->appendNewNode(currentNode->getData());
+		}
+
+		currentNode = currentNode->getNextAddress();
+	}
+
+	return filteredFeedbacks;
+}
+
+LinkedList<Feedback>* filterFeedbacksByRecipientId(LinkedList<Feedback>* feedbacks, int recipientId) {
+	// linear search for filtering multiple results
+	// time complexity - O(N)
+
+	LinkedList<Feedback>* filteredFeedbacks = new LinkedList<Feedback>();
+
+	Node<Feedback>* currentNode = feedbacks->getFirstNode();
+	while (currentNode != NULL) {
+		if (currentNode->getData()->getRecipientId() == recipientId) {
 			filteredFeedbacks->appendNewNode(currentNode->getData());
 		}
 
