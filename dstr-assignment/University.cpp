@@ -1,13 +1,5 @@
 #include "University.h"
 
-University::University(int rank, string institution, Rank* rank_obj, double score) {
-    // for testing only
-    uni_rank = rank;
-    uni_institution = institution;
-    uni_ar_rank = rank_obj;
-    uni_ar_score = score;
-}
-
 University::University(
     int rank, string institution, string location_code, string location, double ar_score,
     Rank* ar_rank, double er_score, Rank* er_rank, double fsr_score, Rank* fsr_rank,

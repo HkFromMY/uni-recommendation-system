@@ -20,6 +20,12 @@ Node<University>* sortUniversities(Node<University>*, string*, string*, bool);
 Node<University>* splitUniversities(Node<University>*);
 Node<University>* mergeUniversities(Node<University>*, Node<University>*, string*, string*, bool);
 
+// pivot sort for universities
+void swapNodeData(Node<University>*, Node<University>*);
+void quickSort(LinkedList<University>*);
+void _quickSort(Node<University>*, Node<University>*);
+Node<University>* partitionUniversityNode(Node<University>*, Node<University>*);
+
 // binary search for universities
 Node<University>* searchUniversityByText(Node<University>*, string*, string*);
 Node<University>* searchUniversityByScore(Node<University>*, string*, double);

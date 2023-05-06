@@ -22,7 +22,6 @@ class University
 
 	public:
 		// constructors
-		University(int, string, Rank*, double);
 		University(
 			int, string, string, string, double, Rank*, double, Rank*, double, Rank*, double, Rank*, double, Rank*,
 			double, Rank*, double, Rank*, double, Rank*, double

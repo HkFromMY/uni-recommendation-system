@@ -186,6 +186,63 @@ Node<University>* mergeUniversities(
 	}
 }
 
+// quick sort for universities 
+void swapNodeData(Node<University>* node1, Node<University>* node2) {
+	// swap data between 2 nodes
+	University* temp = node1->getData();
+	node1->setData(node2->getData());
+	node2->setData(temp);
+}
+
+void quickSort(LinkedList<University>* uniList) {
+	// src: https://www.geeksforgeeks.org/quicksort-for-linked-list/
+
+	// last node of the linked list
+	Node<University>* lastNode = uniList->getLastNode();
+	_quickSort(uniList->getFirstNode(), lastNode);
+
+}
+
+void _quickSort(Node<University>* start, Node<University>* end) {
+	// called recursively
+	if (end != NULL && start != end && start != end->getNextAddress()) {
+		Node<University>* partitionedNode = partitionUniversityNode(start, end);
+		_quickSort(start, partitionedNode->getPreviousAddress());
+		_quickSort(partitionedNode->getNextAddress(), end);
+	}
+}
+
+Node<University>* partitionUniversityNode(Node<University>* start, Node<University>* end) {
+	// set a pivot
+	double pivotArScore = end->getData()->getARScore();
+
+	Node<University>* i = start->getPreviousAddress();
+
+	for (Node<University>* j = start; j != end; j = j->getNextAddress()) {
+		if (j->getData()->getARScore() <= pivotArScore) {
+			if (i == NULL) {
+				i = start;
+			}
+			else {
+				i = i->getNextAddress();
+			}
+
+			swapNodeData(i, j);
+		}
+	}
+
+	if (i == NULL) {
+		i = start;
+	}
+	else {
+		i = i->getNextAddress();
+	}
+
+	swapNodeData(i, end);
+
+	return i;
+}
+
 // binary search for university
 Node<University>* searchUniversityByText(Node<University>* headNode, string* searchField, string* target) {
 	// ASSUMPTIONS: The linked list passed is sorted (ascending)!
