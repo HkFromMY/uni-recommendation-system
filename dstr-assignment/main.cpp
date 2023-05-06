@@ -6,11 +6,11 @@
 #include "favourite_model.h"
 #include "university_model.h"
 #include "input_validation.h"
+#include "guest.h"
+#include "HashMap.h"
 
 #include <chrono>
 #include <fstream>
-
-#include "HashMap.h"
 
 using namespace std;
 using namespace chrono;
@@ -44,7 +44,7 @@ void mainInterface() {
 
         switch (selection) {
             case 1:
-                cout << "Entering guest interface!" << endl;
+                guestInterface();
                 break;
 
             case 2:
@@ -59,7 +59,7 @@ void mainInterface() {
                 // recursion for asking new valid input
                 cout << "Please choose a valid option!" << endl;
                 system("pause");
-                mainInterface();
+                return mainInterface();
         }
     }
 }

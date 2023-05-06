@@ -7,5 +7,6 @@
 using namespace std;
 
 void systemHeading();
+string promptUserSearchField();
 
 #endif // common_interface_h

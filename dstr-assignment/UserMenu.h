@@ -30,5 +30,3 @@ void displaySavedUniversities(User*);
 void displayFeedback(User*);
 void sendFeedback(User*);
 void displayFeedbackReplies(User*);
-
-string promptUserSearchField();

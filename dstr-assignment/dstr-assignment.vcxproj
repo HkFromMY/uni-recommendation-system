@@ -147,6 +147,7 @@
     <ClCompile Include="favourite_model.cpp" />
     <ClCompile Include="Feedback.cpp" />
     <ClCompile Include="feedback_model.cpp" />
+    <ClCompile Include="guest.cpp" />
     <ClCompile Include="input_validation.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="Rank.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="favourite_model.h" />
     <ClInclude Include="Feedback.h" />
     <ClInclude Include="feedback_model.h" />
+    <ClInclude Include="guest.h" />
     <ClInclude Include="HashMap.h" />
     <ClInclude Include="input_validation.h" />
     <ClInclude Include="LinkedList.h" />

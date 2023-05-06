@@ -1,6 +1,25 @@
 #include "user_model.h"
 
 // functions to conduct CRUD operations on txt files
+void addNewUserOnFile(User* newUser) {
+	if (newUser == NULL) {
+		return;
+	}
+
+	appendToFile("user.txt", newUser->toString());
+}
+
+void updateLastLoginDateOnFile(User* user) {
+	// search and modify the user record's last login date
+	LinkedList<User>* userList = loadUserData();
+	Node<User>* userToUpdate = searchUser(userList->getFirstNode(), user->getUserId());
+	userToUpdate->getData()->setLastLoginDate(new Date());
+	
+	// update on text file
+	string outputTextFile = latestUserRecordInString(userList);
+	writeToFile("user.txt", outputTextFile);
+}
+
 void editUserOnFile(int userId, string newUsername, string newPassword, string newEmail, string newPhone) {
 	// list of all users (including admins and users)
 	LinkedList<User>* allUserList = loadUserData();

@@ -31,6 +31,9 @@ void loginInterface() {
 	else {
 		int login_role = userFound->getRole();
 
+		// update last login date
+		updateLastLoginDateOnFile(userFound);
+
 		// go other interface because correct credentials
 		if (login_role == USER) {
 			// registered user interface

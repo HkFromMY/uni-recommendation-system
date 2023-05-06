@@ -25,6 +25,8 @@ LinkedList<User>* filterUsersByRole(LinkedList<User>*, int);
 // file operations for users - CRUD
 LinkedList<User>* loadUserData();
 int generateUserId();
+void updateLastLoginDateOnFile(User*);
+void addNewUserOnFile(User*);
 void editUserOnFile(int, string, string, string, string);
 void deleteUserOnFile(int);
 string latestUserRecordInString(LinkedList<User>*);
