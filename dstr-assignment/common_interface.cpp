@@ -8,7 +8,8 @@ void systemHeading() {
 string promptUserSearchField() {
 	// a utility function that converts integer (selection by users) into sort/search fields in string format
 	// the string returned is in format "sortType|sortField" so the value returned need to be parsed
-
+	system("cls");
+	systemHeading();
 	int selection = 0;
 
 	cout << "Which field do you want to search the universities by?" << endl;

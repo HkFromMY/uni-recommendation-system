@@ -127,7 +127,10 @@ int generateUserId() {
 	LinkedList<User>* userList = loadUserData();
 	User* lastUser = userList->getLastNode()->getData();
 
-	return lastUser->getUserId() + 1;
+	int newUserId = lastUser->getUserId() + 1;
+	delete userList;
+
+	return newUserId;
 }
 
 string latestUserRecordInString(LinkedList<User>* userList) {

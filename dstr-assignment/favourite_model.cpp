@@ -187,8 +187,10 @@ int generateFavouriteId() {
 	LinkedList<Favourite>* favList = loadFavouriteData();
 	Favourite* lastFavourite = favList->getLastNode()->getData();
 
+	int newFavouriteId = lastFavourite->getFavouriteId() + 1;
 	delete favList; // free memory
-	return lastFavourite->getFavouriteId() + 1;
+
+	return newFavouriteId;
 }
 
 void addNewFavouriteOnFile(int userId, Favourite* newFavourite) {

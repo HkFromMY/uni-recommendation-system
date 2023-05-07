@@ -4,3 +4,4 @@
 4|4|University of Oxford
 5|1|University of Oxford
 6|1|National University of Singapore (NUS)
+7|1|Universiti Putra Malaysia (UPM)

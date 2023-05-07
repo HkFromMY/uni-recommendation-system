@@ -165,9 +165,11 @@ int generateFeedbackId() {
 	// this function generates new feedback id by incrementing to the latest feedback records by 1
 	LinkedList<Feedback>* feedbackList = loadFeedbackData();
 	Feedback* lastFeedback = feedbackList->getLastNode()->getData();
-
+	
+	int newFeedbackId = lastFeedback->getFeedbackId() + 1;
 	delete feedbackList; // free memory
-	return lastFeedback->getFeedbackId() + 1;
+
+	return newFeedbackId;
 }
 
 void appendNewFeedbackOnFile(Feedback* newFeedback) {

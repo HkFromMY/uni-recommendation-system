@@ -25,6 +25,7 @@ void userInterface(User*);
 void displayUniversityDetails(User*);
 void displayUniversityRecords(User*, LinkedList<University>*);
 void searchUniversityMenu(User*);
+int promptAction(User*, Node<University>*);
 void saveUniversityAsFavourite(User*, Favourite*);
 void displaySavedUniversities(User*);
 void displayFeedback(User*);

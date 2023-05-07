@@ -249,17 +249,17 @@ bool promptReSearch(Node<University>* universityFound) {
 		cin >> action;
 
 		switch (action) {
-			case 1:
-				return true;
+		case 1:
+			return true;
 
-			case 2:
-				return false;
+		case 2:
+			return false;
 
-			default:
-				cout << "Invalid input!" << endl;
-				system("pause");
+		default:
+			cout << "Invalid input!" << endl;
+			system("pause");
 
-				return promptReSearch(universityFound);
+			return promptReSearch(universityFound);
 		}
 	}
 }
@@ -301,7 +301,7 @@ void registerAsCustomer() {
 	bool isUniqueRecord = checkRecordUniqueness(&username, &email, &phone);
 	if (!isUniqueRecord) {
 		system("pause");
-		return registerAsCustomer();
+		return;
 	}
 	
 	// creating new profile for user
