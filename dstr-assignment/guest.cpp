@@ -52,19 +52,29 @@ void displayAllUniversities() {
 	cout << "Do you want to sort the universities by institution name before displaying? (1 - Yes, 2 - No) --> ";
 	cin >> sortSelection;
 
-	// sort records
-	uniList->setFirstNode(
-		sortUniversities(
-			uniList->getFirstNode(),
-			&sortFieldType,
-			&sortField,
-			true // ascending order
-		)
-	);
+	switch (sortSelection) {
+		case 1: 
+			// sort records
+			uniList->setFirstNode(
+				sortUniversities(
+					uniList->getFirstNode(),
+					&sortFieldType,
+					&sortField,
+					true // ascending order
+				)
+			);
+			break;
+		case 2:
+			break;
+		default:
+			cout << "Invalid input!" << endl;
+			system("pause");
+			delete uniList; // free memory
+			return displayAllUniversities();
+	}
 
 	// display records
 	displayUniRecords(uniList);
-
 	delete uniList; // free memory
 }
 
@@ -112,106 +122,146 @@ void displayUniRecords(LinkedList<University>* uniList) {
 
 void searchUniversityDetails() {
 	// search university menu
-	system("cls");
-	systemHeading();
+	bool reSearch = false; // users want to search again
 	LinkedList<University>* uniList = loadUniversitiesData();
 
-	// get the search field type and search field
-	string selection = promptUserSearchField();
-	stringstream ss(selection);
-	string sortFieldType, sortField;
-	getline(ss, sortFieldType, '|');
-	getline(ss, sortField, '|');
+	do {
+		system("cls");
+		systemHeading();
 
-	string searchTarget;
-	cout << "Please enter your search value: ";
-	getline(cin, searchTarget, '\n');
-
-	// basic validation for rank
-	if (sortFieldType == "rank_obj") {
-		bool validRank = validateRank(searchTarget);
-
-		if (!validRank) {
-			cout << "The search value for rank is not valid! Please retry!" << endl;
-			system("pause");
+		// get the search field type and search field
+		string selection = promptUserSearchField();
+		if (selection == "") {
 
 			delete uniList;
-			return searchUniversityDetails();
+			return;
 		}
-	}
 
-	// sort the array according to the search field as binary search is implemented
-	uniList->setFirstNode(
-		sortUniversities(
-			uniList->getFirstNode(),
-			&sortFieldType,
-			&sortField,
-			true
-		)
-	);
+		stringstream ss(selection);
+		string sortFieldType, sortField;
+		getline(ss, sortFieldType, '|');
+		getline(ss, sortField, '|');
 
-	Node<University>* universityFound;
-	if (sortFieldType == "uni_rank") {
-		universityFound = searchUniversityByRank(
-			uniList->getFirstNode(),
-			&sortField,
-			convertToInt(searchTarget)
-		);
-	}
-	else if (sortFieldType == "text") {
-		universityFound = searchUniversityByText(
-			uniList->getFirstNode(),
-			&sortField,
-			&searchTarget
-		);
-	}
-	else if (sortFieldType == "score") {
-		universityFound = searchUniversityByScore(
-			uniList->getFirstNode(),
-			&sortField,
-			convertToDouble(searchTarget)
-		);
-	}
-	else {
-		universityFound = searchUniversityByRankObj(
-			uniList->getFirstNode(),
-			&sortField,
-			new Rank(searchTarget)
-		);
-	}
+		string searchTarget;
+		cout << "Please enter your search value: ";
+		getline(cin, searchTarget, '\n');
 
+		// basic validation for rank
+		if (sortFieldType == "rank_obj") {
+			bool validRank = validateRank(searchTarget);
+
+			if (!validRank) {
+				cout << "The search value for rank is not valid! Please retry!" << endl;
+				system("pause");
+
+				delete uniList;
+				return searchUniversityDetails();
+			}
+		}
+		else if (sortFieldType == "uni_rank") {
+			bool validDigit = validateInteger(searchTarget);
+
+			if (!validDigit) {
+				cout << "The search value for rank is not valid! Please retry!" << endl;
+				system("pause");
+
+				delete uniList;
+				return searchUniversityDetails();
+			}
+		}
+		else if (sortFieldType == "score") {
+			bool validDouble = validateDouble(searchTarget);
+
+			if (!validDouble) {
+				cout << "The search value for score is not valid! Please retry!" << endl;
+				system("pause");
+
+				delete uniList;
+				return searchUniversityDetails();
+			}
+		}
+
+		// sort the array according to the search field as binary search is implemented
+		uniList->setFirstNode(
+			sortUniversities(
+				uniList->getFirstNode(),
+				&sortFieldType,
+				&sortField,
+				true
+			)
+		);
+
+		Node<University>* universityFound;
+		if (sortFieldType == "uni_rank") {
+			universityFound = searchUniversityByRank(
+				uniList->getFirstNode(),
+				&sortField,
+				convertToInt(searchTarget)
+			);
+		}
+		else if (sortFieldType == "text") {
+			universityFound = searchUniversityByText(
+				uniList->getFirstNode(),
+				&sortField,
+				&searchTarget
+			);
+		}
+		else if (sortFieldType == "score") {
+			universityFound = searchUniversityByScore(
+				uniList->getFirstNode(),
+				&sortField,
+				convertToDouble(searchTarget)
+			);
+		}
+		else {
+			universityFound = searchUniversityByRankObj(
+				uniList->getFirstNode(),
+				&sortField,
+				new Rank(searchTarget)
+			);
+		}
+
+		reSearch = promptReSearch(universityFound);
+	
+	} while (reSearch);
+
+	delete uniList; // free memory
+}
+
+bool promptReSearch(Node<University>* universityFound) {
 	if (universityFound == NULL) {
 		cout << "The target is not found!" << endl;
+		system("pause");
+		return true; // ask the user to search again
 	}
 	else {
 		system("cls");
 		systemHeading();
 
 		universityFound->getData()->printDetails();
+		cout << string(50, '=') << endl;
+
+		int action = 0;
+		cout << "Please select one of the options below." << endl;
+		cout << "1. Search for another university." << endl;
+		cout << "2. Quit" << endl;
+		cout << "Enter your selection here --> ";
+		cin >> action;
+
+		switch (action) {
+			case 1:
+				return true;
+
+			case 2:
+				return false;
+
+			default:
+				cout << "Invalid input!" << endl;
+				system("pause");
+
+				return promptReSearch(universityFound);
+		}
 	}
-
-	int action = 0;
-	cout << "Please select one of the options below." << endl;
-	cout << "1. Search for another university." << endl;
-	cout << "2. Quit" << endl;
-	cout << "Enter your selection here --> " << endl;
-	cin >> action;
-
-	switch (action) {
-		case 2:
-			return searchUniversityDetails();
-
-		case 3:
-			return;
-
-		default:
-			cout << "Invalid input!" << endl;
-			system("pause");
-
-			break;
-	}
-
-	delete uniList;
 }
 
 void registerAsCustomer() {
@@ -269,36 +319,4 @@ void registerAsCustomer() {
 	addNewUserOnFile(newCustomer);
 	cout << "Registration Successful!" << endl;
 	system("pause");
-}
-
-bool checkRecordUniqueness(string* username, string* email, string* phone) {
-	// runs a linear search to check uniqueness of the username, email, and phone of a newly registered customer
-	// time complexity - O(N)
-	LinkedList<User>* userList = loadUserData();
-	
-	Node<User>* currentNode = userList->getFirstNode();
-	while (currentNode != NULL) {
-		User* user = currentNode->getData();
-
-		if (user->getUsername() == *username) {
-			cout << "Your username is taken!" << endl;
-			delete userList;
-			return false;
-		}
-		else if (user->getEmail() == *email) {
-			cout << "Your email is taken!" << endl;
-			delete userList;
-			return false;
-		}
-		else if (user->getPhone() == *phone) {
-			cout << "Your phone is taken!" << endl;
-			delete userList;
-			return false;
-		}
-
-		currentNode = currentNode->getNextAddress();
-	}
-
-	delete userList; // free memory
-	return true;
 }

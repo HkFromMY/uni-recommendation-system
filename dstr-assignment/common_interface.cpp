@@ -33,6 +33,7 @@ string promptUserSearchField() {
 	cout << "19. Employment Outcome Score (GER Score)" << endl;
 	cout << "20. Employment Outcome Rank (GER Rank)" << endl;
 	cout << "21. Score Scaled" << endl;
+	cout << "22. Exit" << endl;
 	cout << "Enter your selection here >> ";
 	cin >> selection;
 
@@ -82,5 +83,11 @@ string promptUserSearchField() {
 		return "rank_obj|uni_ger_rank";
 	case 21:
 		return "score|uni_scored_scaled";
+	case 22:
+		return "";
+	default:
+		cout << "Invalid input!" << endl;
+		system("pause");
+		return promptUserSearchField();
 	}
 }

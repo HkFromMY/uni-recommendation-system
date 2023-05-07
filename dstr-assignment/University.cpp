@@ -7,9 +7,9 @@ University::University(
     Rank* isr_rank, double irn_score, Rank* irn_rank, double ger_score, Rank* ger_rank, double score_scaled
 ) {
     uni_rank = rank;
-    uni_institution = institution;
-    uni_location_code = location_code;
-    uni_location = location;
+    uni_institution = trimString(institution);
+    uni_location_code = trimString(location_code);
+    uni_location = trimString(location);
     uni_ar_score = ar_score;
     uni_ar_rank = ar_rank;
     uni_er_score = er_score;

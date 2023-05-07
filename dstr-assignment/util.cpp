@@ -22,6 +22,33 @@ double convertToDouble(string str) {
 	}
 }
 
+string trimString(string value) {
+	// this function trim leading and trailing string
+	// src: https://www.techiedelight.com/trim-string-cpp-remove-leading-trailing-spaces/
+	const string WHITESPACE = " \n\r\t\f\v";
+	string trimmed = value;
+
+	// trim left side
+	size_t start = value.find_first_not_of(WHITESPACE);
+	if (start == string::npos) {
+		trimmed = "";
+	}
+	else {
+		trimmed = value.substr(start);
+	}
+
+	// trim right side
+	size_t end = trimmed.find_last_not_of(WHITESPACE);
+	if (end == string::npos) {
+		trimmed = "";
+	}
+	else {
+		trimmed = trimmed.substr(0, end + 1);
+	}
+
+	return trimmed;
+}
+
 // file functions
 void writeToFile(string filepath, string content) {
 	// receives content of string and overwrite the entire file given the filepath

@@ -18,6 +18,7 @@ void guestInterface();
 void displayAllUniversities();
 void displayUniRecords(LinkedList<University>*);
 void searchUniversityDetails();
+bool promptReSearch(Node<University>*);
 void registerAsCustomer();
 bool checkRecordUniqueness(string*, string*, string*);
 

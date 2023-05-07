@@ -26,9 +26,9 @@ void editUserOnFile(int userId, string newUsername, string newPassword, string n
 	// list of all users (including admins and users)
 	LinkedList<User>* allUserList = loadUserData();
 
-	Node<User>* userToEdit = searchUser(allUserList->getLastNode(), userId);
+	Node<User>* userToEdit = searchUser(allUserList->getFirstNode(), userId);
 	if (userToEdit == NULL) {
-		cout << "User not found!" << endl;
+		throw "User not found!";
 		return;
 	}
 
@@ -208,4 +208,73 @@ LinkedList<User>* loadUserData() {
 	}
 
 	return user_list;
+}
+
+bool checkRecordUniqueness(string* username, string* email, string* phone) {
+	// runs a linear search to check uniqueness of the username, email, and phone of a newly registered customer
+	// time complexity - O(N)
+	LinkedList<User>* userList = loadUserData();
+
+	Node<User>* currentNode = userList->getFirstNode();
+	while (currentNode != NULL) {
+		User* user = currentNode->getData();
+
+		if (user->getUsername() == *username) {
+			cout << "Your username is taken!" << endl;
+			delete userList;
+			return false;
+		}
+		else if (user->getEmail() == *email) {
+			cout << "Your email is taken!" << endl;
+			delete userList;
+			return false;
+		}
+		else if (user->getPhone() == *phone) {
+			cout << "Your phone is taken!" << endl;
+			delete userList;
+			return false;
+		}
+
+		currentNode = currentNode->getNextAddress();
+	}
+
+	delete userList; // free memory
+	return true;
+}
+
+bool checkRecordUniqueness(int userId, string* username, string* email, string* phone) {
+	// runs a linear search to check uniqueness of the username, email, and phone of a newly registered customer
+	// time complexity - O(N)
+	LinkedList<User>* userList = loadUserData();
+
+	Node<User>* currentNode = userList->getFirstNode();
+	while (currentNode != NULL) {
+		User* user = currentNode->getData();
+		if (userId == user->getUserId()) {
+			// no need check for existing customers
+			currentNode = currentNode->getNextAddress();
+			continue;
+		}
+
+		if (user->getUsername() == *username) {
+			cout << "Your username is taken!" << endl;
+			delete userList;
+			return false;
+		}
+		else if (user->getEmail() == *email) {
+			cout << "Your email is taken!" << endl;
+			delete userList;
+			return false;
+		}
+		else if (user->getPhone() == *phone) {
+			cout << "Your phone is taken!" << endl;
+			delete userList;
+			return false;
+		}
+
+		currentNode = currentNode->getNextAddress();
+	}
+
+	delete userList; // free memory
+	return true;
 }

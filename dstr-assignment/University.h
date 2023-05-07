@@ -3,6 +3,7 @@
 #define university_h
 
 #include "Rank.h"
+#include "util.h"
 
 #include <iostream>
 #include <string>

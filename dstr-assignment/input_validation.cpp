@@ -17,3 +17,17 @@ bool validateRank(string rank) {
 	
 	return regex_match(rank, pattern);
 }
+
+bool validateInteger(string number) {
+	// validates if the given string is an integer
+	regex integer_pattern("^[-+]?\\d+$");
+
+	return regex_match(number, integer_pattern);
+}
+
+bool validateDouble(string number) {
+	// validates if the given string is a double
+	regex double_pattern("^[-+]?\\d*\\.\\d+$");
+
+	return regex_match(number, double_pattern);
+}

@@ -3,7 +3,7 @@
 void userInterface(User* userLoggedIn) {
 	int selection = 0;
 
-	while (selection != 6) {
+	while (selection != 7) {
 		system("cls");
 		systemHeading();
 		cout << "Hello " << userLoggedIn->getUsername() << "!" << endl << endl;
@@ -14,7 +14,8 @@ void userInterface(User* userLoggedIn) {
 		cout << "3. Display saved universities" << endl;
 		cout << "4. Display sent feedbacks" << endl;
 		cout << "5. Display received feedback replies" << endl;
-		cout << "6. Log out from the system" << endl;
+		cout << "6. Edit user profile" << endl;
+		cout << "7. Log out from the system" << endl;
 		cout << "Enter your selection here --> ";
 		cin >> selection;
 
@@ -44,6 +45,10 @@ void userInterface(User* userLoggedIn) {
 				break;
 
 			case 6:
+				editUserProfile(userLoggedIn);
+				break;
+
+			case 7:
 				break;
 
 			default:
@@ -204,6 +209,11 @@ void searchUniversityMenu(User* userLoggedIn) {
 
 	// get the search field type and search field
 	string selection = promptUserSearchField();
+	if (selection == "") {
+		delete uniList;
+		return;
+	}
+
 	stringstream ss(selection);
 	string sortFieldType, sortField;
 	getline(ss, sortFieldType, '|');
@@ -476,4 +486,91 @@ void displayFeedbackReplies(User* userLoggedIn) {
 	system("pause");
 
 	delete feedbacks; // free memory
+}
+
+void editUserProfile(User* userLoggedIn) {
+	system("cls");
+	systemHeading();
+
+	cout << "This is your current profile: " << endl;
+	cout << "Username: " << userLoggedIn->getUsername() << endl;
+	cout << "Email: " << userLoggedIn->getEmail() << endl;
+	cout << "Phone: " << userLoggedIn->getPhone() << endl;
+
+	int selection = 0;
+	cout << "Do you want to edit your profile? (1 - Yes, 2 - No): ";
+	cin >> selection;
+
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	switch (selection) {
+		case 1: {
+			// edit user profile here
+			string newUsername, newPassword, newEmail, newPhone;
+
+			cout << "New username: ";
+			getline(cin, newUsername);
+
+			cout << "New password: ";
+			getline(cin, newPassword);
+
+			cout << "New Email: ";
+			getline(cin, newEmail);
+
+			cout << "New Phone: ";
+			getline(cin, newPhone);
+
+			// validations
+			bool validEmail = validateEmail(newEmail);
+			bool validPhone = validatePhone(newPhone);
+
+			if (!validEmail) {
+				cout << "The email is invalid!" << endl;
+				system("pause");
+				return;
+			}
+			else if (!validPhone) {
+				cout << "The phone number is invalid!" << endl;
+				system("pause");
+				return;
+			}
+
+			bool isUniqueRecord = checkRecordUniqueness(userLoggedIn->getUserId(), &newUsername, &newEmail, &newPhone);
+			if (!isUniqueRecord) {
+				system("pause");
+				return editUserProfile(userLoggedIn);
+			}
+
+			try {
+				// edit user on text file
+				editUserOnFile(userLoggedIn->getUserId(), newUsername, newPassword, newEmail, newPhone);
+
+				// update immediate UI
+				userLoggedIn->setUsername(newUsername);
+				userLoggedIn->setPassword(newPassword); // not necessary
+				userLoggedIn->setEmail(newEmail);
+				userLoggedIn->setPhone(newPhone);
+
+				cout << "User profile is edited successfully!" << endl;
+				system("pause");
+
+			}
+			catch (const char* errorMsg) {
+				cout << errorMsg << endl;
+				system("pause");
+				return;
+			}
+			
+			break;
+		}
+
+		case 2:
+			return;
+
+		default:
+			cout << "Invalid input!" << endl;
+			system("pause");
+			return editUserProfile(userLoggedIn);
+	}
 }

@@ -31,4 +31,7 @@ void editUserOnFile(int, string, string, string, string);
 void deleteUserOnFile(int);
 string latestUserRecordInString(LinkedList<User>*);
 
+bool checkRecordUniqueness(string*, string*, string*);
+bool checkRecordUniqueness(int, string*, string*, string*);
+
 #endif
