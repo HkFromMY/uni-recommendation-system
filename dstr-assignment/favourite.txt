@@ -5,3 +5,16 @@
 5|1|University of Oxford
 6|1|National University of Singapore (NUS)
 7|1|Universiti Putra Malaysia (UPM)
+8|3|Tomsk State University
+9|3|Universiti Putra Malaysia (UPM)
+10|1|Sorbonne University
+11|1|The University of Manchester
+12|1|McGill University
+13|1|MGIMO University
+14|1|University of Tsukuba
+15|3|University of California, Los Angeles (UCLA)
+16|3|University of Tsukuba
+17|4|University of Tsukuba
+18|4|MGIMO University
+19|4|Massachusetts Institute of Technology (MIT)
+20|1|Harvard University

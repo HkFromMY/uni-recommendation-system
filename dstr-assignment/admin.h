@@ -8,6 +8,7 @@
 #include "common_interface.h"
 #include "input_validation.h"
 #include "user_model.h"
+#include "university_model.h"
 #include "feedback_model.h"
 #include "favourite_model.h"
 
@@ -16,17 +17,15 @@
 
 using namespace std;
 
-void adminInterface(User*);
-void displayRegisteredUserDetails();
+void adminInterface(User*, LinkedList<User>*, LinkedList<University>*, LinkedList<Feedback>*, LinkedList<Favourite>*);
+void displayRegisteredUserDetails(LinkedList<User>*);
+void editUser(User*, LinkedList<User>*);
+void deleteUserAccount(User*, LinkedList<User>*);
 bool promptUserAction(User*, string);
-string latestUserRecordInString(LinkedList<User>*);
 
-// functions to manipulate user file
-void editUserOnFile(int, string, string, string, string);
-void deleteUserOnFile(int);
-
-void displayInactiveUser();
-void displayFeedbacks(User*);
-void displayUniversities();
+void displayInactiveUser(LinkedList<User>*);
+void displayFeedbacks(User*, LinkedList<Feedback>*);
+void sendFeedbackReply(User*, LinkedList<Feedback>*, int);
+void displayUniversities(LinkedList<University>*, LinkedList<Favourite>*);
 
 #endif // !admin_h

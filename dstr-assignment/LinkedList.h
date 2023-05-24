@@ -48,6 +48,7 @@ class LinkedList
 
 		void displayNodesDetailsFromFront();
 		void displayNodeDetailsFromEnd();
+		LinkedList<Data>* cloneLinkedList();
 
 };
 
@@ -154,7 +155,6 @@ void LinkedList<Data>::insertNodeAt(Data* newData, int position) {
 			// put previous address of new node to current node
 			newNode->setPreviousAddress(currentNode);
 
-			cout << "Node has been inserted!" << endl;
 			count++;
 			break;
 		}
@@ -335,6 +335,21 @@ void LinkedList<Data>::displayNodeDetailsFromEnd() {
 		currentNode = currentNode->getPreviousAddress();
 		
 	}
+}
+
+template <class Data>
+LinkedList<Data>* LinkedList<Data>::cloneLinkedList() {
+	LinkedList<Data>* newList = new LinkedList<Data>();
+	Node<Data>* currentNode = this->head;
+
+	while (currentNode != NULL) {
+		// insert data into the new list
+		newList->appendNewNode(currentNode->getData());
+
+		currentNode = currentNode->getNextAddress();
+	}
+	
+	return newList;
 }
 
 template <class Data>

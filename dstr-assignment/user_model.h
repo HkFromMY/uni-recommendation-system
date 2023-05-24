@@ -24,14 +24,15 @@ LinkedList<User>* filterUsersByRole(LinkedList<User>*, int);
 
 // file operations for users - CRUD
 LinkedList<User>* loadUserData();
-int generateUserId();
-void updateLastLoginDateOnFile(User*);
+int generateUserId(LinkedList<User>*);
 void addNewUserOnFile(User*);
 void editUserOnFile(int, string, string, string, string);
 void deleteUserOnFile(int);
-string latestUserRecordInString(LinkedList<User>*);
 
-bool checkRecordUniqueness(string*, string*, string*);
-bool checkRecordUniqueness(int, string*, string*, string*);
+string latestUserRecordInString(LinkedList<User>*);
+void updateLatestUserListOnFile(LinkedList<User>*);
+
+bool checkRecordUniqueness(LinkedList<User>*, string*, string*, string*);
+bool checkRecordUniqueness(LinkedList<User>*, int, string*, string*, string*);
 
 #endif

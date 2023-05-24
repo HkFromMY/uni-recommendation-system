@@ -55,6 +55,10 @@ bool User::isInactive() {
 	return false;
 }
 
+LinkedList<Favourite>* User::getFavouriteUniversities() { return favourite_universities; }
+LinkedList<Feedback>* User::getFeedbackSent() { return feedback_sent; }
+LinkedList<Feedback>* User::getFeedbackReplies() { return feedback_replies; }
+
 void User::setUserId(int newUserId) { user_id = newUserId; }
 void User::setUsername(string newUsername) { username = newUsername; }
 void User::setPassword(string newPassword) { password = newPassword; }
@@ -71,6 +75,9 @@ void User::setRole(string newRole) {
 	role = newRole; 
 }
 void User::setLastLoginDate(Date* newLastLoginDate) { last_login_date = newLastLoginDate; }
+void User::setFavouriteUniversities(LinkedList<Favourite>* userFavouriteUniversities) { favourite_universities = userFavouriteUniversities; }
+void User::setFeedbackSent(LinkedList<Feedback>* userFeedbackSent) { feedback_sent = userFeedbackSent; }
+void User::setFeedbackReplies(LinkedList<Feedback>* feedbackReplies) { feedback_replies = feedbackReplies; }
 
 bool User::isPasswordMatch(string usernameEntered, string passwordEntered) {
 	return (

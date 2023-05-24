@@ -1,6 +1,7 @@
 #include "favourite_model.h"
 
 Node<Counter>* sortFavouritesByOccurrences(Node<Counter>* node) {
+	// sort favourite counter linked list by descending order according to the saved count of users
 	if (node == NULL || node->getNextAddress() == NULL) {
 		return node;
 	}
@@ -154,41 +155,27 @@ LinkedList<Favourite>* loadFavouriteData() {
 	return favourite_list;
 }
 
-HashMap<string, int>* loadFavouriteOccurrences() {
-	// loads the favourites from text file into HashMap object
+HashMap<string, int>* loadFavouriteOccurrences(LinkedList<Favourite>* allFavourites) {
+	// convert favourite linked list into hash map
 	HashMap<string, int>* favourite_occurrences = new HashMap<string, int>(2000);
-	string favourite_id, user_id, favourite_university;
-	ifstream file("favourite.txt");
+	Node<Favourite>* currentNode = allFavourites->getFirstNode();
 
-	if (!file.is_open()) {
-		cerr << "ERROR: File not found!" << endl;
+	while (currentNode != NULL) {
+		Favourite* favourite = currentNode->getData();
 
-		throw exception();
-	}
+		// tracking counts
+		favourite_occurrences->incrementCount(favourite->getFavouriteUniversity());
 
-	// parse data and return list of favourite objects
-	while (file.good()) {
-		getline(file, favourite_id, '|');
-		getline(file, user_id, '|');
-		getline(file, favourite_university, '\n');
-
-		if (favourite_id == "") {
-			break;
-		}
-
-		// keep track of the count
-		favourite_occurrences->incrementCount(favourite_university);
+		currentNode = currentNode->getNextAddress();
 	}
 
 	return favourite_occurrences;
 }
 
-int generateFavouriteId() {
-	LinkedList<Favourite>* favList = loadFavouriteData();
+int generateFavouriteId(LinkedList<Favourite>* favList) {
 	Favourite* lastFavourite = favList->getLastNode()->getData();
 
 	int newFavouriteId = lastFavourite->getFavouriteId() + 1;
-	delete favList; // free memory
 
 	return newFavouriteId;
 }
@@ -239,4 +226,12 @@ string latestFavouritesInString(LinkedList<Favourite>* favList) {
 	}
 
 	return outputText;
+}
+
+void updateLatestFavouritesOnTextFile(LinkedList<Favourite>* allFavourites) {
+	// represent latest favourite list in string
+	string latestFavourites = latestFavouritesInString(allFavourites);
+
+	// write to the text file of that latest favourites
+	writeToFile("favourite.txt", latestFavourites);
 }

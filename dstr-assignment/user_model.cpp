@@ -9,19 +9,6 @@ void addNewUserOnFile(User* newUser) {
 	appendToFile("user.txt", newUser->toString());
 }
 
-void updateLastLoginDateOnFile(User* user) {
-	// search and modify the user record's last login date
-	LinkedList<User>* userList = loadUserData();
-	Node<User>* userToUpdate = searchUser(userList->getFirstNode(), user->getUserId());
-	userToUpdate->getData()->setLastLoginDate(new Date());
-	
-	// update on text file
-	string outputTextFile = latestUserRecordInString(userList);
-	writeToFile("user.txt", outputTextFile);
-
-	delete userList; // free memory
-}
-
 void editUserOnFile(int userId, string newUsername, string newPassword, string newEmail, string newPhone) {
 	// list of all users (including admins and users)
 	LinkedList<User>* allUserList = loadUserData();
@@ -122,13 +109,11 @@ Node<User>* findMiddleUserNode(Node<User>* first, Node<User>* last) {
 }
 
 // generate ids for records
-int generateUserId() {
-	// this function generates new user id by incrementing to the latest user records by 1
-	LinkedList<User>* userList = loadUserData();
-	User* lastUser = userList->getLastNode()->getData();
+int generateUserId(LinkedList<User>* currentUserList) {
+	// this function generates new user id by incrementing to the latest user id by 1
+	User* lastUser = currentUserList->getLastNode()->getData();
 
 	int newUserId = lastUser->getUserId() + 1;
-	delete userList;
 
 	return newUserId;
 }
@@ -151,6 +136,14 @@ string latestUserRecordInString(LinkedList<User>* userList) {
 	}
 
 	return output_text;
+}
+
+void updateLatestUserListOnFile(LinkedList<User>* latestUserList) {
+	// get the latest user list and convert to string represented in text file
+	string latestUserInString = latestUserRecordInString(latestUserList);
+
+	// update on the text file
+	writeToFile("user.txt", latestUserInString);
 }
 
 LinkedList<User>* filterUsersByRole(LinkedList<User>* users, int userRole) {
@@ -213,43 +206,38 @@ LinkedList<User>* loadUserData() {
 	return user_list;
 }
 
-bool checkRecordUniqueness(string* username, string* email, string* phone) {
+bool checkRecordUniqueness(LinkedList<User>* userList, string* username, string* email, string* phone) {
 	// runs a linear search to check uniqueness of the username, email, and phone of a newly registered customer
 	// time complexity - O(N)
-	LinkedList<User>* userList = loadUserData();
-
 	Node<User>* currentNode = userList->getFirstNode();
 	while (currentNode != NULL) {
 		User* user = currentNode->getData();
 
 		if (user->getUsername() == *username) {
 			cout << "Your username is taken!" << endl;
-			delete userList;
+
 			return false;
 		}
 		else if (user->getEmail() == *email) {
 			cout << "Your email is taken!" << endl;
-			delete userList;
+
 			return false;
 		}
 		else if (user->getPhone() == *phone) {
 			cout << "Your phone is taken!" << endl;
-			delete userList;
+
 			return false;
 		}
 
 		currentNode = currentNode->getNextAddress();
 	}
 
-	delete userList; // free memory
 	return true;
 }
 
-bool checkRecordUniqueness(int userId, string* username, string* email, string* phone) {
+bool checkRecordUniqueness(LinkedList<User>* userList, int userId, string* username, string* email, string* phone) {
 	// runs a linear search to check uniqueness of the username, email, and phone of a newly registered customer
 	// time complexity - O(N)
-	LinkedList<User>* userList = loadUserData();
-
 	Node<User>* currentNode = userList->getFirstNode();
 	while (currentNode != NULL) {
 		User* user = currentNode->getData();
@@ -261,23 +249,22 @@ bool checkRecordUniqueness(int userId, string* username, string* email, string* 
 
 		if (user->getUsername() == *username) {
 			cout << "Your username is taken!" << endl;
-			delete userList;
+
 			return false;
 		}
 		else if (user->getEmail() == *email) {
 			cout << "Your email is taken!" << endl;
-			delete userList;
+
 			return false;
 		}
 		else if (user->getPhone() == *phone) {
 			cout << "Your phone is taken!" << endl;
-			delete userList;
+
 			return false;
 		}
 
 		currentNode = currentNode->getNextAddress();
 	}
 
-	delete userList; // free memory
 	return true;
 }

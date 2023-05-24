@@ -161,13 +161,11 @@ LinkedList<Feedback>* loadFeedbackData() {
 	return feedback_list;
 }
 
-int generateFeedbackId() {
+int generateFeedbackId(LinkedList<Feedback>* feedbackList) {
 	// this function generates new feedback id by incrementing to the latest feedback records by 1
-	LinkedList<Feedback>* feedbackList = loadFeedbackData();
 	Feedback* lastFeedback = feedbackList->getLastNode()->getData();
 	
 	int newFeedbackId = lastFeedback->getFeedbackId() + 1;
-	delete feedbackList; // free memory
 
 	return newFeedbackId;
 }
@@ -197,4 +195,12 @@ string latestFeedbackRecordInString(LinkedList<Feedback>* latestFeedbacks) {
 	}
 
 	return outputText;
+}
+
+void updateLatestFeedbacksOnTextFile(LinkedList<Feedback>* allFeedbacks) {
+	// represent the latest feedback list in string
+	string latestFeedbacks = latestFeedbackRecordInString(allFeedbacks);
+
+	// write to the text file of latest feedback list
+	writeToFile("feedback.txt", latestFeedbacks);
 }

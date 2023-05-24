@@ -2,6 +2,9 @@
 #ifndef user_h
 
 #include "Date.h"
+#include "LinkedList.h"
+#include "Favourite.h"
+#include "Feedback.h"
 
 #include <iostream>
 #include <string>
@@ -26,6 +29,11 @@ class User
 		Date* last_login_date; // update when registered and login
 		string role; // can be user or admin only
 
+		// list objects
+		LinkedList<Favourite>* favourite_universities; // saved uni list
+		LinkedList<Feedback>* feedback_sent;
+		LinkedList<Feedback>* feedback_replies; 
+
 	public:
 		User(int, string, string, string, string, string, Date*);
 		~User();
@@ -39,6 +47,10 @@ class User
 		int getRole(); // use to compare with the enum defined above
 		Date* getLastLoginDate();
 
+		LinkedList<Favourite>* getFavouriteUniversities();
+		LinkedList<Feedback>* getFeedbackSent();
+		LinkedList<Feedback>* getFeedbackReplies();
+
 		// setters
 		void setUserId(int);
 		void setUsername(string);
@@ -47,6 +59,10 @@ class User
 		void setPhone(string);
 		void setRole(string);
 		void setLastLoginDate(Date*);
+
+		void setFavouriteUniversities(LinkedList<Favourite>*);
+		void setFeedbackSent(LinkedList<Feedback>*);
+		void setFeedbackReplies(LinkedList<Feedback>*);
 
 		// utility functions
 		void printDetails();

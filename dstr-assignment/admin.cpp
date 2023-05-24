@@ -1,6 +1,12 @@
 #include "admin.h"
 
-void adminInterface(User* userLoggedIn) {
+void adminInterface(
+	User* userLoggedIn,
+	LinkedList<User>* userList,
+	LinkedList<University>* allUniversities,
+	LinkedList<Feedback>* allFeedbacks,
+	LinkedList<Favourite>* allFavourites
+) {
 	int selection = 0;
 
 	while (selection != 5) {
@@ -24,19 +30,19 @@ void adminInterface(User* userLoggedIn) {
 
 		switch (selection) {
 			case 1:
-				displayRegisteredUserDetails();
+				displayRegisteredUserDetails(userList);
 				break;
 
 			case 2:
-				displayInactiveUser();
+				displayInactiveUser(userList);
 				break;
 
 			case 3:
-				displayFeedbacks(userLoggedIn);
+				displayFeedbacks(userLoggedIn, allFeedbacks);
 				break;
 
 			case 4:
-				displayUniversities();
+				displayUniversities(allUniversities, allFavourites);
 				break;
 
 			case 5:
@@ -45,25 +51,24 @@ void adminInterface(User* userLoggedIn) {
 			default:
 				cout << "Please choose a valid option!" << endl;
 				system("pause");
-				adminInterface(userLoggedIn);
+				adminInterface(userLoggedIn, userList, allUniversities, allFeedbacks, allFavourites);
 				break;
 		}
 	}
 }
 
-void displayRegisteredUserDetails() {
+void displayRegisteredUserDetails(LinkedList<User>* allUsers) {
 	system("cls");
 	systemHeading();
 
 	// loads in the user records
-	LinkedList<User>* userList = loadUserData();
-	userList = filterUsersByRole(userList, USER); // filters that only users are left
+	LinkedList<User>* userList = filterUsersByRole(allUsers, USER); // filters that only users are left
 
 	int selection = 0;
 	int count = 1;
 	Node<User>* currentNode = userList->getFirstNode();
 
-	while (selection != 5) {
+	while (true) {
 		// display details and allows the users to navigate back and forth
 		User* user = currentNode->getData();
 
@@ -71,134 +76,235 @@ void displayRegisteredUserDetails() {
 		user->printDetails();
 		cout << endl;
 
-		cout << "Actions: " << endl;
-		cout << "1. Previous record." << endl;
-		cout << "2. Next record." << endl;
-		cout << "3. Edit user account." << endl;
-		cout << "4. Delete user account." << endl;
-		cout << "5. Quit." << endl;
-		cout << "Enter your selection here --> ";
-		cin >> selection;
+		// selective UI
+		if (currentNode->getPreviousAddress() == NULL) {
+			cout << "Actions: " << endl;
+			cout << "1. Next record." << endl;
+			cout << "2. Edit user account." << endl;
+			cout << "3. Delete user account." << endl;
+			cout << "4. Quit." << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
 
-		// clear string buffer
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			// clear string buffer
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		switch (selection) {
-			case 1: {
-				if (count == 1) {
-					// traverse to the last element
-					currentNode = userList->getLastNode();
-					count = userList->getSize();
-				}
-				else {
-					// get previous element
-					currentNode = currentNode->getPreviousAddress();
-					count--;
-				}
-
-				break;
-
-			}
-			case 2: {
-				if (count == userList->getSize()) {
-					// traverse back to the first element
-					currentNode = userList->getFirstNode();
-					count = 1;
-				}
-				else {
-					// get to the next element
+			switch (selection) {
+				case 1: {
 					currentNode = currentNode->getNextAddress();
 					count++;
+					break;
+
 				}
-				
-				break;
+				case 2: {
+					// edit user profile
+					editUser(user, allUsers);
+					break;
 
-			}
-			case 3: {
-				// edit user account
-				bool editUser;
-				editUser = promptUserAction(user, "edit");
+				}
+				case 3: {
+					// delete user node from global structure
+					deleteUserAccount(user, allUsers);
 
-				if (editUser) {
-					system("cls");
+					// delete user node from local user list structure for immediate UI update
+					userList->deleteThisNode(currentNode); 
+
+					currentNode = userList->getFirstNode();
+					count = 1;
+					break;
+				}
+				case 4: {
+					return;
+
+				}
+
+				default: {
+					cout << "Please choose a valid option!" << endl;
+					system("pause");
 					systemHeading();
+					break;
 
-					string username, password, email, phone;
-					cout << "New username --> ";
-					getline(cin, username, '\n');
-
-					cout << "New password --> ";
-					getline(cin, password, '\n');
-
-					cout << "New email --> ";
-					getline(cin, email, '\n');
-					bool validEmail = validateEmail(email);
-					if (!validEmail) {
-						cout << "Email not valid!" << endl;
-						system("pause");
-						break;
-					}
-
-					cout << "New phone --> ";
-					getline(cin, phone, '\n');
-					bool validPhone = validatePhone(phone);
-					if (!validPhone) {
-						cout << "Phone not valid!" << endl;
-						system("pause");
-						break;
-					}
-
-					editUserOnFile(user->getUserId(), username, password, email, phone);
-
-					// immediate update
-					user->setUsername(username);
-					user->setPassword(password);
-					user->setEmail(email);
-					user->setPhone(phone);
 				}
-
-				break;
 			}
-			case 4: {
-				// delete user account
-				bool deleteUser;
-				deleteUser = promptUserAction(user, "delete");
 
-				// if confirmed that need to delete, then delete from LinkedList and txt file.
-				if (deleteUser) {
 
-					// delete this user record on txt file
-					deleteUserOnFile(user->getUserId());
+		}
+		else if (currentNode->getNextAddress() == NULL) {
+			cout << "Actions: " << endl;
+			cout << "1. Previous record." << endl;
+			cout << "2. Edit user account." << endl;
+			cout << "3. Delete user account." << endl;
+			cout << "4. Quit." << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
 
-					// delete the node loaded in this function for immediate update on UI
+			// clear string buffer
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			switch (selection) {
+				case 1: {
+					currentNode = currentNode->getPreviousAddress();
+					count--;
+					break;
+
+				}
+				case 2: {
+					// edit user profile
+					editUser(user, allUsers);
+					break;
+
+				}
+				case 3: {
+					// delete user account
+					deleteUserAccount(user, allUsers);
+
+					// delete user node from local user list structure for immediate UI update
 					userList->deleteThisNode(currentNode);
 
-					// get to first element after deletion
-					currentNode = userList->getFirstNode(); // go back to first element
+					currentNode = userList->getFirstNode();
 					count = 1;
+					break;
+				}
+				case 4: {
+					return;
+
 				}
 
-				break;
+				default: {
+					cout << "Please choose a valid option!" << endl;
+					system("pause");
+					systemHeading();
+					break;
 
+				}
 			}
-			case 5:
-				return;
 
-			default: {
-				cout << "Please choose a valid option!" << endl;
-				system("pause");
-				systemHeading();
-				break;
+		}
+		else {
+			cout << "Actions: " << endl;
+			cout << "1. Previous record." << endl;
+			cout << "2. Next record." << endl;
+			cout << "3. Edit user account." << endl;
+			cout << "4. Delete user account." << endl;
+			cout << "5. Quit." << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
 
+			// clear string buffer
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			switch (selection) {
+				case 1: {
+					currentNode = currentNode->getPreviousAddress();
+					count--;
+					break;
+
+				}
+				case 2:
+					currentNode = currentNode->getNextAddress();
+					count++;
+					break;
+
+				case 3: {
+					// edit user profile
+					editUser(user, allUsers);
+					break;
+
+				}
+				case 4: {
+					// delete user account
+					deleteUserAccount(user, allUsers);
+
+					// delete user node from local user list structure for immediate UI update
+					userList->deleteThisNode(currentNode);
+
+					currentNode = userList->getFirstNode();
+					count = 1;
+					break;
+				}
+				case 5: {
+					return;
+
+				}
+
+				default: {
+					cout << "Please choose a valid option!" << endl;
+					system("pause");
+					systemHeading();
+					break;
+
+				}
 			}
+
 		}
 
 		system("cls");
 		systemHeading();
 	}
+}
 
-	delete userList; // free memory
+void editUser(User* userToEdit, LinkedList<User>* allUsers) {
+	// edit user account
+	bool editUser;
+	editUser = promptUserAction(userToEdit, "edit");
+
+	if (editUser) {
+		system("cls");
+		systemHeading();
+
+		string username, password, email, phone;
+		cout << "New username --> ";
+		getline(cin, username, '\n');
+
+		cout << "New password --> ";
+		getline(cin, password, '\n');
+
+		cout << "New email --> ";
+		getline(cin, email, '\n');
+		bool validEmail = validateEmail(email);
+		if (!validEmail) {
+			cout << "Email not valid!" << endl;
+			system("pause");
+			return;
+		}
+
+		cout << "New phone --> ";
+		getline(cin, phone, '\n');
+		bool validPhone = validatePhone(phone);
+		if (!validPhone) {
+			cout << "Phone not valid!" << endl;
+			system("pause");
+			return;
+		}
+
+		// check whether the new details exists such as username, email, and phone
+		bool uniqueDetails = checkRecordUniqueness(allUsers, userToEdit->getUserId(), &username, &email, &phone);
+		if (uniqueDetails) {
+			// immediate update
+			userToEdit->setUsername(username);
+			userToEdit->setPassword(password);
+			userToEdit->setEmail(email);
+			userToEdit->setPhone(phone);
+		}
+	}
+}
+
+void deleteUserAccount(User* userToDelete, LinkedList<User>* allUsers) {
+	// delete user account
+	bool deleteUser;
+	deleteUser = promptUserAction(userToDelete, "delete");
+
+	// if confirmed that need to delete, then delete from LinkedList and txt file.
+	if (deleteUser) {
+		// delete the node loaded in this function for immediate update on UI
+		Node<User>* deleteUserFromAll = searchUser(allUsers->getFirstNode(), userToDelete->getUserId());
+		allUsers->deleteThisNode(deleteUserFromAll);
+
+		cout << "The user account is deleted successfully!" << endl;
+	}
 }
 
 bool promptUserAction(User* user, string action) {
@@ -235,15 +341,13 @@ bool promptUserAction(User* user, string action) {
 	}
 }
 
-void displayInactiveUser() {
+void displayInactiveUser(LinkedList<User>* allUsers) {
 	system("cls");
 	systemHeading();
 	
 	// printing inactive users
 	bool hasInactive = false;
-	LinkedList<User>* userList = loadUserData();
-	userList = filterUsersByRole(userList, USER);
-
+	LinkedList<User>* userList = filterUsersByRole(allUsers, USER); // filters only user role out
 	Node<User>* currentNode = userList->getFirstNode();
 	User* user;
 
@@ -274,7 +378,7 @@ void displayInactiveUser() {
 
 	// Select user and delete on text file
 	int userId;
-	cout << "Which user's account you wish to delete? (Enter -1 to exit) --> ";
+	cout << "Enter the user's id you wish to delete (Enter -1 to exit) --> ";
 	cin >> userId;
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -283,47 +387,45 @@ void displayInactiveUser() {
 
 	}
 
-	Node<User>* userToDelete = searchUser(userList->getFirstNode(), userId);
+	Node<User>* userToDelete = searchUser(allUsers->getFirstNode(), userId);
 	if (userToDelete == NULL || !userToDelete->getData()->isInactive()) {
 		// if user not found
 		cout << "WARNING: User not found!" << endl;
 		system("pause");
 
-		delete userList; // free memory
-		return displayInactiveUser();
+		return displayInactiveUser(allUsers);
 
 	}
 	else {
 		// if user found
 		bool deleteUser = promptUserAction(userToDelete->getData(), "delete");
 		if (deleteUser) {
-			// delete the users on text file
-			deleteUserOnFile(userId);
+			// delete on the global user list data structure
+			allUsers->deleteThisNode(userToDelete);
 
 		}
 		else {
-			// call again this interface
-			delete userList;
-			return displayInactiveUser();
+			// show all the inactive users again if don't want to delete the user
+			return displayInactiveUser(allUsers);
 
 		}
 	}
 }
 
-void displayFeedbacks(User* userLoggedIn) {
+void displayFeedbacks(User* userLoggedIn, LinkedList<Feedback>* allFeedbacks) {
 	system("cls");
 	systemHeading();
 
 	// sort feedback by date (descending)
-	LinkedList<Feedback>* feedbacks = loadFeedbackData();
-	feedbacks->setFirstNode(sortFeedbackByDate(feedbacks->getFirstNode(), false));
-	feedbacks = filterFeedbacksByType(feedbacks, "User Feedback"); // filter so that only user feedback are remained
+	LinkedList<Feedback>* sortedFeedbacks = allFeedbacks->cloneLinkedList(); // clone new linked list for sorted display purposes
+	sortedFeedbacks->setFirstNode(sortFeedbackByDate(sortedFeedbacks->getFirstNode(), false));
+	sortedFeedbacks = filterFeedbacksByType(sortedFeedbacks, "User Feedback"); // filter so that only user feedback are remained
 
 	int selection = 0;
 	int count = 1;
-	Node<Feedback>* currentNode = feedbacks->getFirstNode();
+	Node<Feedback>* currentNode = sortedFeedbacks->getFirstNode();
 
-	while (selection != 4) {
+	while (true) {
 		// display details and allows the users to navigate back and forth
 		Feedback* feedback = currentNode->getData();
 
@@ -331,101 +433,176 @@ void displayFeedbacks(User* userLoggedIn) {
 		feedback->printDetails();
 		cout << endl;
 
-		cout << "Actions: " << endl;
-		cout << "1. Previous record." << endl;
-		cout << "2. Next record." << endl;
-		cout << "3. Reply to feedback." << endl;
-		cout << "4. Quit." << endl;
-		cout << "Enter your selection here --> ";
-		cin >> selection;
+		if (currentNode->getPreviousAddress() == NULL) {
+			cout << "Actions: " << endl;
+			cout << "1. Next record." << endl;
+			cout << "2. Reply to feedback." << endl;
+			cout << "3. Quit." << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
 
-		// clear string buffer
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			// clear string buffer
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		switch (selection) {
-			case 1: {
-				if (count == 1) {
-					// traverse to the last element
-					currentNode = feedbacks->getLastNode();
-					count = feedbacks->getSize();
-				}
-				else {
-					// get previous element
-					currentNode = currentNode->getPreviousAddress();
-					count--;
-				}
-				break;
-
-			}
-			case 2: {
-				if (count == feedbacks->getSize()) {
-					// traverse to the first element
-					currentNode = feedbacks->getFirstNode();
-					count = 1;
-				}
-				else {
-					// get next element
+			switch (selection) {
+				case 1: {
 					currentNode = currentNode->getNextAddress();
 					count++;
-				}
-				break;
-
-			}
-			case 3: {
-				// reply feedback to user
-				cout << endl;
-				string reply;
-
-				cout << "Your reply to this feedback (-1 to cancel) --> ";
-				getline(cin, reply, '\n');
-
-				// simple validations
-				if (reply == "-1") {
 					break;
+				}
 
-				} else if (reply == "") {
-					cout << "The content of this reply message is invalid!" << endl;
+				case 2: {
+					// reply feedback to user
+					sendFeedbackReply(userLoggedIn, allFeedbacks, currentNode->getData()->getSenderId());
+
+					currentNode = sortedFeedbacks->getFirstNode();
+					count = 1;
+					break;
+				}
+
+				case 3: {
+					return;
+				}
+
+				default: {
+					cout << "Please choose a valid option!" << endl;
 					system("pause");
 
 					break;
 				}
-
-				// append new feedback on the text file after passing validations
-				Feedback* newFeedback = new Feedback(
-					generateFeedbackId(),
-					userLoggedIn->getUserId(), // admin id
-					currentNode->getData()->getSenderId(), // recipient id which is the sender of this feedback replying to
-					"Admin Reply",
-					reply
-				);
-				appendNewFeedbackOnFile(newFeedback);
-				cout << "Feedback has been sent successfully!" << endl;
-				system("pause");
-
-				break;
-
 			}
-			case 4:
-				return;
+		}
+		else if (currentNode->getNextAddress() == NULL) {
+			cout << "Actions: " << endl;
+			cout << "1. Previous record." << endl;
+			cout << "2. Reply to feedback." << endl;
+			cout << "3. Quit." << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
 
-			default: {
-				cout << "Please choose a valid option!" << endl;
-				system("pause");
+			// clear string buffer
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-				break;
+			switch (selection) {
+				case 1: {
+					currentNode = currentNode->getPreviousAddress();
+					count--;
+					break;
+				}
 
+				case 2: {
+					// reply feedback to users
+					sendFeedbackReply(userLoggedIn, allFeedbacks, currentNode->getData()->getSenderId());
+					
+					currentNode = sortedFeedbacks->getFirstNode();
+					count = 1;
+					break;
+				}
+
+				case 3: {
+					return;
+
+				}
+
+				default: {
+					cout << "Please choose a valid option!" << endl;
+					system("pause");
+
+					break;
+				}
 			}
+		}
+		else {
+			cout << "Actions: " << endl;
+			cout << "1. Previous record." << endl;
+			cout << "2. Next record." << endl;
+			cout << "3. Reply to feedback." << endl;
+			cout << "4. Quit." << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
+
+			// clear string buffer
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			switch (selection) {
+				case 1: {
+					currentNode = currentNode->getPreviousAddress();
+					count--;
+					break;
+				}
+
+				case 2: {
+					currentNode = currentNode->getNextAddress();
+					count++;
+					break;
+				}
+
+				case 3: {
+					// reply feedback to user
+					sendFeedbackReply(userLoggedIn, allFeedbacks, currentNode->getData()->getSenderId());
+					
+					currentNode = sortedFeedbacks->getFirstNode();
+					count = 1;
+					break;
+				}
+				case 4: {
+					return;
+
+				}
+
+				default: {
+					cout << "Please choose a valid option!" << endl;
+					system("pause");
+
+					break;
+				}
+			}
+
 		}
 
 		system("cls");
 		systemHeading();
 	}
-
-	delete feedbacks; // free memory
 }
 
-void displayUniversities() {
+void sendFeedbackReply(User* userLoggedIn, LinkedList<Feedback>* allFeedbacks, int recipientId) {
+	// reply feedback to user
+	cout << endl;
+	string reply;
+
+	cout << "Your reply to this feedback (-1 to cancel) --> ";
+	getline(cin, reply, '\n');
+
+	// simple validations
+	if (reply == "-1") {
+		return;
+
+	}
+	else if (reply == "") {
+		cout << "The content of this reply message is invalid!" << endl;
+		system("pause");
+
+		return;
+	}
+
+	// create new feedback object after passing validations
+	Feedback* newFeedback = new Feedback(
+		generateFeedbackId(allFeedbacks),
+		userLoggedIn->getUserId(), // admin id
+		recipientId, // recipient id which is the sender of this feedback replying to
+		"Admin Reply",
+		reply
+	);
+	allFeedbacks->appendNewNode(newFeedback); // append the new feedback to the global feedback list
+
+	cout << "Feedback has been sent successfully!" << endl;
+	system("pause");
+}
+
+void displayUniversities(LinkedList<University>* allUniversities, LinkedList<Favourite>* allFavourites) {
 	// display top 10 universities according to the favourites
 	system("cls");
 	systemHeading();
@@ -433,7 +610,7 @@ void displayUniversities() {
 	cout << string(40, '=') << endl;
 
 	// load favourite occurrences from favourites.txt and sort it by descending order
-	LinkedList<Counter>* favourites = loadFavouriteOccurrences()->to_counters();
+	LinkedList<Counter>* favourites = loadFavouriteOccurrences(allFavourites)->to_counters();
 	favourites->setFirstNode(sortFavouritesByOccurrences(favourites->getFirstNode()));
 
 	Node<Counter>* currentNode = favourites->getFirstNode();
@@ -452,6 +629,63 @@ void displayUniversities() {
 		currentNode = currentNode->getNextAddress();
 	}
 
-	delete favourites; // free memory
-	system("pause");
+	cout << endl;
+	int selection = 0;
+	cout << "Do you want to search for the details of the university?" << endl;
+	cout << "1. Yes" << endl;
+	cout << "2. No" << endl;
+	cout << "Enter your selection >> ";
+	cin >> selection;
+
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	switch (selection) {
+		case 1: {
+			string sortFieldType = "text";
+			string sortField = "uni_institution";
+			string searchUni;
+
+			cout << "Feel free to copy the institution name and find further details about the university using the search function!" << endl;
+			cout << "Enter your search here: ";
+			getline(cin, searchUni, '\n');
+			
+			LinkedList<University>* sortedUniversities = allUniversities->cloneLinkedList();
+
+			// sort universities before search
+			sortedUniversities->setFirstNode(
+				sortUniversities(
+					sortedUniversities->getFirstNode(),
+					&sortFieldType,
+					&sortField,
+					true
+				)
+			);
+
+			// search universities
+			Node<University>* uniFound = searchUniversityByText(sortedUniversities->getFirstNode(), &sortField, &searchUni);
+			if (uniFound) {
+				system("cls");
+				systemHeading();
+				cout << "Results: " << endl;
+				uniFound->getData()->printDetails();
+
+			}
+			else {
+				cout << "The searched university is not found!" << endl;
+
+			}
+
+			system("pause");
+			return displayUniversities(allUniversities, allFavourites);
+		}
+
+		case 2:
+			return;
+
+		default:
+			cout << "Invalid input!" << endl;
+			system("pause");
+			return displayUniversities(allUniversities, allFavourites);
+	}
 }

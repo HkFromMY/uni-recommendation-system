@@ -14,12 +14,12 @@
 
 using namespace std;
 
-void guestInterface();
-void displayAllUniversities();
+void guestInterface(LinkedList<User>*, LinkedList<University>*);
+void displayAllUniversities(LinkedList<University>*);
 void displayUniRecords(LinkedList<University>*);
-void searchUniversityDetails();
+void searchUniversityDetails(LinkedList<University>*);
 bool promptReSearch(Node<University>*);
-void registerAsCustomer();
+void registerAsCustomer(LinkedList<User>*);
 bool checkRecordUniqueness(string*, string*, string*);
 
 #endif

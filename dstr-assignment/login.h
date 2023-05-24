@@ -7,8 +7,8 @@
 
 #include <iostream>;
 
-void loginInterface();
-User* validateCredentials(string, string);
+void loginInterface(LinkedList<User>*, LinkedList<University>*, LinkedList<Feedback>*, LinkedList<Favourite>*);
+User* validateCredentials(LinkedList<User>*, string, string);
 bool promptLogin();
 
 #endif // !login_h

@@ -27,6 +27,13 @@ int main()
 
 void mainInterface() {
     int selection = 0;
+
+    // upon booting up of the program load all data required
+    LinkedList<User>* userList = loadUserData();
+    LinkedList<University>* uniList = loadUniversitiesData();
+    LinkedList<Favourite>* favouriteList = loadFavouriteData();
+    LinkedList<Feedback>* feedbackList = loadFeedbackData();
+
     while (selection != 3) {
         system("cls");
         systemHeading();
@@ -44,11 +51,11 @@ void mainInterface() {
 
         switch (selection) {
             case 1:
-                guestInterface();
+                guestInterface(userList, uniList);
                 break;
 
             case 2:
-                loginInterface();
+                loginInterface(userList, uniList, feedbackList, favouriteList);
                 break;
 
             case 3:
@@ -62,4 +69,9 @@ void mainInterface() {
                 return mainInterface();
         }
     }
+
+    // update latest data structures on respective text file (uni data is read-only)
+    updateLatestUserListOnFile(userList);
+    updateLatestFeedbacksOnTextFile(feedbackList);
+    updateLatestFavouritesOnTextFile(favouriteList);
 }

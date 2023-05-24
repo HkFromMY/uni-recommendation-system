@@ -4,7 +4,12 @@
 #include "util.h"
 #include "UserMenu.h"
 
-void loginInterface() {
+void loginInterface(
+	LinkedList<User>* userList,
+	LinkedList<University>* allUniversities,
+	LinkedList<Feedback>* allFeedbacks,
+	LinkedList<Favourite>* allFavourites
+) {
 	system("cls");
 	systemHeading();
 
@@ -16,7 +21,7 @@ void loginInterface() {
 	getline(cin, password);
 
 	// validate and verify password here
-	User* userFound = validateCredentials(username, password);
+	User* userFound = validateCredentials(userList, username, password);
 
 	if (userFound == nullptr) {
 		// if incorrect credentials
@@ -25,34 +30,39 @@ void loginInterface() {
 		bool wantLogin = promptLogin();
 		if (wantLogin) {
 			// if they want to try logging in again, then call loginInterface() again
-			loginInterface();
+			loginInterface(
+				userList,
+				allUniversities,
+				allFeedbacks,
+				allFavourites
+			);
 		}
 	}
 	else {
 		int login_role = userFound->getRole();
-
-		// update last login date
-		updateLastLoginDateOnFile(userFound);
+		userFound->setLastLoginDate(new Date());
+		userFound->setFeedbackReplies(filterFeedbacksByRecipientId(allFeedbacks, userFound->getUserId())); // get all feedback replies from the admin
+		userFound->setFeedbackSent(filterFeedbacksBySenderId(allFeedbacks, userFound->getUserId())); // get all feedback sent by this user
+		userFound->setFavouriteUniversities(filterFavouriteByUser(allFavourites, userFound->getUserId())); // get all saved universities of this user
 
 		// go other interface because correct credentials
 		if (login_role == USER) {
 			// registered user interface
-			userInterface(userFound);
+			userInterface(userFound, userList, allUniversities, allFeedbacks, allFavourites);
 
 		}
 		else if (login_role == ADMIN) {
 			// admin interface
-			adminInterface(userFound);
+			adminInterface(userFound, userList, allUniversities, allFeedbacks, allFavourites);
 
 		}
 	}
 }
 
-User* validateCredentials(string username, string password) {
+User* validateCredentials(LinkedList<User>* userList, string username, string password) {
 	// search whether there is matched record in user record
-	LinkedList<User>* user_list = loadUserData();
 	
-	Node<User>* currentUserNode = user_list->getFirstNode();
+	Node<User>* currentUserNode = userList->getFirstNode();
 	while (currentUserNode != NULL) {
 		// linear search O(N)
 		User* user = currentUserNode->getData();

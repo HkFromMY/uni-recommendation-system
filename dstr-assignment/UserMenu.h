@@ -21,14 +21,21 @@
 
 using namespace std;
 
-void userInterface(User*);
-void displayUniversityDetails(User*);
-void displayUniversityRecords(User*, LinkedList<University>*);
-void searchUniversityMenu(User*);
-int promptAction(User*, Node<University>*);
-void saveUniversityAsFavourite(User*, Favourite*);
-void displaySavedUniversities(User*);
-void displayFeedback(User*);
-void sendFeedback(User*);
+void userInterface(User*, LinkedList<User>*, LinkedList<University>*, LinkedList<Feedback>*, LinkedList<Favourite>*);
+void displayUniversityDetails(User*, LinkedList<University>*, LinkedList<Favourite>*);
+void displayUniversityRecords(User*, LinkedList<University>*, LinkedList<Favourite>*);
+void searchUniversityMenu(User*, LinkedList<University>*, LinkedList<Favourite>*);
+int promptAction(User*, Node<University>*, LinkedList<Favourite>*);
+
+// favourite modules
+void saveUniversityAsFavourite(User*, Favourite*, LinkedList<Favourite>*);
+void displaySavedUniversities(User*, LinkedList<Favourite>*);
+void deleteFavouriteUniversity(User*, LinkedList<Favourite>*);
+
+// feedback module
+void displayFeedback(User*, LinkedList<User>*, LinkedList<Feedback>*);
+void sendFeedback(User*, LinkedList<User>*, LinkedList<Feedback>*);
 void displayFeedbackReplies(User*);
-void editUserProfile(User*);
+
+// edit user profile
+void editUserProfile(User*, LinkedList<User>*);

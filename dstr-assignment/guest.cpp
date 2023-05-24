@@ -1,6 +1,6 @@
 #include "guest.h"
 
-void guestInterface() {
+void guestInterface(LinkedList<User>* currentUserList, LinkedList<University>* uniList) {
 	int selection = 0;
 	while (selection != 4) {
 		system("cls");
@@ -18,15 +18,15 @@ void guestInterface() {
 
 		switch (selection) {
 			case 1:
-				displayAllUniversities();
+				displayAllUniversities(uniList);
 				break;
 
 			case 2:
-				searchUniversityDetails();
+				searchUniversityDetails(uniList);
 				break;
 
 			case 3:
-				registerAsCustomer();
+				registerAsCustomer(currentUserList);
 				break;
 			
 			case 4:
@@ -40,24 +40,24 @@ void guestInterface() {
 	}
 }
 
-void displayAllUniversities() {
+void displayAllUniversities(LinkedList<University>* allUniversities) {
 	system("cls");
 	systemHeading();
 
-	LinkedList<University>* uniList = loadUniversitiesData();
+	LinkedList<University>* sortedUniversities = allUniversities->cloneLinkedList();
+
 	int sortSelection;
 	string sortFieldType = "text";
 	string sortField = "uni_institution";
-
 	cout << "Do you want to sort the universities by institution name before displaying? (1 - Yes, 2 - No) --> ";
 	cin >> sortSelection;
 
 	switch (sortSelection) {
 		case 1: 
 			// sort records
-			uniList->setFirstNode(
+			sortedUniversities->setFirstNode(
 				sortUniversities(
-					uniList->getFirstNode(),
+					sortedUniversities->getFirstNode(),
 					&sortFieldType,
 					&sortField,
 					true // ascending order
@@ -69,13 +69,12 @@ void displayAllUniversities() {
 		default:
 			cout << "Invalid input!" << endl;
 			system("pause");
-			delete uniList; // free memory
-			return displayAllUniversities();
+
+			return displayAllUniversities(allUniversities);
 	}
 
 	// display records
-	displayUniRecords(uniList);
-	delete uniList; // free memory
+	displayUniRecords(sortedUniversities);
 }
 
 void displayUniRecords(LinkedList<University>* uniList) {
@@ -89,41 +88,88 @@ void displayUniRecords(LinkedList<University>* uniList) {
 		currentNode->getData()->printDetails();
 		cout << string(50, '=') << endl;
 
-		cout << "1. Previous" << endl;
-		cout << "2. Next" << endl;
-		cout << "3. Quit" << endl;
-		cout << "Enter your selection here --> ";
-		cin >> selection;
+		if (currentNode->getPreviousAddress() == NULL) {
+			cout << "1. Next" << endl;
+			cout << "2. Quit" << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
 
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		switch (selection) {
-			case 1:
-				if (currentNode->getPreviousAddress() != NULL) currentNode = currentNode->getPreviousAddress();
-				else currentNode = uniList->getLastNode(); // go to the last element
-				break;
+			switch (selection) {
+				case 1:
+					currentNode = currentNode->getNextAddress();
+					break;
 
-			case 2:
-				if (currentNode->getNextAddress() != NULL) currentNode = currentNode->getNextAddress();
-				else currentNode = uniList->getFirstNode(); // go back to first element
-				break;
+				case 2:
+					return;
 
-			case 3:
-				return;
+				default:
+					cout << "Invalid input!" << endl;
+					system("pause");
+					break;
+			}
 
-			default:
-				cout << "Invalid input!" << endl;
-				system("pause");
-				break;
+		}
+		else if (currentNode->getNextAddress() == NULL) {
+			cout << "1. Previous" << endl;
+			cout << "2. Quit" << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
+
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			switch (selection) {
+				case 1:
+					currentNode = currentNode->getPreviousAddress();
+					break;
+
+				case 2:
+					return;
+
+				default:
+					cout << "Invalid input!" << endl;
+					system("pause");
+					break;
+			}
+
+		}
+		else {
+			cout << "1. Previous" << endl;
+			cout << "2. Next" << endl;
+			cout << "3. Quit" << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
+
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			switch (selection) {
+				case 1:
+					currentNode = currentNode->getPreviousAddress();
+					break;
+					
+				case 2:
+					currentNode = currentNode->getNextAddress();
+					break;
+
+				case 3:
+					return;
+
+				default:
+					cout << "Invalid input!" << endl;
+					system("pause");
+					break;
+			}
 		}
 	}
 }
 
-void searchUniversityDetails() {
+void searchUniversityDetails(LinkedList<University>* allUniversities) {
 	// search university menu
 	bool reSearch = false; // users want to search again
-	LinkedList<University>* uniList = loadUniversitiesData();
 
 	do {
 		system("cls");
@@ -133,7 +179,6 @@ void searchUniversityDetails() {
 		string selection = promptUserSearchField();
 		if (selection == "") {
 
-			delete uniList;
 			return;
 		}
 
@@ -154,8 +199,7 @@ void searchUniversityDetails() {
 				cout << "The search value for rank is not valid! Please retry!" << endl;
 				system("pause");
 
-				delete uniList;
-				return searchUniversityDetails();
+				return searchUniversityDetails(allUniversities);
 			}
 		}
 		else if (sortFieldType == "uni_rank") {
@@ -165,8 +209,7 @@ void searchUniversityDetails() {
 				cout << "The search value for rank is not valid! Please retry!" << endl;
 				system("pause");
 
-				delete uniList;
-				return searchUniversityDetails();
+				return searchUniversityDetails(allUniversities);
 			}
 		}
 		else if (sortFieldType == "score") {
@@ -176,15 +219,15 @@ void searchUniversityDetails() {
 				cout << "The search value for score is not valid! Please retry!" << endl;
 				system("pause");
 
-				delete uniList;
-				return searchUniversityDetails();
+				return searchUniversityDetails(allUniversities);
 			}
 		}
 
 		// sort the array according to the search field as binary search is implemented
-		uniList->setFirstNode(
+		LinkedList<University>* sortedUniversities = allUniversities->cloneLinkedList();
+		sortedUniversities->setFirstNode(
 			sortUniversities(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortFieldType,
 				&sortField,
 				true
@@ -194,28 +237,28 @@ void searchUniversityDetails() {
 		Node<University>* universityFound;
 		if (sortFieldType == "uni_rank") {
 			universityFound = searchUniversityByRank(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				convertToInt(searchTarget)
 			);
 		}
 		else if (sortFieldType == "text") {
 			universityFound = searchUniversityByText(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				&searchTarget
 			);
 		}
 		else if (sortFieldType == "score") {
 			universityFound = searchUniversityByScore(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				convertToDouble(searchTarget)
 			);
 		}
 		else {
 			universityFound = searchUniversityByRankObj(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				new Rank(searchTarget)
 			);
@@ -224,8 +267,6 @@ void searchUniversityDetails() {
 		reSearch = promptReSearch(universityFound);
 	
 	} while (reSearch);
-
-	delete uniList; // free memory
 }
 
 bool promptReSearch(Node<University>* universityFound) {
@@ -264,7 +305,7 @@ bool promptReSearch(Node<University>* universityFound) {
 	}
 }
 
-void registerAsCustomer() {
+void registerAsCustomer(LinkedList<User>* currentUserList) {
 	system("cls");
 	systemHeading();
 
@@ -298,7 +339,8 @@ void registerAsCustomer() {
 		return;
 	}
 
-	bool isUniqueRecord = checkRecordUniqueness(&username, &email, &phone);
+
+	bool isUniqueRecord = checkRecordUniqueness(currentUserList, &username, &email, &phone);
 	if (!isUniqueRecord) {
 		system("pause");
 		return;
@@ -306,7 +348,7 @@ void registerAsCustomer() {
 	
 	// creating new profile for user
 	User* newCustomer = new User(
-		generateUserId(),
+		generateUserId(currentUserList),
 		username,
 		password,
 		email,
@@ -315,8 +357,7 @@ void registerAsCustomer() {
 		new Date()
 	);
 
-	// update on text file
-	addNewUserOnFile(newCustomer);
+	currentUserList->appendNewNode(newCustomer); // add newly registered customer to the linked list
 	cout << "Registration Successful!" << endl;
 	system("pause");
 }

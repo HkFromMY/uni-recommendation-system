@@ -1,6 +1,6 @@
 #include "UserMenu.h"
 
-void userInterface(User* userLoggedIn) {
+void userInterface(User* userLoggedIn, LinkedList<User>* allUsers, LinkedList<University>* allUniversities, LinkedList<Feedback>* allFeedbacks, LinkedList<Favourite>* allFavourites) {
 	int selection = 0;
 
 	while (selection != 7) {
@@ -25,19 +25,19 @@ void userInterface(User* userLoggedIn) {
 
 		switch (selection) {
 			case 1:
-				displayUniversityDetails(userLoggedIn);
+				displayUniversityDetails(userLoggedIn, allUniversities, allFavourites);
 				break;
 
 			case 2:
-				searchUniversityMenu(userLoggedIn);
+				searchUniversityMenu(userLoggedIn, allUniversities, allFavourites);
 				break;
 
 			case 3:
-				displaySavedUniversities(userLoggedIn);
+				displaySavedUniversities(userLoggedIn, allFavourites);
 				break;
 
 			case 4:
-				displayFeedback(userLoggedIn);
+				displayFeedback(userLoggedIn, allUsers, allFeedbacks);
 				break;
 
 			case 5:
@@ -45,7 +45,7 @@ void userInterface(User* userLoggedIn) {
 				break;
 
 			case 6:
-				editUserProfile(userLoggedIn);
+				editUserProfile(userLoggedIn, allUsers);
 				break;
 
 			case 7:
@@ -54,19 +54,19 @@ void userInterface(User* userLoggedIn) {
 			default:
 				cout << "Please choose a valid option!" << endl;
 				system("pause");
-				userInterface(userLoggedIn);
+				userInterface(userLoggedIn, allUsers, allUniversities, allFeedbacks, allFavourites);
 				break;
 
 		}
 	}
 }
 
-void displayUniversityDetails(User* userLoggedIn) {
+void displayUniversityDetails(User* userLoggedIn, LinkedList<University>* allUniversities, LinkedList<Favourite>* allFavourites) {
 	// before displaying uni details the users can select whether to sort the universities by what field in ascending or descending order
 	system("cls");
 	systemHeading();
 
-	LinkedList<University>* uniList = loadUniversitiesData();
+	LinkedList<University>* sortedUniversities = allUniversities->cloneLinkedList();
 	int sortSelection;
 	cout << "Do you want to sort the universities before displaying? (1 - Yes, 2 - No) --> ";
 	cin >> sortSelection;
@@ -105,25 +105,25 @@ void displayUniversityDetails(User* userLoggedIn) {
 			cout << "Invalid input!" << endl;
 			system("pause");
 
-			delete uniList;
-			return displayUniversityDetails(userLoggedIn);
+			return displayUniversityDetails(userLoggedIn, allUniversities, allFavourites);
 		}
 
-		// sort the uniList and replaces the unsorted one
-		uniList->setFirstNode(
+		// sort the cloned linked list
+		sortedUniversities->setFirstNode(
 			sortUniversities(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortFieldType,
 				&sortField,
 				false // descending order
 			)
 		);
 
-		displayUniversityRecords(userLoggedIn, uniList);
+		displayUniversityRecords(userLoggedIn, sortedUniversities, allFavourites);
 
 	}
 	else if (sortSelection == 2) {
-		displayUniversityRecords(userLoggedIn, uniList);
+		// unsorted uni list
+		displayUniversityRecords(userLoggedIn, sortedUniversities, allFavourites);
 
 	}
 	else {
@@ -131,15 +131,13 @@ void displayUniversityDetails(User* userLoggedIn) {
 		cout << "Invalid input!" << endl;
 		system("pause");
 
-		delete uniList;
-		return displayUniversityDetails(userLoggedIn);
+		return displayUniversityDetails(userLoggedIn, allUniversities, allFavourites);
 
 	}
 
-	delete uniList; // free memory
 }
 
-void displayUniversityRecords(User* userLoggedIn, LinkedList<University>* uniList) {
+void displayUniversityRecords(User* userLoggedIn, LinkedList<University>* uniList, LinkedList<Favourite>* allFavourites) {
 	// display the university records 1 by 1
 	Node<University>* currentNode = uniList->getFirstNode();
 	int selection = 0;
@@ -153,59 +151,130 @@ void displayUniversityRecords(User* userLoggedIn, LinkedList<University>* uniLis
 		cout << string(50, '=') << endl;
 
 		// ask for action
-		cout << "1. Previous" << endl;
-		cout << "2. Next" << endl;
-		cout << "3. Save as favourite." << endl;
-		cout << "4. Quit" << endl;
-		cout << "Enter your selection here --> ";
-		cin >> selection;
+		if (currentNode->getNextAddress() == NULL) {
+			cout << "1. Previous" << endl;
+			cout << "2. Save as favourite." << endl;
+			cout << "3. Quit" << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
+
+			switch (selection) {
+				case 1:
+					currentNode = currentNode->getPreviousAddress();
+					break;
+
+				case 2:
+					// save university as favourite
+					saveUniversityAsFavourite(
+						userLoggedIn,
+						new Favourite(
+							generateFavouriteId(allFavourites),
+							userLoggedIn->getUserId(),
+							currentNode->getData()->getInstitution()
+						),
+						allFavourites
+					);
+					break;
+
+				case 3:
+					return;
+
+				default:
+					cout << "Invalid input!" << endl;
+					system("pause");
+
+					break;
+			}
+		}
+		else if (currentNode->getPreviousAddress() == NULL) {
+			cout << "1. Next" << endl;
+			cout << "2. Save as favourite." << endl;
+			cout << "3. Quit" << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
+
+			switch (selection) {
+				case 1:
+					currentNode = currentNode->getNextAddress();
+					break;
+
+				case 2:
+					// save university as favourite
+					saveUniversityAsFavourite(
+						userLoggedIn,
+						new Favourite(
+							generateFavouriteId(allFavourites),
+							userLoggedIn->getUserId(),
+							currentNode->getData()->getInstitution()
+						),
+						allFavourites
+					);
+					break;
+
+				case 3:
+					return;
+
+				default:
+					cout << "Invalid input!" << endl;
+					system("pause");
+
+					break;
+			}
+		}
+		else {
+			cout << "1. Previous" << endl;
+			cout << "2. Next" << endl;
+			cout << "3. Save as favourite." << endl;
+			cout << "4. Quit" << endl;
+			cout << "Enter your selection here --> ";
+			cin >> selection;
+
+			switch (selection) {
+				case 1:
+					currentNode = currentNode->getPreviousAddress();
+					break;
+
+				case 2:
+					currentNode = currentNode->getNextAddress();
+					break;
+
+				case 3:
+					// save university as favourite
+					saveUniversityAsFavourite(
+						userLoggedIn,
+						new Favourite(
+							generateFavouriteId(allFavourites),
+							userLoggedIn->getUserId(),
+							currentNode->getData()->getInstitution()
+						),
+						allFavourites
+					);
+					break;
+
+				case 4:
+					return;
+
+				default:
+					cout << "Invalid input!" << endl;
+					system("pause");
+
+					break;
+			}
+		}
 
 		// clear string elements in input stream
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-		switch (selection) {
-			case 1:
-				if (currentNode->getPreviousAddress() != NULL) currentNode = currentNode->getPreviousAddress();
-				else currentNode = uniList->getLastNode(); // go to the last element
-				break;
-
-			case 2:
-				if (currentNode->getNextAddress() != NULL) currentNode = currentNode->getNextAddress();
-				else currentNode = uniList->getFirstNode(); // go back to first element
-				break;
-
-			case 3:
-				// save as favourite university
-				saveUniversityAsFavourite(
-					userLoggedIn,
-					new Favourite(
-						generateFavouriteId(),
-						userLoggedIn->getUserId(),
-						currentNode->getData()->getInstitution()
-					)
-				);
-				break;
-
-			case 4:
-				return;
-
-			default:
-				cout << "Invalid input!" << endl;
-				system("pause");
-
-				break;
-		}
 	}
 }
 
-void searchUniversityMenu(User* userLoggedIn) {
+void searchUniversityMenu(User* userLoggedIn, LinkedList<University>* allUniversities, LinkedList<Favourite>* allFavourites) {
 	// search university menu
 	// ask users which field to search before searching
 	// only returns 1 result and call printDetails to print its details.
 
 	int action = 0;
-	LinkedList<University>* uniList = loadUniversitiesData();
+	LinkedList<University>* sortedUniversities = allUniversities->cloneLinkedList();
 	while (action != 3) {
 		system("cls");
 		systemHeading();
@@ -213,7 +282,7 @@ void searchUniversityMenu(User* userLoggedIn) {
 		// get the search field type and search field
 		string selection = promptUserSearchField();
 		if (selection == "") {
-			delete uniList;
+
 			return;
 		}
 
@@ -234,8 +303,7 @@ void searchUniversityMenu(User* userLoggedIn) {
 				cout << "The search value for rank is not valid! Please retry!" << endl;
 				system("pause");
 
-				delete uniList;
-				return searchUniversityMenu(userLoggedIn);
+				return searchUniversityMenu(userLoggedIn, allUniversities, allFavourites);
 			}
 		}
 		else if (sortFieldType == "uni_rank") {
@@ -245,8 +313,7 @@ void searchUniversityMenu(User* userLoggedIn) {
 				cout << "The search value for rank is not valid! Please retry!" << endl;
 				system("pause");
 
-				delete uniList;
-				return searchUniversityMenu(userLoggedIn);
+				return searchUniversityMenu(userLoggedIn, allUniversities, allFavourites);
 			}
 		}
 		else if (sortFieldType == "score") {
@@ -256,15 +323,14 @@ void searchUniversityMenu(User* userLoggedIn) {
 				cout << "The search value for score is not valid! Please retry!" << endl;
 				system("pause");
 
-				delete uniList;
-				return searchUniversityMenu(userLoggedIn);
+				return searchUniversityMenu(userLoggedIn, allUniversities, allFavourites);
 			}
 		}
 
 		// sort the array according to the search field as binary search is implemented
-		uniList->setFirstNode(
+		sortedUniversities->setFirstNode(
 			sortUniversities(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortFieldType,
 				&sortField,
 				true
@@ -274,41 +340,39 @@ void searchUniversityMenu(User* userLoggedIn) {
 		Node<University>* universityFound;
 		if (sortFieldType == "uni_rank") {
 			universityFound = searchUniversityByRank(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				convertToInt(searchTarget)
 			);
 		}
 		else if (sortFieldType == "text") {
 			universityFound = searchUniversityByText(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				&searchTarget
 			);
 		}
 		else if (sortFieldType == "score") {
 			universityFound = searchUniversityByScore(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				convertToDouble(searchTarget)
 			);
 		}
 		else {
 			universityFound = searchUniversityByRankObj(
-				uniList->getFirstNode(),
+				sortedUniversities->getFirstNode(),
 				&sortField,
 				new Rank(searchTarget)
 			);
 		}
 
-		action = promptAction(userLoggedIn, universityFound);
+		action = promptAction(userLoggedIn, universityFound, allFavourites);
 
 	}
-
-	delete uniList; // free memory
 }
 
-int promptAction(User* userLoggedIn, Node<University>* universityFound) {
+int promptAction(User* userLoggedIn, Node<University>* universityFound, LinkedList<Favourite>* allFavourites) {
 	int action = 0;
 	if (universityFound == NULL) {
 		cout << "The target is not found!" << endl;
@@ -333,10 +397,11 @@ int promptAction(User* userLoggedIn, Node<University>* universityFound) {
 				saveUniversityAsFavourite(
 					userLoggedIn,
 					new Favourite(
-						generateFavouriteId(), // new id
+						generateFavouriteId(allFavourites), // new id
 						userLoggedIn->getUserId(),
 						universityFound->getData()->getInstitution()
-					)
+					),
+					allFavourites
 				);
 				return 1;
 
@@ -350,35 +415,42 @@ int promptAction(User* userLoggedIn, Node<University>* universityFound) {
 				cout << "Invalid input!" << endl;
 				system("pause");
 
-				return promptAction(userLoggedIn, universityFound);
+				return promptAction(userLoggedIn, universityFound, allFavourites);
 		}
 	}
 }
 
-void saveUniversityAsFavourite(User* userLoggedIn, Favourite* favouriteUniversity) {
+void saveUniversityAsFavourite(User* userLoggedIn, Favourite* favouriteUniversity, LinkedList<Favourite>* allFavourites) {
 	// confirm want to save then proceed
 	int confirmSave = 0;
 	cout << "Do you really want to save the university \"" << favouriteUniversity->getFavouriteUniversity() << "\" as favourite university? (1 - Yes, 2 - No) >> ";
 	cin >> confirmSave;
 
 	switch (confirmSave) {
-		case 1:
+		case 1: {
 			// save as favourite here
-			try {
-				addNewFavouriteOnFile(userLoggedIn->getUserId(), favouriteUniversity);
-				cout << "The university has been successfully saved!" << endl;
-				system("pause");
-				return;
+			Node<Favourite>* currentNode = userLoggedIn->getFavouriteUniversities()->getFirstNode();
+			while (currentNode != NULL) {
+				// linear search to find if this record already exists
 
-			}
-			catch (const char* msg) {
-				cerr << msg << endl;
-				system("pause");
+				Favourite* favUni = currentNode->getData();
+				if (favUni->getFavouriteUniversity() == favouriteUniversity->getFavouriteUniversity()) {
+					// if found record then return with appropriate message
+					cout << "This university is already saved by the users!" << endl;
+					system("pause");
 
-				return;
+					return;
+				}
+
+				currentNode = currentNode->getNextAddress();
 			}
+
+			userLoggedIn->getFavouriteUniversities()->appendNewNode(favouriteUniversity);
+			allFavourites->appendNewNode(favouriteUniversity);
+			cout << "The university has been successfully saved!" << endl;
+			system("pause");
 			break;
-
+		}
 		case 2:
 			return;
 
@@ -386,42 +458,98 @@ void saveUniversityAsFavourite(User* userLoggedIn, Favourite* favouriteUniversit
 			cout << "Invalid input!" << endl;
 			system("pause");
 
-			return saveUniversityAsFavourite(userLoggedIn, favouriteUniversity);
+			return saveUniversityAsFavourite(userLoggedIn, favouriteUniversity, allFavourites);
 	}
 }
 
-void displaySavedUniversities(User* userLoggedIn) {
+void displaySavedUniversities(User* userLoggedIn, LinkedList<Favourite>* allFavourites) {
 	// display all favourite universities of that users
 	system("cls");
 	systemHeading();
 
-	// filter favourite by users
-	LinkedList<Favourite>* favList = loadFavouriteData();
-	favList = filterFavouriteByUser(favList, userLoggedIn->getUserId());
-
+	// user's favourite list
+	LinkedList<Favourite>* favList = userLoggedIn->getFavouriteUniversities();
+	
 	// print the favourite university out
 	Node<Favourite>* currentNode = favList->getFirstNode();
-	cout << "Favourite List: " << endl;
-	int counter = 1;
+
+	cout << "Favourite List: " << endl << endl;
 	while (currentNode != NULL) {
-		cout << counter << ". " << currentNode->getData()->getFavouriteUniversity() << endl;
+
+		cout << "Feedback Id: " << currentNode->getData()->getFavouriteId() << endl;
+		cout << "University Name: " << currentNode->getData()->getFavouriteUniversity() << endl;
+		if (currentNode->getNextAddress() != NULL)
+			cout << string(50, '=') << endl;
+		else
+			cout << endl;
 
 		currentNode = currentNode->getNextAddress();
-		counter++;
 	}
-	system("pause");
-	delete favList; // free memory
+
+	int selection = 0;
+	cout << "Do you wish to delete any favourite university saved?" << endl;
+	cout << "1. Yes" << endl;
+	cout << "2. No (will quit to user main menu)" << endl;
+	cout << "Enter your selection >> ";
+	cin >> selection;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	if (selection == 1) {
+		// come back to this favourite interface after deleting saved uni
+		deleteFavouriteUniversity(userLoggedIn, allFavourites);
+
+		// travel back to this interface
+		displaySavedUniversities(userLoggedIn, allFavourites);
+
+	}
+	else if (selection == 2) {
+		return;
+
+	}
+	else {
+		// return back to this menu after printing error message
+		cout << "Invalid input from users! Please choose valid choice." << endl;
+		system("pause");
+
+		displaySavedUniversities(userLoggedIn, allFavourites);
+
+	}
 }
 
-void displayFeedback(User* userLoggedIn) {
+void deleteFavouriteUniversity(User* userLoggedIn, LinkedList<Favourite>* allFavourites) {
+	int feedbackIdToDelete;
+	cout << "Please enter the favourite id of the university saved you wish to delete >> ";
+	cin >> feedbackIdToDelete;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	Node<Favourite>* deleteFavFromAll = searchFavourite(allFavourites, feedbackIdToDelete);
+	Node<Favourite>* deleteFavFromUser = searchFavourite(userLoggedIn->getFavouriteUniversities(), feedbackIdToDelete);
+
+	if (deleteFavFromAll == NULL || deleteFavFromUser == NULL) {
+		cout << "The saved university is not found!" << endl;
+		system("pause");
+	}
+	else {
+		// disconnect the targeted node from the linked list
+		userLoggedIn->getFavouriteUniversities()->deleteThisNode(deleteFavFromUser); // delete from user's fav list
+		allFavourites->deleteThisNode(deleteFavFromAll); // delete from all fav list
+
+		cout << "The saved university has been deleted!" << endl;
+		system("pause");
+	}
+}
+
+void displayFeedback(User* userLoggedIn, LinkedList<User>* allUsers, LinkedList<Feedback>* allFeedbacks) {
 	// show all the feedbacks sent, then give options to create 1
 	system("cls");
 	systemHeading();
 
-	int counter = 1;
-	LinkedList<Feedback>* userFeedbacks = loadFeedbackData();
-	userFeedbacks = filterFeedbacksBySenderId(userFeedbacks, userLoggedIn->getUserId());
+	// get user's feedbacdisplayFeedbackks sent
+	LinkedList<Feedback>* userFeedbacks = userLoggedIn->getFeedbackSent();
 	Node<Feedback>* currentNode = userFeedbacks->getFirstNode();
+	int counter = 1;
 	
 	cout << "Feedbacks sent: " << endl;
 	while (currentNode != NULL) {
@@ -444,7 +572,7 @@ void displayFeedback(User* userLoggedIn) {
 
 	switch (selection) {
 		case 1:
-			sendFeedback(userLoggedIn);
+			sendFeedback(userLoggedIn, allUsers, allFeedbacks);
 			break;
 
 		case 2:
@@ -455,11 +583,10 @@ void displayFeedback(User* userLoggedIn) {
 			system("pause");
 			break;
 	}
-
-	delete userFeedbacks; // free memory
 }
 
-void sendFeedback(User* userLoggedIn) {
+void sendFeedback(User* userLoggedIn, LinkedList<User>* allUsers, LinkedList<Feedback>* allFeedbacks) {
+	// add a newly created feedback object to the feedback list
 	system("cls");
 	systemHeading();
 
@@ -468,24 +595,21 @@ void sendFeedback(User* userLoggedIn) {
 	getline(cin, content, '\n');
 
 	// get admin's id
-	LinkedList<User>* userList = loadUserData();
-	User* admin = filterUsersByRole(userList, ADMIN)->getFirstNode()->getData();
-
+	User* admin = filterUsersByRole(allUsers, ADMIN)->getFirstNode()->getData();
 	Feedback* feedbackSent = new Feedback(
-		generateFeedbackId(),
+		generateFeedbackId(allFeedbacks),
 		userLoggedIn->getUserId(),
 		admin->getUserId(),
 		"User Feedback",
 		content
 	);
 
-	// record on file
-	appendNewFeedbackOnFile(feedbackSent);
+	// update the global feedback list data structure and user's object filtered list
+	allFeedbacks->appendNewNode(feedbackSent);
+	userLoggedIn->getFeedbackSent()->appendNewNode(feedbackSent);
 
 	cout << "Feedback sent successfully!" << endl;
 	system("pause");
-
-	delete userList; // free memory
 }
 
 void displayFeedbackReplies(User* userLoggedIn) {
@@ -495,8 +619,7 @@ void displayFeedbackReplies(User* userLoggedIn) {
 	cout << "Feedback Replies from Admin: " << endl << endl;
 
 	// sort feedback replies from the admin (descending)
-	LinkedList<Feedback>* feedbacks = loadFeedbackData();
-	feedbacks = filterFeedbacksByRecipientId(feedbacks, userLoggedIn->getUserId());
+	LinkedList<Feedback>* feedbacks = userLoggedIn->getFeedbackReplies();
 	feedbacks->setFirstNode(
 		sortFeedbackByDate(
 			feedbacks->getFirstNode(),
@@ -513,11 +636,9 @@ void displayFeedbackReplies(User* userLoggedIn) {
 	}
 
 	system("pause");
-
-	delete feedbacks; // free memory
 }
 
-void editUserProfile(User* userLoggedIn) {
+void editUserProfile(User* userLoggedIn, LinkedList<User>* allUsers) {
 	system("cls");
 	systemHeading();
 
@@ -565,31 +686,20 @@ void editUserProfile(User* userLoggedIn) {
 				return;
 			}
 
-			bool isUniqueRecord = checkRecordUniqueness(userLoggedIn->getUserId(), &newUsername, &newEmail, &newPhone);
+			bool isUniqueRecord = checkRecordUniqueness(allUsers, userLoggedIn->getUserId(), &newUsername, &newEmail, &newPhone);
 			if (!isUniqueRecord) {
 				system("pause");
-				return editUserProfile(userLoggedIn);
+				return editUserProfile(userLoggedIn, allUsers);
 			}
 
-			try {
-				// edit user on text file
-				editUserOnFile(userLoggedIn->getUserId(), newUsername, newPassword, newEmail, newPhone);
+			// update immediately
+			userLoggedIn->setUsername(newUsername);
+			userLoggedIn->setPassword(newPassword);
+			userLoggedIn->setEmail(newEmail);
+			userLoggedIn->setPhone(newPhone);
 
-				// update immediate UI
-				userLoggedIn->setUsername(newUsername);
-				userLoggedIn->setPassword(newPassword); // not necessary
-				userLoggedIn->setEmail(newEmail);
-				userLoggedIn->setPhone(newPhone);
-
-				cout << "User profile is edited successfully!" << endl;
-				system("pause");
-
-			}
-			catch (const char* errorMsg) {
-				cout << errorMsg << endl;
-				system("pause");
-				return;
-			}
+			cout << "User profile is edited successfully!" << endl;
+			system("pause");
 			
 			break;
 		}
@@ -600,6 +710,6 @@ void editUserProfile(User* userLoggedIn) {
 		default:
 			cout << "Invalid input!" << endl;
 			system("pause");
-			return editUserProfile(userLoggedIn);
+			return editUserProfile(userLoggedIn, allUsers);
 	}
 }
