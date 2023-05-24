@@ -170,17 +170,6 @@ int generateFeedbackId(LinkedList<Feedback>* feedbackList) {
 	return newFeedbackId;
 }
 
-void appendNewFeedbackOnFile(Feedback* newFeedback) {
-	if (newFeedback == NULL) {
-		cout << "Feedback object cannot be NULL!";
-
-		return;
-	}
-
-	// append to the feedback.txt file
-	appendToFile("feedback.txt", newFeedback->toString());
-}
-
 string latestFeedbackRecordInString(LinkedList<Feedback>* latestFeedbacks) {
 	// returns latest feedback objects in string that represents records in text file
 	// time complexity - O(N)

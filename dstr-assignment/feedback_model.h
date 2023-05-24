@@ -25,7 +25,6 @@ LinkedList<Feedback>* filterFeedbacksByRecipientId(LinkedList<Feedback>*, int);
 
 LinkedList<Feedback>* loadFeedbackData();
 int generateFeedbackId(LinkedList<Feedback>*);
-void appendNewFeedbackOnFile(Feedback*);
 string latestFeedbackRecordInString(LinkedList<Feedback>*);
 void updateLatestFeedbacksOnTextFile(LinkedList<Feedback>*);
 

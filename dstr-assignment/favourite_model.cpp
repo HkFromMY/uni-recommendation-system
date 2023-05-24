@@ -180,40 +180,6 @@ int generateFavouriteId(LinkedList<Favourite>* favList) {
 	return newFavouriteId;
 }
 
-void addNewFavouriteOnFile(int userId, Favourite* newFavourite) {
-	// validations to make sure this university is unique in the user's fav list
-	LinkedList<Favourite>* favList = loadFavouriteData();
-	favList = filterFavouriteByUser(favList, userId);
-
-	// simple linear search to search through the favourite list
-	Node<Favourite>* currentNode = favList->getFirstNode();
-	while (currentNode != NULL) {
-		if (currentNode->getData()->getFavouriteUniversity() == newFavourite->getFavouriteUniversity()) {
-
-			throw "This university is already saved by the users!";
-		}
-
-		currentNode = currentNode->getNextAddress();
-	}
-
-	// append new line of favourite object in file
-	appendToFile("favourite.txt", newFavourite->toString());
-
-	delete favList; // free memory
-}
-
-void deleteFavouriteOnFile(int favouriteId) {
-	// search and delete favourite based on the favourite ID
-	LinkedList<Favourite>* favList = loadFavouriteData();
-	favList->deleteThisNode(searchFavourite(favList, favouriteId));
-
-	// update on text file
-	string latestFavouritesRecords = latestFavouritesInString(favList);
-	writeToFile("favourite.txt", latestFavouritesRecords);
-
-	delete favList; // free memory
-}
-
 string latestFavouritesInString(LinkedList<Favourite>* favList) {
 	// convert latest favourite linked list into string to be outputted into the text file
 	Node<Favourite>* currentNode = favList->getFirstNode();

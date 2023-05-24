@@ -27,8 +27,6 @@ Node<Favourite>* findMiddleFavouriteNode(Node<Favourite>*, Node<Favourite>*);
 LinkedList<Favourite>* loadFavouriteData();
 HashMap<string, int>* loadFavouriteOccurrences(LinkedList<Favourite>*);
 int generateFavouriteId(LinkedList<Favourite>*);
-void addNewFavouriteOnFile(int, Favourite*);
-void deleteFavouriteOnFile(int);
 string latestFavouritesInString(LinkedList<Favourite>*);
 void updateLatestFavouritesOnTextFile(LinkedList<Favourite>*);
 
