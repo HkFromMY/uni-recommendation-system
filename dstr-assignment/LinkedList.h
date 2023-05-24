@@ -15,7 +15,7 @@ using namespace std;
 template <class Data>
 class LinkedList
 {
-	// a doubly circular linked list that can traverse in two direction and
+	// a doubly linked list that can traverse in two direction and
 	// 1. from last element to first element
 	// 2. from first element to last element
 

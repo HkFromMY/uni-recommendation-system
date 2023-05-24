@@ -476,7 +476,7 @@ void displaySavedUniversities(User* userLoggedIn, LinkedList<Favourite>* allFavo
 	cout << "Favourite List: " << endl << endl;
 	while (currentNode != NULL) {
 
-		cout << "Feedback Id: " << currentNode->getData()->getFavouriteId() << endl;
+		cout << "Favourite Id: " << currentNode->getData()->getFavouriteId() << endl;
 		cout << "University Name: " << currentNode->getData()->getFavouriteUniversity() << endl;
 		if (currentNode->getNextAddress() != NULL)
 			cout << string(50, '=') << endl;
